@@ -1,0 +1,300 @@
+<!--
+    author : cys
+-->
+<template>
+  <div>
+    <LeftNav :data="lefNav"></LeftNav>
+    <div class="admin-video">
+      <h2 class="title">视频库</h2>
+      <ul class="video-classify">
+        <li>
+          <span>视频ID</span>
+          <input type="text" class="inp" v-model="search_info.id">
+        </li>
+        <li>
+          <span>视频名称</span>
+          <input type="text" class="inp" v-model="search_info.name">
+        </li>
+        <li style="margin-right: 100px">
+          <span>上传时间</span>
+          <el-date-picker
+            v-model="search_info.time"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
+        </li>
+        <li>
+          <span>是否被使用</span>
+          <el-select v-model="search_info.isUse" placeholder="请选择">
+            <el-option
+              v-for="(item,index) in search_info.isUse_select"
+              :key="index"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+        </li>
+        <li class="last-li">
+          <span class="show-list" @click="show_up_list">视频传输列表</span>
+          <span class="video-up">
+            上传
+              <!--<input type="file" style="opacity: 0;position: absolute;top: -2px;left:3px;width: 110px;height: 40px;"-->
+                     <!--id="upload" value="多文件上传" multiple/>-->
+            <UpLoading
+            m_style="opacity: 0;position: absolute;top: -2px;left:3px;width: 110px;height: 40px;"
+            :cover_show="cover_show"
+            @close_cover="close_cover"
+            @get_list_again="get_list_again"
+            ></UpLoading>
+          </span>
+          <span class="video-search" @click="video_search">搜索</span>
+        </li>
+      </ul>
+      <table class="video-list">
+        <tr>
+          <th>序号</th>
+          <th>视频ID</th>
+          <th>视频名称</th>
+          <th>时长</th>
+          <th>类型</th>
+          <th>上传时间</th>
+          <th>是否被使用</th>
+          <th>操作</th>
+        </tr>
+        <tbody>
+        <tr v-for="(item,index) in video_lists" :key="index">
+          <td width="80px">{{index + 1}}</td>
+          <td width="230px">{{item.video_id}}</td>
+          <td width="300px">
+            <p class="p1">{{item.show_name}}</p>
+          </td>
+          <td width="150px">{{item.time === '' ? '--' : item.time}}分钟</td>
+          <td width="150px">{{item.video_type}}</td>
+          <td width="250px">{{item.updated_at}}</td>
+          <td width="150px">
+            <span class="col-sure" v-show="item.is_used !== 0">是</span>
+            <span class="col-error" v-show="item.is_used === 0">否</span>
+          </td>
+          <td>
+            <span class="delete-one" @click="delete_one(item.id)">删除</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <!--分页-->
+      <div class="paging">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="paging.currentPage"
+          :page-sizes="paging.page_sizes"
+          :page-size="paging.page_size"
+          layout="prev, pager, next, sizes, jumper"
+          :total="paging.total"
+          v-loading.fullscreen.lock="fullscreenLoading"
+          :pager-count="5">
+        </el-pagination>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import LeftNav from '~/components/admin/LeftNav';
+  import '~/static/admin/css/up_video.css'
+  import '~/static/admin/css/video.css'
+  import UpLoading from './up_video'
+  import axios from 'axios'
+  import Vue from 'vue'
+
+  Vue.filter('b_to_mb', function (m) {
+    var mb = m / 1024 / 1024;
+    return mb.toFixed(2);
+  });
+
+
+  export default {
+    layout: 'admin',
+    name: "admin-video",
+    components: {
+      LeftNav,
+      UpLoading
+    },
+    data() {
+      return {
+        lefNav: [
+          {
+            name: '视频库',
+            link: '/admin/video',
+            active: true
+          }, {
+            name: '课程管理',
+            link: '/admin/class',
+            active: false
+          }, {
+            name: '课程分类管理',
+            link: '/admin/classification',
+            active: false
+          },
+        ],
+        fullscreenLoading: false,
+        search_info: {
+          id: '',
+          name: '',
+          time: [],
+          isUse_select: ['全部', '是', '否'],
+          isUse: '全部',
+        },
+        //  弹窗显示
+        cover_show: false,
+        // 视频上传
+        vsrc: '',
+        vsrc1: '',
+        vsrc_t: '',
+        vsrc_t1: '',
+        upload_item: [], //上传列表
+        upload_control_item: [], //上传控制列表 实质和上传列表一模一样，只是一个用于显示，一个用于删除清空操作
+        upload_vedio_nums: 0, //正在上传视频的个数，用于暂停和上传结束的后续操作判断
+        upload_index: 0, // 上传的索引
+        upload_index_a: 0,
+      }
+    },
+    async asyncData({store}) {
+      let params = {
+        url: '/manage/manage_video/video_list',
+        data: {
+          page: 1,
+          psize: 10,
+          is_used: '',
+          video_id: '',
+          show_name: '',
+          create_start_time: '',
+          create_end_time: ''
+        }
+      };
+      let res = await store.dispatch("adminHttpGet", params);
+      console.log(res);
+
+      return {
+        // 分页
+        paging: {
+          currentPage: 1,  //当前页
+          page_sizes: [10, 20,], //每页显示多少条下拉
+          page_size: 10,// 默认显示多少条
+          total: res.data.total
+        },
+        video_lists: res.data.data.data,
+        headers: {
+          token: store.state.admin.token
+        },
+      }
+
+    },
+    methods: {
+      //分页
+      async video_paging() {
+        const that = this;
+        that.fullscreenLoading = true;
+        let params = {
+          url: '/manage/manage_video/video_list',
+          data: {
+            page: that.paging.currentPage,
+            psize: that.paging.page_size,
+            is_used: that.search_info.isUse === '全部' ? '' : that.search_info.isUse === '是' ? 1 : 0,
+            video_id: that.search_info.id,
+            show_name: that.search_info.name,
+            create_start_time: that.search_info.time[0],
+            create_end_time: that.search_info.time[1]
+          }
+        };
+        let res = await this.$store.dispatch("adminHttpGet", params);
+        if (res.code === 0) {
+          that.fullscreenLoading = false;
+        }
+        that.paging.total = res.data.data.total;
+        that.video_lists = res.data.data.data;
+      },
+      // 每页多少条
+      handleSizeChange(val) {
+        this.paging.page_size = val;
+        this.video_paging();
+      },
+      handleCurrentChange(val) {
+        // 当前页
+        this.paging.currentPage = val;
+        this.video_paging();
+      },
+      //  删除视频
+      delete_one(video_id) {
+        const that = this;
+        // 删除提示框
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(() => {
+          // 确定之后执行删除
+          axios({
+            url: '/manage/manage_video/video_del',
+            baseURL: that.$store.state.admin.baseUrl,
+            method: 'post',
+            headers: {
+              token: that.$store.state.admin.token
+            },
+            data: {
+              id: video_id
+            }
+          }).then((res) => {
+            if (res.data.code === 0) {
+              that.video_paging()
+            }
+          }).catch((error) => {
+            console.log(error)
+          });
+        })
+      },
+      //  搜索
+      video_search() {
+        this.video_paging();
+      },
+      // 弹窗列表
+      show_up_list() {
+        this.cover_show = true
+      },
+      // 关闭列表
+      close_cover(val) {
+        this.cover_show = val
+      },
+      // 上传结束
+      get_list_again(val) {
+        const that = this;
+        that.cover_show = false
+        if (val) {
+          that.video_paging();
+        }
+      },
+
+    },
+    mounted: function () {
+    },
+    head() {
+      return {
+        script: [
+          {src: '/admin/js/es6-promise.min.js'},
+          {src: '/admin/js/aliyun-oss-sdk4.13.2.min.js'},
+          {src: '/admin/js/aliyun-upload-sdk1.3.1.min.js'},
+          {src: '/admin/js/bootstrap.min.js'},
+        ]
+      }
+
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>

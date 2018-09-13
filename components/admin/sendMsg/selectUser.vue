@@ -1,0 +1,225 @@
+<template>
+<div class="app_update">
+   <div class="app_update_setting">
+  {{searchFilter}}
+     <div class="searchFilter">
+        <el-form :inline="true" :model="searchFilter" class="demo-form-inline">
+          <el-form-item label="用户昵称" label-width="90px">
+            <el-input v-model="searchFilter.username" clearable auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="账号" label-width="90px">
+            <el-input v-model="searchFilter.mobile" clearable auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="账号状态" label-width="90px">
+              <el-select v-model="searchFilter.status" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in status"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+          <el-form-item label="性别" label-width="90px">
+              <el-select v-model="searchFilter.sex" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in sex"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+          <el-form-item label="操作时间" label-width="90px">
+            <el-date-picker
+      v-model="searchFilter.register_start_time"
+      type="date"
+      placeholder="选择日期">
+          </el-date-picker> -
+          <el-date-picker
+      v-model="searchFilter.register_end_time"
+      type="date"
+      placeholder="选择日期">
+          </el-date-picker>
+          </el-form-item>
+ 
+
+
+      <el-form-item class="fRight">
+   
+          <el-button   @click="getData()" class="btn_search">搜索</el-button>
+    
+      </el-form-item>
+
+        </el-form>
+
+       
+     </div>
+     {{ids}}
+      
+        
+
+     
+    
+     <div class="table-responsive">
+      
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="8%" ><el-checkbox v-model="allChecked" >序号</el-checkbox></th>
+          <th width="8%">用户</th>
+          <th width="8%">账号</th>
+          <th width="8%">性别</th>
+          <th width="8%">生日</th>
+          <th width="8%">注册时间</th>
+          <th width="8%">积分</th>
+          <th width="8%">状态</th>      
+        </tr>
+        </tbody>
+      </table>
+      <el-checkbox-group v-model="ids">
+      <table class="table">
+        <tbody>
+       
+        <tr v-for="(vo, index) in updateInfo" :key="index">
+          <td width="8%"><el-checkbox :label="vo.id">{{index+1}}</el-checkbox></td>
+          <td width="8%"><div class="head_img"><img :src="vo.photo" /></div>{{vo.username}}</td>
+          <td width="8%">{{vo.mobile}}</td>
+          <td width="8%">{{$store.state.admin.sex[vo.sex]}}</td>
+          <td width="8%">{{vo.register_time}}</td>
+          <td width="8%">{{vo.register_time}}</td>
+          <td width="8%">{{vo.point}}</td>
+          <td width="8%">{{vo.status}}</td>
+        </tr>
+        
+        </tbody>
+      </table>
+      </el-checkbox-group>
+    </div>
+      
+    <div class="page">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage"
+      :page-sizes="pageInfo.pageSizes"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total">
+    </el-pagination>
+    </div>
+   </div>
+  <div slot="footer" class="dialog-footer">
+      <el-button v-on:click="cancel()">取 消</el-button>
+      <el-button type="primary" v-on:click="save()">确 定</el-button>
+  </div>
+</div>
+</template>
+ 
+
+<script>
+
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  props:['addInfo'],
+  data () {
+    return {
+      allChecked:false,
+      ids:[],
+      idsAll:"",
+      updateInfo:{},
+      pageInfo:{currentPage:1,pageSize:10},
+      status:[{id:1,title:"正常"},{id:2,title:"冻结"}],
+      sex:[{id:1,title:"男"},{id:0,title:"女"}],
+      searchFilter:{mobile:""},    
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+
+    }
+  },
+  created(){
+    console.log(this.addInfo)
+  },
+  
+  methods: {
+    async getData(){
+         this.searchFilter.page = this.pageInfo.currentPage;
+         this.searchFilter.psize = this.pageInfo.pageSize;
+         let params = {url: "/manage/person/list",data:this.searchFilter} 
+        let res  = await this.$store.dispatch("adminHttpGet",params);
+        this.updateInfo=res.data.data
+        this.pageInfo={
+            total:res.data.total,
+            pageSizes:[10, 20, 30, 400],
+            pageSize:this.pageInfo.pageSize,
+            currentPage:parseInt(res.data.page),
+        }
+        this.setAll()
+    
+    },
+    handleSizeChange(val) {
+      this.$set(this.pageInfo,'pageSize',val);
+      this.getData()
+    },
+    handleCurrentChange(val) {
+      this.$set(this.pageInfo,'currentPage',val);
+      this.getData() 
+    },
+    remove(val) { 
+      var index = this.ids.indexOf(val); 
+      if (index > -1) { 
+       this.ids.splice(index, 1); 
+      } 
+    },
+    setAll() {
+      if(this.allChecked == true) {
+          for(var i in this.updateInfo){
+            var index = this.ids.indexOf(this.updateInfo[i].id); 
+            if (index == -1) { 
+              this.ids.push(this.updateInfo[i].id);
+            } 
+          }
+        　　
+       }
+    },
+    save() {
+      let res = {}
+      res.visible = false
+      if(this.allChecked == true) {
+        res.ids = ["all"]
+      }
+      else {
+        res.ids = this.ids
+      }
+      
+      this.$emit('editSuccess',res) 
+    },
+    cancel:function(){
+        var res={}
+        res.visible = false
+        res.ids = []
+        this.$emit('editSuccess',res) 
+     },
+ 
+  },
+ 
+  mounted () {
+
+    this.getData()
+  },
+  watch: {
+    allChecked: function (val) {
+      this.setAll()
+      if(val == false) {
+          this.ids = []  
+      }
+    },
+ 
+  
+  },
+ 
+}
+</script>
+

@@ -1,0 +1,179 @@
+<!--
+  author：cys
+-->
+<template>
+  <div>
+    <LeftNav :data="leftNav"></LeftNav>
+    <div class="admin-log">
+      <h2 class="title">日志</h2>
+      <ul class="log-search">
+        <li>
+          <span>操作账号</span>
+          <input type="text" class="inp" v-model="search_info.account">
+        </li>
+        <li>
+          <span>操作时间</span>
+          <el-date-picker
+            v-model="search_info.time"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
+        </li>
+        <li class="last-li" @click="log_search">搜索</li>
+      </ul>
+      <table>
+        <thead>
+        <tr>
+          <th width="150px">序号</th>
+          <th width="350px">操作时间</th>
+          <th width="350px">操作账户</th>
+          <th>操作记录</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item,index) in log_lists" :key="index">
+          <td>{{index + 1}}</td>
+          <td>{{item.created_at}}</td>
+          <td>{{item.manage.username}}</td>
+          <td>{{item.method_name.privilege_title}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <!--分页-->
+      <div class="paging">
+
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="paging.currentPage"
+          :page-sizes="paging.page_sizes"
+          :page-size="paging.page_size"
+          layout="prev, pager, next, sizes, jumper"
+          :total="paging.total"
+          :pager-count="5"
+          v-loading.fullscreen.lock="fullscreenLoading"
+        >
+        </el-pagination>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<script>
+  import LeftNav from '~/components/admin/LeftNav';
+  import '~/static/admin/css/log.css'
+
+
+  export default {
+    layout: 'admin',
+    name: "log",
+    components: {
+      LeftNav
+    },
+    data() {
+      return {
+        leftNav: [
+          {
+            name: '员工账号',
+            link: '/admin/account',
+            active: false
+          }, {
+            name: '角色管理',
+            link: '/admin/role',
+            active: false
+          }, {
+            name: '日志',
+            link: '/admin/log',
+            active: true
+          }
+        ],
+        fullscreenLoading: false,
+        search_info: {
+          account: '',
+          time: []
+        },
+        paging: {
+          currentPage: 1,  //当前页
+          page_sizes: [10, 20, 50], //每页显示多少条下拉
+          page_size: 10,// 默认显示多少条
+          total: 20,  // 总条数
+        }
+      }
+    },
+    // 初始化数据
+    async asyncData({store}) {
+      let params = {
+        url: "/manage/log/list",
+        data: {
+          username: '',
+          start_time: '',
+          end_time: '',
+          page: 1,
+          psize: 10,
+        }
+      };
+      let res = await store.dispatch("adminHttpGet", params)
+      console.log(res.data)
+      return {
+        //  列表
+        log_lists: res.data.data,
+        //  分页
+        paging: {
+          currentPage: 1,  //当前页
+          page_sizes: [10, 20, 50], //每页显示多少条下拉
+          page_size: 10,// 默认显示多少条
+          total: res.data.total,  // 总条数
+        }
+      }
+    },
+
+
+    methods: {
+      //  分页
+      handleSizeChange(val) {
+        this.paging.page_size = val;
+        this._paging()
+
+      },
+      handleCurrentChange(val) {
+        // 当前页
+        this.paging.currentPage = val;
+        this._paging()
+      },
+      log_search() {
+        this._paging();
+      },
+      async _paging() {
+        const that = this
+        that.fullscreenLoading = true
+        let params = {
+          url: "/manage/log/list",
+          data: {
+            username: that.search_info.account,
+            start_time: that.search_info.time[0],
+            end_time: that.search_info.time[1],
+            page: that.paging.currentPage,
+            psize: that.paging.page_size,
+          }
+        };
+        let res = await that.$store.dispatch("adminHttpGet", params);
+        console.log(res);
+        if(res.code === 0){
+          that.fullscreenLoading = false;
+          that.log_lists = res.data.data;
+          that.paging.total = res.data.total
+        }
+      },
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>

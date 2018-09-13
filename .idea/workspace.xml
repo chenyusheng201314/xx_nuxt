@@ -1,0 +1,1618 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+<<<<<<< .mine
+    <list default="true" readonly="true" id="1c13b0d5-76f9-4585-994f-a6a188ad3cd5" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+||||||| .r2698
+    <list default="true" readonly="true" id="1c13b0d5-76f9-4585-994f-a6a188ad3cd5" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/index" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/pages/home" afterDir="true" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/App.js" afterDir="false" />
+=======
+    <list default="true" readonly="true" id="2ee5f452-10dd-4d41-9e67-3c712a82550d" name="Default" comment="">
+>>>>>>> .r2705
+      <change beforePath="$PROJECT_DIR$/.nuxt/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/router.js" afterDir="false" />
+<<<<<<< .mine
+      <change beforePath="$PROJECT_DIR$/components/head.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/head.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/modal.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/modal.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nuxt/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/nuxt/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/home" beforeDir="true" />
+      <change beforePath="$PROJECT_DIR$/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/idnex.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine01trip.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine01trip/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine01trip/total.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip02pro.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine01trip/pro.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip03buy.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine01trip/buy.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip04company.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine01trip/company.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip05history.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine01trip/history.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip06train.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine01trip/train.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine02card.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine02card.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine04points.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine04points.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine04points/buy.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine04points/buy.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine04points/rules.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine04points/rules.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine06company.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine06company.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine06company/course.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine06company/course.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine06company/join.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine06company/join.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine06company/members.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine06company/members.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine06company/train.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine06company/train.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine07message.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine07message.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine08order.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine08order.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine09request.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine09request.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine10follow.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine10follow.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine10follow/course.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine10follow/course.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine10follow/teacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine10follow/teacher.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mine/mine/mine10follow/train.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mine/mine/mine10follow/train.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/news/detail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/news/_id.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/news/news.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/news/news.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/teacher/_id.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/teacher/_id.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/teacher/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/teacher/index.vue" afterDir="false" />
+||||||| .r2698
+      <change beforePath="$PROJECT_DIR$/assets/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/body-parser/HISTORY.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/body-parser/HISTORY.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/body-parser/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/body-parser/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/body-parser/lib/types/json.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/body-parser/lib/types/json.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/body-parser/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/body-parser/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/raw-body/HISTORY.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/raw-body/HISTORY.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/raw-body/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/raw-body/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/raw-body/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/raw-body/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/css.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/css.css" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/components/head.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/head.vue" afterDir="false" />
+>>>>>>> .r2705
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< .mine
+      <file leaf-file-name="show.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pages/user/show.vue">
+||||||| .r2698
+      <file leaf-file-name="head.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/head.vue">
+=======
+      <file leaf-file-name="article-title.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pages/blogs/article-title.vue">
+>>>>>>> .r2705
+          <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+            <state relative-caret-position="-761">
+              <caret line="8" column="2" lean-forward="true" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+||||||| .r2698
+            <state relative-caret-position="561">
+              <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
+=======
+            <state relative-caret-position="25">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
+>>>>>>> .r2705
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< .mine
+      <file leaf-file-name="detail.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine04points/detail.vue">
+||||||| .r2698
+      <file leaf-file-name="shows.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pages/teacher/shows.vue">
+=======
+      <file leaf-file-name="list.vue" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pages/blogs/list.vue">
+>>>>>>> .r2705
+          <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+            <state relative-caret-position="74">
+              <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mine09request.vue" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine09request.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="488">
+              <caret line="34" column="24" lean-forward="true" selection-start-line="34" selection-start-column="24" selection-end-line="34" selection-end-column="24" />
+||||||| .r2698
+            <state relative-caret-position="612">
+              <caret line="38" column="11" selection-start-line="38" selection-start-column="11" selection-end-line="38" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="default.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/layouts/default.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="16" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
+              <folding>
+                <element signature="e#274#310#0" expanded="true" />
+              </folding>
+=======
+            <state relative-caret-position="305">
+              <caret line="548" column="18" selection-start-line="548" selection-start-column="18" selection-end-line="548" selection-end-column="18" />
+              <folding>
+                <element signature="e#476#12160#0" />
+              </folding>
+>>>>>>> .r2705
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< .mine
+||||||| .r2698
+      <file leaf-file-name="index.vue" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pages/teacher/index.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="301">
+              <caret line="23" column="15" lean-forward="true" selection-start-line="23" selection-start-column="15" selection-end-line="23" selection-end-column="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="router.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.nuxt/router.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pages/index.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="314">
+              <caret line="135" column="22" lean-forward="true" selection-start-line="135" selection-start-column="22" selection-end-line="135" selection-end-column="22" />
+              <folding>
+                <element signature="e#13429#13456#0" expanded="true" />
+                <element signature="e#13562#21509#0" />
+                <element signature="e#13729#15137#0" />
+                <element signature="e#15155#17434#0" />
+                <element signature="e#17457#17690#0" />
+                <element signature="n#style#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_id.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pages/teacher/_id.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="7" column="27" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+=======
+      <file leaf-file-name="article.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pages/blogs/article.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="325">
+              <caret line="13" column="47" lean-forward="true" selection-start-line="13" selection-start-column="47" selection-end-line="13" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="filtrate.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pages/blogs/filtrate.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="525">
+              <caret line="21" column="12" lean-forward="true" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+>>>>>>> .r2705
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Vue Single File Component" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>run</find>
+<<<<<<< .mine
+      <find>.swiper-pagination-bullet-active</find>
+      <find>simp</find>
+      <find>new-con</find>
+      <find>con-follow</find>
+      <find>tes</find>
+      <find>ima</find>
+      <find>tabs</find>
+      <find>router-link</find>
+      <find>static</find>
+      <find>link</find>
+      <find>stat</find>
+      <find>sta</find>
+      <find>poin</find>
+||||||| .r2698
+      <find>.swiper-pagination-bullet-active</find>
+      <find>simp</find>
+      <find>static</find>
+      <find>new-con</find>
+=======
+      <find>scripts</find>
+      <find>swiper-pagination swiper-pagination-business</find>
+>>>>>>> .r2705
+    </findStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+<<<<<<< .mine
+        <option value="$PROJECT_DIR$/pages/teacher/teachers.vue" />
+        <option value="$PROJECT_DIR$/pages/teacher/detail.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip01total.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip02pro.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip03buy.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip04company.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip05history.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip06train.vue" />
+        <option value="$PROJECT_DIR$/components/foot.vue" />
+        <option value="$PROJECT_DIR$/static/css/css.css" />
+        <option value="$PROJECT_DIR$/layouts/index.vue" />
+        <option value="$PROJECT_DIR$/pages/teacher/shows.vue" />
+        <option value="$PROJECT_DIR$/static/css/home.css" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/index.vue" />
+        <option value="$PROJECT_DIR$/pages/teacher/_id.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine02card.vue" />
+        <option value="$PROJECT_DIR$/assets/index.js" />
+        <option value="$PROJECT_DIR$/layouts/mine.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/index.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/index.vue" />
+        <option value="$PROJECT_DIR$/.nuxt/router.js" />
+        <option value="$PROJECT_DIR$/components/head.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine04points.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine06company.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine10follow.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/buy.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/company.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/history.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/pro.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/total.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/train.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine04points/buy.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine06company/course.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine06company/join.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine06company/members.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine06company/train.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine10follow/course.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine10follow/train.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine07message.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine10follow/teacher.vue" />
+        <option value="$PROJECT_DIR$/components/modal.vue" />
+        <option value="$PROJECT_DIR$/layouts/default.vue" />
+        <option value="$PROJECT_DIR$/pages/index.vue" />
+        <option value="$PROJECT_DIR$/pages/news/_id.vue" />
+        <option value="$PROJECT_DIR$/pages/news/news.vue" />
+        <option value="$PROJECT_DIR$/pages/teacher/index.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine04points/rules.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine08order.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine09request.vue" />
+||||||| .r2698
+        <option value="$PROJECT_DIR$/pages/home/home.vue" />
+        <option value="$PROJECT_DIR$/pages/news/detail.vue" />
+        <option value="$PROJECT_DIR$/pages/news/news.vue" />
+        <option value="$PROJECT_DIR$/pages/teacher/teachers.vue" />
+        <option value="$PROJECT_DIR$/pages/teacher/detail.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine02card.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine08order.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine09request.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip01total.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip02pro.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip03buy.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip04company.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip05history.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip06train.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine04points/buy.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine04points/rules.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine06company/course.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine06company/join.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine06company/members.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine06company/train.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine10follow/course.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine10follow/teacher.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine10follow/train.vue" />
+        <option value="$PROJECT_DIR$/assets/index.js" />
+        <option value="$PROJECT_DIR$/components/foot.vue" />
+        <option value="$PROJECT_DIR$/components/head.vue" />
+        <option value="$PROJECT_DIR$/static/css/css.css" />
+        <option value="$PROJECT_DIR$/layouts/index.vue" />
+        <option value="$PROJECT_DIR$/.nuxt/router.js" />
+        <option value="$PROJECT_DIR$/pages/mine/mine/mine01trip.vue" />
+        <option value="$PROJECT_DIR$/pages/mine/index.vue" />
+        <option value="$PROJECT_DIR$/pages/teacher/index.vue" />
+        <option value="$PROJECT_DIR$/pages/teacher/shows.vue" />
+        <option value="$PROJECT_DIR$/static/css/home.css" />
+        <option value="$PROJECT_DIR$/pages/index.vue" />
+        <option value="$PROJECT_DIR$/pages/teacher/_id.vue" />
+=======
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/nuxt.config.js" />
+        <option value="$PROJECT_DIR$/nuxt/router.js" />
+        <option value="$PROJECT_DIR$/pages/case/_id.vue" />
+        <option value="$PROJECT_DIR$/pages/case/list.vue" />
+        <option value="$PROJECT_DIR$/pages/case/detail.vue" />
+        <option value="$PROJECT_DIR$/pages/blogs/detail.vue" />
+        <option value="$PROJECT_DIR$/pages/blogs/article-title.vue" />
+        <option value="$PROJECT_DIR$/pages/blogs/article.vue" />
+        <option value="$PROJECT_DIR$/pages/blogs/filtrate.vue" />
+        <option value="$PROJECT_DIR$/pages/blogs/index.vue" />
+        <option value="$PROJECT_DIR$/components/head.vue" />
+        <option value="$PROJECT_DIR$/pages/blogs/list.vue" />
+>>>>>>> .r2705
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
+    <package-json value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/package.json" />
+    </packageJsonPaths>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="182" />
+    <option name="y" value="103" />
+    <option name="width" value="1624" />
+    <option name="height" value="966" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+              <item name=".nuxt" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+<<<<<<< .mine
+              <item name="layouts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+||||||| .r2698
+              <item name="layouts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+              <item name="nuxt" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+=======
+>>>>>>> .r2705
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="mine" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="blogs" type="462c0819:PsiDirectoryNode" />
+              <item name="mine" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+<<<<<<< .mine
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="mine" type="462c0819:PsiDirectoryNode" />
+              <item name="mine" type="462c0819:PsiDirectoryNode" />
+              <item name="mine04points" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="news" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="teacher" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+||||||| .r2698
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="teacher" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+=======
+>>>>>>> .r2705
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+<<<<<<< .mine
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+||||||| .r2698
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+              <item name="swiper.css" type="620a8d5e:NestingTreeNode" />
+            </path>
+            <path>
+              <item name="nuxt_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nuxt_project" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+=======
+>>>>>>> .r2705
+              <item name="images" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="E:\xmapp\htdocs\code\nuxt_project\node_modules\eslint" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="E:\xmapp\htdocs\code\nuxt_project\node_modules\prettier" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+  </component>
+<<<<<<< .mine
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pages/mine" />
+      <recent name="$PROJECT_DIR$/layouts" />
+      <recent name="$PROJECT_DIR$/pages" />
+      <recent name="$PROJECT_DIR$/pages/home" />
+      <recent name="$PROJECT_DIR$/index" />
+    </key>
+  </component>
+||||||| .r2698
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pages" />
+      <recent name="$PROJECT_DIR$/pages/home" />
+      <recent name="$PROJECT_DIR$/index" />
+    </key>
+  </component>
+=======
+>>>>>>> .r2705
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>C:\Users\chen\AppData\Roaming\Subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="E:\xmapp\htdocs\code\nuxt_project" />
+          <option name="myCopyRoot" value="E:\xmapp\htdocs\code\nuxt_project" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="E:\xmapp\htdocs\code\nuxt_project" />
+          <option name="myCopyRoot" value="E:\xmapp\htdocs\code\nuxt_project" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2ee5f452-10dd-4d41-9e67-3c712a82550d" name="Default" comment="" />
+      <created>1532673011394</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+<<<<<<< .mine
+      <updated>1532671689503</updated>
+      <workItem from="1532671693955" duration="344000" />
+      <workItem from="1532672136349" duration="4431000" />
+      <workItem from="1532676614056" duration="8629000" />
+      <workItem from="1532912576990" duration="3941000" />
+||||||| .r2698
+      <updated>1532671689503</updated>
+      <workItem from="1532671693955" duration="344000" />
+      <workItem from="1532672136349" duration="4431000" />
+      <workItem from="1532676614056" duration="2077000" />
+=======
+      <updated>1532673011394</updated>
+      <workItem from="1532673015415" duration="9255000" />
+      <workItem from="1532912652220" duration="1101000" />
+>>>>>>> .r2705
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+<<<<<<< .mine
+    <option name="totallyTimeSpent" value="17345000" />
+||||||| .r2698
+    <option name="totallyTimeSpent" value="6852000" />
+=======
+    <option name="totallyTimeSpent" value="10356000" />
+>>>>>>> .r2705
+  </component>
+  <component name="ToolWindowManager">
+<<<<<<< .mine
+    <frame x="70" y="23" width="1850" height="1057" extended-state="0" />
+||||||| .r2698
+    <frame x="70" y="23" width="1850" height="1057" extended-state="1" />
+=======
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+>>>>>>> .r2705
+    <editor active="true" />
+    <layout>
+<<<<<<< .mine
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19567567" />
+||||||| .r2698
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3518919" />
+=======
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17760417" />
+>>>>>>> .r2705
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+<<<<<<< .mine
+||||||| .r2698
+      <window_info anchor="bottom" id="Run" order="2" />
+=======
+      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.24335814" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" />
+>>>>>>> .r2705
+      <window_info id="npm" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.19234857" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+<<<<<<< .mine
+      <window_info anchor="bottom" id="Find" order="1" weight="0.74059004" />
+||||||| .r2698
+      <window_info anchor="bottom" id="Find" order="1" weight="0.31739572" />
+=======
+>>>>>>> .r2705
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="2" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/.nuxt/store.js">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine07message.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/blogs/index.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="68">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+||||||| .r2698
+        <state relative-caret-position="124">
+          <caret line="9" column="20" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+=======
+        <state relative-caret-position="450">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/.nuxt/utils.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.nuxt/server.js">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine08order.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/blogs/article-title.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="-195">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+||||||| .r2698
+        <state relative-caret-position="-920">
+          <caret line="48" column="32" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="32" />
+=======
+        <state relative-caret-position="350">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/.nuxt/App.js">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine09request.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/blogs/article.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="-335">
+          <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+||||||| .r2698
+        <state relative-caret-position="-1430">
+          <caret line="20" column="68" selection-start-line="20" selection-start-column="68" selection-end-line="20" selection-end-column="68" />
+=======
+        <state relative-caret-position="325">
+          <caret line="13" column="47" lean-forward="true" selection-start-line="13" selection-start-column="47" selection-end-line="13" selection-end-column="47" />
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/assets/index.js">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine10follow.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/blogs/filtrate.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="34">
+          <caret line="7" selection-start-line="7" selection-end-line="7" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+||||||| .r2698
+        <state relative-caret-position="5">
+          <caret line="2" column="29" selection-start-line="2" selection-start-column="29" selection-end-line="2" selection-end-column="29" />
+=======
+        <state relative-caret-position="525">
+          <caret line="21" column="12" lean-forward="true" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/static/css/css.css">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine11feedback.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/package.json">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="102">
+          <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+||||||| .r2698
+        <state relative-caret-position="73">
+          <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
+=======
+        <state relative-caret-position="500">
+          <caret line="20" column="35" lean-forward="true" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/.nuxt/router.js">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip02pro.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/nuxt.config.js">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="347">
+          <caret line="182" column="10" lean-forward="true" selection-start-line="182" selection-start-column="10" selection-end-line="182" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+||||||| .r2698
+        <state relative-caret-position="287">
+          <caret line="117" column="32" selection-start-line="117" selection-start-column="32" selection-end-line="117" selection-end-column="32" />
+=======
+        <state relative-caret-position="300">
+          <caret line="15" column="4" lean-forward="true" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/components/head.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip03buy.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/nuxt/router.js">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="216">
+          <caret line="42" column="23" lean-forward="true" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="23" />
+||||||| .r2698
+        <state relative-caret-position="-70">
+          <caret line="248" column="32" selection-start-line="248" selection-start-column="32" selection-end-line="248" selection-end-column="32" />
+=======
+        <state relative-caret-position="501">
+          <caret line="68" column="13" lean-forward="true" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine02card.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip04company.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/news/news.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="118">
+          <caret line="26" column="26" lean-forward="true" selection-start-line="26" selection-start-column="26" selection-end-line="26" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="98" selection-start-line="7" selection-start-column="77" selection-end-line="7" selection-end-column="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine04points.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="10" lean-forward="true" selection-start-line="9" selection-start-column="10" selection-end-line="9" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-372">
+          <caret line="26" column="13" lean-forward="true" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip/buy.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1960">
+          <caret line="248" column="18" selection-start-line="248" selection-start-column="18" selection-end-line="248" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip/company.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="129" column="18" selection-start-line="129" selection-start-column="18" selection-end-line="129" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip/history.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="65" column="18" selection-start-line="65" selection-start-column="18" selection-end-line="65" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip/pro.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="117" column="18" selection-start-line="117" selection-start-column="18" selection-end-line="117" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip/total.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-16">
+          <caret line="120" column="21" selection-start-line="120" selection-start-column="21" selection-end-line="120" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip/train.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="8" lean-forward="true" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine04points/buy.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine04points/get.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="9" column="28" lean-forward="true" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine06company/join.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="562">
+          <caret line="103" column="27" selection-start-line="103" selection-start-column="27" selection-end-line="103" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine06company/members.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="107" column="21" selection-start-line="107" selection-start-column="21" selection-end-line="107" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine06company/train.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="33" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine07message/others.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="73">
+          <caret line="6" column="8" lean-forward="true" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine07message/system.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="14" column="11" lean-forward="true" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine10follow/course.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="100" column="27" selection-start-line="100" selection-start-column="27" selection-end-line="100" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine10follow/train.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="34" lean-forward="true" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine10follow/teacher.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="87">
+          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine06company/course.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="64" column="25" lean-forward="true" selection-start-line="64" selection-start-column="25" selection-end-line="64" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/modal.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="8" lean-forward="true" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+||||||| .r2698
+        <state relative-caret-position="220">
+          <caret line="63" column="22" selection-start-line="63" selection-start-column="18" selection-end-line="63" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip05history.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="236">
+          <caret line="65" column="32" selection-start-line="65" selection-start-column="32" selection-end-line="65" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip/mine01trip06train.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="49" selection-start-line="5" selection-start-column="49" selection-end-line="5" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine04points/buy.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="49" selection-start-line="5" selection-start-column="49" selection-end-line="5" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine04points/detail.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5">
+          <caret line="2" column="26" lean-forward="true" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine04points/get.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine04points/rules.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-104">
+          <caret line="27" column="32" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine06company/course.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="62" column="32" selection-start-line="62" selection-start-column="32" selection-end-line="62" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine06company/join.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1751">
+          <caret line="103" column="41" selection-start-line="103" selection-start-column="41" selection-end-line="103" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine06company/members.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="49">
+          <caret line="107" column="35" selection-start-line="107" selection-start-column="35" selection-end-line="107" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine06company/train.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="47" selection-start-line="4" selection-start-column="47" selection-end-line="4" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine07message/system.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="39">
+          <caret line="4" column="32" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine10follow/course.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="457">
+          <caret line="100" column="41" selection-start-line="100" selection-start-column="41" selection-end-line="100" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine10follow/teacher.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1836">
+          <caret line="108" column="41" selection-start-line="108" selection-start-column="41" selection-end-line="108" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine10follow/train.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="11" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine07message/others.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine05medal.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index/home.vue" />
+    <entry file="file://$PROJECT_DIR$/static/member/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+=======
+        <state relative-caret-position="225">
+          <caret line="9" column="40" lean-forward="true" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+          <folding>
+            <element signature="e#948#988#0" expanded="true" />
+          </folding>
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/components/paging.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/nuxt/loading.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/test.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/layouts/default.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="289">
+          <caret line="17" column="21" lean-forward="true" selection-start-line="17" selection-start-column="21" selection-end-line="17" selection-end-column="21" />
+||||||| .r2698
+        <state relative-caret-position="-160">
+          <caret line="4" column="3" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
+=======
+        <state relative-caret-position="100">
+          <caret line="4" column="15" lean-forward="true" selection-start-line="4" selection-start-column="15" selection-end-line="4" selection-end-column="15" />
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/topBg.vue">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="136">
+          <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+||||||| .r2698
+        <state relative-caret-position="85">
+          <caret line="166" column="40" selection-start-line="166" selection-start-column="40" selection-end-line="166" selection-end-column="40" />
+          <folding>
+            <element signature="e#13429#13456#0" expanded="true" />
+            <element signature="e#13562#21509#0" />
+            <element signature="e#13729#15137#0" />
+            <element signature="e#15155#17434#0" />
+            <element signature="e#17457#17690#0" />
+            <element signature="n#style#0;n#!!top" />
+          </folding>
+=======
+        <state relative-caret-position="400">
+          <caret line="280" column="7" lean-forward="true" selection-start-line="280" selection-start-column="7" selection-end-line="280" selection-end-column="7" />
+          <folding>
+            <element signature="e#13412#13439#0" expanded="true" />
+          </folding>
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/layouts/default.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/assets/index.js">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/news/detail.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="170">
+          <caret line="10" column="12" lean-forward="true" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+||||||| .r2698
+        <state relative-caret-position="153">
+          <caret line="9" column="12" lean-forward="true" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
+=======
+        <state relative-caret-position="475">
+          <caret line="28" column="38" lean-forward="true" selection-start-line="28" selection-start-column="38" selection-end-line="28" selection-end-column="38" />
+>>>>>>> .r2705
+          <folding>
+<<<<<<< .mine
+            <element signature="e#274#310#0" expanded="true" />
+||||||| .r2698
+            <element signature="e#0#35#0" expanded="true" />
+=======
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#2;n#!!top" expanded="true" />
+>>>>>>> .r2705
+          </folding>
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/pages/index.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/components/AppLogo.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/teacher/index.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="193">
+          <caret line="172" column="23" selection-start-line="172" selection-start-column="23" selection-end-line="172" selection-end-column="23" />
+          <folding>
+            <element signature="n#style#0;n#!!top" />
+          </folding>
+||||||| .r2698
+        <state relative-caret-position="170">
+          <caret line="10" column="14" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="14" />
+=======
+        <state relative-caret-position="165">
+          <caret line="84" column="23" selection-start-line="84" selection-start-column="23" selection-end-line="84" selection-end-column="23" />
+          <folding>
+            <element signature="e#1311#1351#0" expanded="true" />
+          </folding>
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/pages/news/_id.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/components/foot.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/.nuxt/router.js">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="34">
+          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
+          <folding>
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#2;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/news/news.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="42" selection-start-line="5" selection-start-column="42" selection-end-line="5" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/teacher/_id.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="30" column="63" selection-start-line="30" selection-start-column="63" selection-end-line="30" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/teacher/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="443">
+          <caret line="186" column="7" selection-start-line="186" selection-start-column="7" selection-end-line="186" selection-end-column="7" />
+||||||| .r2698
+        <state relative-caret-position="459">
+          <caret line="27" column="42" selection-start-line="27" selection-start-column="42" selection-end-line="27" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/user/index.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/member/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/css.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="3" lean-forward="true" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nuxt/router.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1173">
+          <caret line="69" column="5" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+=======
+        <state relative-caret-position="575">
+          <caret line="156" column="13" selection-start-line="156" selection-start-column="13" selection-end-line="156" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/pages/teacher/shows.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine01trip/index.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/case/list.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="119">
+          <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
+||||||| .r2698
+        <state relative-caret-position="119">
+          <caret line="7" column="118" selection-start-line="7" selection-start-column="114" selection-end-line="7" selection-end-column="118" />
+=======
+        <state relative-caret-position="450">
+          <caret line="205" column="46" selection-start-line="205" selection-start-column="46" selection-end-line="205" selection-end-column="46" />
+          <folding>
+            <element signature="e#458#496#0" expanded="true" />
+            <element signature="e#521#4556#0" />
+          </folding>
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/pages/user/index.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/mine/index.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/case/detail.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="51">
+          <caret line="3" column="11" lean-forward="true" selection-start-line="3" selection-start-column="11" selection-end-line="3" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/user/_id.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="29">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/user/show.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-761">
+          <caret line="8" column="2" lean-forward="true" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine06company.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="697">
+          <caret line="41" column="3" selection-start-line="41" selection-start-column="3" selection-end-line="41" selection-end-column="3" />
+||||||| .r2698
+        <state relative-caret-position="67">
+          <caret line="14" column="12" lean-forward="true" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/idnex.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="8" lean-forward="true" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/layouts/default.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nuxt/client.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="13" column="14" lean-forward="true" selection-start-line="13" selection-start-column="14" selection-end-line="13" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nuxt/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="11" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+=======
+        <state relative-caret-position="550">
+          <caret line="181" column="23" selection-start-line="181" selection-start-column="23" selection-end-line="181" selection-end-column="23" />
+          <folding>
+            <element signature="e#1020#1059#0" expanded="true" />
+            <element signature="e#1432#4856#0" />
+            <element signature="e#4876#5735#0" />
+            <element signature="n#style#0;n#!!top" />
+          </folding>
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine07message.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/nuxt/utils.js">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/blogs/detail.vue" />
+    <entry file="file://$PROJECT_DIR$/pages/blogs/article.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="192">
+          <caret line="13" column="33" lean-forward="true" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
+||||||| .r2698
+        <state relative-caret-position="190">
+          <caret line="19" column="38" selection-start-line="19" selection-start-column="38" selection-end-line="19" selection-end-column="38" />
+=======
+        <state relative-caret-position="325">
+          <caret line="13" column="47" lean-forward="true" selection-start-line="13" selection-start-column="47" selection-end-line="13" selection-end-column="47" />
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine08order.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/static/css/home.css" />
+    <entry file="file://$PROJECT_DIR$/.nuxt/router.js">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/blogs/filtrate.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="244">
+          <caret line="96" column="6" selection-start-line="96" selection-start-column="6" selection-end-line="96" selection-end-column="6" />
+||||||| .r2698
+        <state relative-caret-position="51">
+          <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+=======
+        <state relative-caret-position="525">
+          <caret line="21" column="12" lean-forward="true" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine10follow.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/teacher/shows.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/blogs/index.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="244">
+          <caret line="44" column="3" selection-start-line="44" selection-start-column="3" selection-end-line="44" selection-end-column="3" />
+||||||| .r2698
+        <state relative-caret-position="612">
+          <caret line="38" column="11" selection-start-line="38" selection-start-column="11" selection-end-line="38" selection-end-column="11" />
+=======
+        <state relative-caret-position="500">
+          <caret line="22" column="13" lean-forward="true" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine11feedback.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/components/head.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/blogs/article-title.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="210">
+          <caret line="46" column="9" lean-forward="true" selection-start-line="46" selection-start-column="9" selection-end-line="46" selection-end-column="9" />
+||||||| .r2698
+        <state relative-caret-position="561">
+          <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
+=======
+        <state relative-caret-position="25">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine05medal.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/layouts/default.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/components/head.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="136">
+          <caret line="8" column="9" lean-forward="true" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+||||||| .r2698
+        <state relative-caret-position="102">
+          <caret line="6" column="16" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
+          <folding>
+            <element signature="e#274#310#0" expanded="true" />
+          </folding>
+=======
+        <state relative-caret-position="425">
+          <caret line="41" column="28" selection-start-line="41" selection-start-column="28" selection-end-line="41" selection-end-column="28" />
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine04points/rules.vue">
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/index.vue">
+=======
+    <entry file="file://$PROJECT_DIR$/pages/blogs/list.vue">
+>>>>>>> .r2705
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< .mine
+        <state relative-caret-position="68">
+          <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
+||||||| .r2698
+        <state relative-caret-position="314">
+          <caret line="135" column="22" lean-forward="true" selection-start-line="135" selection-start-column="22" selection-end-line="135" selection-end-column="22" />
+          <folding>
+            <element signature="e#13429#13456#0" expanded="true" />
+            <element signature="e#13562#21509#0" />
+            <element signature="e#13729#15137#0" />
+            <element signature="e#15155#17434#0" />
+            <element signature="e#17457#17690#0" />
+            <element signature="n#style#0;n#!!top" />
+          </folding>
+=======
+        <state relative-caret-position="305">
+          <caret line="548" column="18" selection-start-line="548" selection-start-column="18" selection-end-line="548" selection-end-column="18" />
+          <folding>
+            <element signature="e#476#12160#0" />
+          </folding>
+>>>>>>> .r2705
+        </state>
+      </provider>
+    </entry>
+<<<<<<< .mine
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine04points/detail.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="74">
+          <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mine/mine/mine09request.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="488">
+          <caret line="34" column="24" lean-forward="true" selection-start-line="34" selection-start-column="24" selection-end-line="34" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+||||||| .r2698
+    <entry file="file://$PROJECT_DIR$/pages/teacher/_id.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="7" column="27" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/teacher/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="23" column="15" lean-forward="true" selection-start-line="23" selection-start-column="15" selection-end-line="23" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+=======
+>>>>>>> .r2705
+  </component>
+</project>

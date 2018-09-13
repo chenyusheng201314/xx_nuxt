@@ -1,0 +1,266 @@
+<template>
+<div class="app_update">
+   <div class="app_update_setting">
+     <div class="app_update_title">
+       <div class="title">
+          邀请好友
+       </div>
+     </div>
+     <div class="searchFilter">
+        <el-form :inline="true" :model="searchFilter" class="demo-form-inline">
+          <el-form-item label="被邀请账号" label-width="90px">
+            <el-input v-model="searchFilter.inviter_mobile" clearable auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="邀请者账号" label-width="90px">
+            <el-input v-model="searchFilter.invitee_mobile" clearable auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="操作时间" label-width="80px">
+            <el-date-picker
+      v-model="searchFilter.register_time"
+      type="date"
+      value-format="yyyy-MM-dd"
+      placeholder="选择日期">
+          </el-date-picker> -
+          <el-date-picker
+      v-model="searchFilter.time2"
+      type="date"
+      value-format="yyyy-MM-dd"
+      placeholder="选择日期">
+          </el-date-picker>
+          </el-form-item>
+ 
+
+
+      <el-form-item class="fRight">
+   
+          <el-button   @click="setData()" class="btn_search">搜索</el-button>
+    
+      </el-form-item>
+
+        </el-form>
+
+       
+     </div>
+     <div class="table-responsive">
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="8%">序号</th>
+          <th v-for="(item, index) in tableHead" :key="index" :width="item.width">{{item.title}}</th>
+          <th width="20%">操作</th>
+        </tr>
+        <tr v-for="(vo, index) in sortUpdateInfo" :key="index">
+          <td>{{index+1}}</td>
+          <td v-for="(item, index) in tableHead" :key="index">{{vo[item.field]}}</td>
+          <td style="text-align: left">
+             <span class="btn_see" v-on:click="see(index)">查看</span>
+             <span class="btn_setting" v-on:click="editPrice(index)">修改价格</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="page">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage"
+      :page-sizes="pageInfo.pageSizes"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total">
+    </el-pagination>
+    </div>
+   </div>
+
+
+ 
+
+
+<el-dialog  :visible.sync="dialogTableVisible" class='order_see'>
+  <div class="order_dialog_left">
+     <div class="base_title">
+         <div class="title">
+            企业信息
+         </div>  
+       </div>
+    <el-form :model="addInfo">
+      <el-form-item :label="item.title" :label-width="formLabelWidth" v-for="(item, index) in tableHead" :key="index">
+           {{addInfo[item.field]}}
+      </el-form-item>
+    </el-form>
+    <div class="base_title">
+         <div class="title">
+            订单信息
+         </div>  
+       </div>
+  </div>
+  <div class="order_dialog_right">
+     <div class="base_title">
+         <div class="title">
+            开票信息
+         </div>  
+       </div>
+    <el-form :model="addInfo">
+      <el-form-item :label="item.title" :label-width="formLabelWidth" v-for="(item, index) in tableHead" :key="index">
+           {{addInfo[item.field]}}
+      </el-form-item>
+    </el-form>
+     <div class="base_title">
+         <div class="title">
+            课程信息
+         </div>  
+       </div>
+ 
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="8%">序号</th>
+          <th width="20%">123</th>
+          <th width="20%">操作</th>
+        </tr>
+        <tr>
+          <td>{{index+1}}</td>
+          <td>123</td>
+          <td >112233</td>
+        </tr>
+        </tbody>
+      </table>
+
+  </div>
+  <div class="clr"></div>
+</el-dialog>
+ 
+
+
+
+</div>
+</template>
+<style>
+.el-dialog__header {display:none}
+</style>
+
+<script>
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  data () {
+    return {
+      tableHead:[
+         {title:"被邀请用户",field:"oderId",width:"10%"},
+         {title:"被邀请账号",field:"acc",width:"12%"},
+         {title:"注册时间",field:"companyName",width:"12%"},
+         {title:"发起邀请账号",field:"addtime",width:"10%"},
+         {title:"被邀奖励积分",field:"price",width:"10%"},
+         {title:"邀请者奖励积分",field:"cPrice",width:"10%"},
+      ],
+ 
+      sortTableHead:[],
+      addInfo:{},
+
+      status:[{id:"0",name:"全部"},{id:"1",name:"正常"},{id:"2",name:"否"}],
+      feedBackType:[{id:0,name:"全部"},{id:1,name:"软件出错"},{id:2,name:"账号申诉"}],
+      pageInfo:{
+        total:400,
+        pageSizes:[10, 20, 30, 400],
+        pageSize:10,
+        currentPage:1
+      },
+      searchFilter:{orderId:"22",acc:"",from:0,time1:'',time2:''},    
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+
+    }
+  },
+  async asyncData({store}){
+      let params = {url: "/manage/person_invitation/list",data:{page:1,psize:10}}
+      let res  = await store.dispatch("adminHttpGet",params);
+      return {
+        updateInfo: res.data.data,
+        pageInfo:{
+          total:res.data.total,
+          pageSizes:[10, 20, 30, 400],
+          pageSize:10,
+          currentPage:parseInt(res.data.page),
+        },
+      }
+  },
+  methods: {
+    see:function(index) {
+        this.choose = index
+        this.saveAction = "edit"
+        this.addInfo = this.updateInfo[index];
+        console.log(this.addInfo);
+        this.dialogTableVisible = true;
+     },
+    editPrice:function() {
+
+     },
+    exportTable() {
+        require.ensure([], () => {
+            const { export_json_to_excel } = require('~/plugins/Export2Excel');
+            const tHeader = ['订单编号', '账号', '充值金额', '下单时间', '订单状态','支付渠道'];
+            const filterVal = ['oderId', 'acc', 'money', 'addtime','status','from'];
+            const list = this.updateInfo;
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '充值订单');
+          })
+    },
+    formatJson(filterVal, jsonData) {
+          return jsonData.map(v => filterVal.map(j => v[j]))
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.currentPage=val
+      console.log(`当前页: ${val}`);
+    },
+    sortByKey: function(array, key) { //(数组、排序的列)
+      return array.sort(function(a, b) {
+        var x = a[key];
+        var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      })
+    }, 
+    async setData() {
+      this.searchFilter.page = this.pageInfo.currentPage;
+      this.searchFilter.psize = this.pageInfo.pageSize;
+      let params = {url: "/manage/person_invitation/list",data:this.searchFilter}
+      let res  = await this.$store.dispatch("adminHttpGet",params);
+      this.pageInfo.page = parseInt(res.data.page);
+      this.pageInfo.total = res.data.total;
+      this.updateInfo = res.data.data
+    },
+ 
+  },
+  computed:{
+    sortUpdateInfo:function(){
+       return this.sortByKey(this.updateInfo,'sort');
+    }
+  },
+  mounted () {
+ 
+      this.sortTableHead = JSON.parse(JSON.stringify(this.tableHead))
+      this.sortTableHead =  this.sortByKey(this.sortTableHead,'sort');
+  },
+  watch: {
+ 
+  
+  },
+   head () {
+    return {
+      title: "导师",
+      meta: [{
+        hid: 'description',
+        name: 'description',
+        content: "123"
+      }],
+    }
+  }
+}
+</script>
+

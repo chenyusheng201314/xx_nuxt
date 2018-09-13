@@ -1,0 +1,356 @@
+<template>
+<div class="app_update">
+   <div class="app_update_setting">
+     <div class="app_update_title">
+       <div class="title">
+          意见反馈
+       </div>
+     
+     </div>
+     <div class="searchFilter">
+        <el-form :inline="true" :model="searchFilter" class="demo-form-inline">
+          <el-form-item label="课程分类" label-width="80px">
+              <el-select v-model="searchFilter.type" placeholder="请选择">
+                  <el-option
+                    v-for="item in feedBackType"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+
+                 <el-select v-model="searchFilter.type" placeholder="请选择">
+                  <el-option
+                    v-for="item in feedBackType"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+          <el-form-item label="课程名称" label-width="80px">
+            <el-input v-model="searchFilter.tel" auto-complete="off"></el-input>
+          </el-form-item>
+ 
+          
+           <el-form-item label="主讲导师" label-width="80px">
+              <el-select v-model="searchFilter.status" placeholder="请选择">
+                  <el-option
+                    v-for="item in status"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+
+        <el-form-item label="上架状态" label-width="80px">
+              <el-select v-model="searchFilter.status" placeholder="请选择">
+                  <el-option
+                    v-for="item in status"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+        <el-form-item label="所属机构" label-width="80px">
+              <el-select v-model="searchFilter.status" placeholder="请选择">
+                  <el-option
+                    v-for="item in status"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+ 
+
+
+      <el-form-item class="fRight">
+          <el-button   @click="add()" class="btn_create">添加</el-button>
+          <el-button   @click="search()" class="btn_search">搜索</el-button>
+    
+      </el-form-item>
+
+        </el-form>
+
+       
+     </div>
+     <div class="table-responsive">
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="8%">序号</th>
+          <th v-for="(item, index) in tableHead" :key="index" :width="item.width">{{item.title}}</th>
+          <th width="20%">操作</th>
+        </tr>
+        <tr v-for="(vo, index) in sortUpdateInfo" :key="index">
+          <td>{{index+1}}</td>
+          <td v-for="(item, index) in tableHead" :key="index">{{vo[item.field]}}</td>
+          <td style="text-align: left">
+            <span class="btn_setting" v-on:click="edit(index)">编辑</span><span class="btn_see" v-on:click="see(index)">查看</span>
+            <img src="/admin/images/app_index_up.png" v-on:click="setSortUp(index)" v-if="index!=0"  /> 
+            <img src="/admin/images/app_index_down.png" v-on:click="setSortDown(index)" v-if="updateInfo.length!=(index+1)" /> 
+
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="page">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage"
+      :page-sizes="pageInfo.pageSizes"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total">
+    </el-pagination>
+    </div>
+   </div>
+
+
+<el-dialog :title="(saveAction=='edit'?'编辑':'添加')+'机构'" :visible.sync="dialogFormVisible">
+  <el-form :model="addInfo">
+    <el-form-item :label="item.title" :label-width="formLabelWidth" v-for="(item, index) in formData" :key="index" >
+       <el-select v-model="addInfo[item.field]" placeholder="请选择" v-if="item.fieldType=='Select'">
+        <el-option
+          v-for="it in item.selectData"
+          :key="it.id"
+          :label="it.title"
+          :value="it.id">
+        </el-option>
+      </el-select>
+      <el-date-picker
+        v-model="addInfo[item.field]"
+        type="date"
+        placeholder="选择日期" v-if="item.fieldType=='DatePicker'">
+      </el-date-picker>
+      <el-input v-model="addInfo[item.field]" auto-complete="off" v-if="item.fieldType=='Input'"></el-input>
+      <el-input v-model="addInfo[item.field]" type="password" auto-complete="off" :disabled="saveAction=='edit'" v-if="item.fieldType=='Password'"></el-input>
+
+      <div v-if="item.fieldType=='UploadImg'" v-on:click="setChooseImg(item.field)">
+      <el-upload
+        class="avatar-uploader"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :show-file-list="false"
+        :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload" >
+        <img v-if="addInfo[item.field]" :src="addInfo[item.field]" class="avatar" >
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+    </div>
+ 
+
+    </el-form-item>
+     
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="save()">确 定</el-button>
+  </div>
+</el-dialog>
+
+
+
+<el-dialog title="查看" :visible.sync="dialogTableVisible">
+  <el-form :model="addInfo">
+    <el-form-item :label="item.title" :label-width="formLabelWidth" v-for="(item, index) in formData" :key="index">
+         {{addInfo[item.field]}}
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogTableVisible = false">取 消</el-button>
+    <el-button type="primary" @click="save()">确 定</el-button>
+  </div>
+</el-dialog>
+
+</div>
+</template>
+
+<script>
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  data () {
+    return {
+      tableHead:[
+         {title:"课程封面图",field:"samllThumb",width:"8%"},
+         {title:"视频名称",field:"name",width:"8%"},
+         {title:"主讲导师",field:"tch",width:"8%"},
+         {title:"单价（学币）",field:"price",width:"8%"},
+         {title:"参与活动",field:"activity",width:"8%"},
+         {title:"上架状态",field:"status",width:"8%"},
+      ],
+      formData:[
+         {title:"*导师姓名",field:"name",fieldType:"Input"},
+         {title:"*导师头衔",field:"title",fieldType:"Password"},
+         {title:"导师英文名",field:"enName",fieldType:"Input"},
+         {title:"*所属机构",field:"atOrt",fieldType:"Select",selectData:[{id:1,title:"正常"},{id:2,title:"冻结"}]},
+         {title:"*导师状态",field:"status",fieldType:"Select",selectData:[{id:1,title:"正常"},{id:2,title:"冻结"}]},
+         {title:"*导师小图",field:"samllThumb",fieldType:"UploadImg"},
+         {title:"*导师大图",field:"bigThumb",fieldType:"UploadImg"},
+         {title:"*导师标签",field:"tag",fieldType:"Input"},
+         {title:"*导师简介",field:"info",fieldType:"Input"},
+         {title:"*导师擅长领域",field:"atField",fieldType:"Input"},
+         {title:"*授课风格",field:"style",fieldType:"Input"},
+         {title:"*导师详情--APP端",field:"contentApp",fieldType:"Input"},
+         {title:"*导师详情--PC端",field:"contentPC",fieldType:"Input"},
+         {title:"*参与项目",field:"item",fieldType:"Input"},
+      ],
+      sortTableHead:[],
+      addInfo:{id:"1",samllThumb:"",bigThumb:"",name:"Android",atOrg:"asss",status:1,price:1,activity:2,addtime:"2018-01-02",fansNum:120,sort:1},
+      updateInfo: [
+         {id:"1",samllThumb:"1024",bigThumb:"",name:"教学九步法之完美收官-凤尾收场",tch:1,status:1,price:1,activity:2,addtime:"2018-01-02",fansNum:120,sort:1},
+         {id:"2",samllThumb:"2",bigThumb:"",name:"Android",tch:2,status:2,price:10,activity:2,addtime:"2018-01-02",fansNum:120,sort:2},
+         {id:"2",samllThumb:"3",bigThumb:"",name:"Android",tch:1,status:2,price:10,activity:2,addtime:"2018-01-02",fansNum:120,sort:3}
+      ],
+      status:[{id:"0",name:"全部"},{id:"1",name:"正常"},{id:"2",name:"否"}],
+      feedBackType:[{id:"0",name:"全部"},{id:"1",name:"软件出错"},{id:"2",name:"账号申诉"}],
+      pageInfo:{
+        total:400,
+        pageSizes:[10, 20, 30, 400],
+        pageSize:10,
+        currentPage:1
+      },
+      searchFilter:{tel:"",status:"1",type:"1",time1:'',time2:''},    
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+      saveAction:"",
+      chooseImg:null
+    }
+  },
+  methods: {
+    see:function(index) {
+        this.choose = index
+        this.saveAction = "edit"
+        this.addInfo = this.updateInfo[index];
+        console.log(this.addInfo);
+        this.dialogTableVisible = true;
+     },
+    add:function(){
+        for (var i = 0; i < this.formData.length; i++) {
+          this.addInfo[this.formData[i].field]="";
+        }
+        this.saveAction = "add"
+        this.dialogFormVisible = true
+     },
+     edit:function(index) {
+        this.choose = index
+        this.saveAction = "edit"
+        this.addInfo = JSON.parse(JSON.stringify(this.updateInfo[index]));
+        this.dialogFormVisible = true;
+     },
+ 
+     save:function() {
+        console.log(this.addInfo)
+        if(this.saveAction == "add") {
+          if(this.updateInfo.length>=this.pageInfo.pageSize) {
+            this.updateInfo.pop();
+          }
+           this.updateInfo.unshift(this.addInfo)
+           this.pageInfo.total++
+        }
+        if(this.saveAction == "edit") {
+          this.updateInfo[this.choose] = this.addInfo
+
+        }
+        this.dialogFormVisible = false
+     },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.currentPage=val
+      console.log(`当前页: ${val}`);
+    },
+    sortByKey: function(array, key) { //(数组、排序的列)
+
+      return array.sort(function(a, b) {
+        var x = a[key];
+        var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      })
+
+    }, 
+    setChooseImg:function(field) {
+       this.chooseImg = field;
+       console.log(field);
+    },
+    handleAvatarSuccess(res, file,fileList) {
+      this.addInfo[this.chooseImg] = URL.createObjectURL(file.raw); 
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    setSortUp:function(index){
+      let t = this.updateInfo[index].sort;
+      this.updateInfo[index].sort = this.updateInfo[index-1].sort;
+      this.updateInfo[index-1].sort = t;   
+    },
+    setSortDown:function(index){
+      let t = this.updateInfo[index].sort;
+      this.updateInfo[index].sort = this.updateInfo[index+1].sort;
+      this.updateInfo[index+1].sort = t;   
+    },
+
+ 
+  },
+  computed:{
+    sortUpdateInfo:function(){
+       return this.sortByKey(this.updateInfo,'sort');
+    }
+  },
+  mounted () {
+      this.sortTableHead = JSON.parse(JSON.stringify(this.tableHead))
+      this.sortTableHead =  this.sortByKey(this.sortTableHead,'sort');
+  },
+   head () {
+    return {
+      title: "机构",
+      meta: [{
+        hid: 'description',
+        name: 'description',
+        content: "123"
+      }],
+      link: [
+        {
+          href: '/css/css.css',
+          type:'text/css',
+          rel: 'stylesheet',
+        },{
+          href: '/static/css/bootstrap.css',
+          type:'text/css',
+          rel: 'stylesheet',
+        }
+      ],
+      script: [{
+        src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'
+      }, {
+        src: '/js/index.js'
+      }, {
+        src: '/admin/js/ueditor/ueditor.config.js'
+      }, {
+        src: '/admin/js/ueditor/ueditor.all.min.js'
+      },{
+        src: '/admin/js/ueditor/lang/zh-cn/zh-cn.js'
+      }
+
+      ]
+    }
+  }
+}
+</script>
+

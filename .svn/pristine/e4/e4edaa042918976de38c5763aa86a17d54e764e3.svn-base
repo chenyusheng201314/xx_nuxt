@@ -1,0 +1,142 @@
+<template>
+ 
+   <div class="badv_info_setting">
+     <div class="base_title">
+       <div class="title">
+          闪屏广告
+       </div>
+   
+     </div>
+     <div class="badv_info" v-for="(item, index) in advInfo" :key="index">
+         <div class="thumb" v-on:click="setThumbIndex(index)">
+           <el-upload
+            class="avatar-uploader"
+            :action="$store.state.admin.fileAddUrl"
+            :headers="{token:$store.state.admin.token}"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload" >
+            <img v-if="item.image.value" :src="item.image.value" class="avatar">
+            <img src="/admin/images/app_setBanner_01.png" v-else  />
+          </el-upload>
+            <p>1260*2240，PNG，jpg格式</p>
+         </div>
+         <div class="badv_info_r">
+           <div class="info_more">
+            <span class="label">广告链接</span> 
+            <div class="in_sel">
+            <el-input v-model="item.link" placeholder="请输入内容" @blur="update(index)"></el-input>
+            </div>
+            <div class="adv_radio">
+              <el-radio-group v-model="item.status" @change="update(index)">
+                <el-radio  :label="1" border>启用</el-radio>
+                <el-radio  :label="0" border>不启用</el-radio>
+              </el-radio-group>
+            </div>
+           </div>
+           <div class="badv_info_sort">
+               <ul>
+                  <li>
+                    <h3>已展示次数</h3>
+                    <p>{{item.show_count}}</p>
+                  </li>
+                  <li>
+                    <h3>层点击次数</h3>
+                    <p>{{item.click_count}}</p>
+                  </li>
+                  
+                </ul>
+           </div>
+         </div>
+   
+     </div> 
+
+   </div>
+
+
+ 
+</template>
+
+<script>
+import Vue from 'vue';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+import AppPreview from '~/components/admin/AppPreview'
+ 
+export default {
+  layout: 'admin',
+  components: {
+    AppPreview
+  },
+  name: 'admin_body',
+  data () {
+    return {
+        formLabelWidth: '120px',
+        imageUrl:'',
+        thumbIndex:'',
+    }
+  },
+  async asyncData({store}){
+      let params = {url: "/manage/app_splash/list",data:{}}
+      let res  = await store.dispatch("adminHttpGet",params);
+      console.log(res.data)
+      return {
+        advInfo: res.data,
+      }
+  },
+  methods: {
+ 
+    addM:function() {
+          this.advInfo.push({thumb:"",linkType:"",name:"",sort:this.bannerInfo.length});
+     },
+
+    save:function() {
+      console.log(this.advInfo)
+    },
+    setThumbIndex:function(index) {
+      this.thumbIndex = index;
+    },
+    async update(index) {
+      var submitInfo = {}
+      this.$set(submitInfo,"id",this.advInfo[index].id)
+      this.$set(submitInfo,"status",this.advInfo[index].status)
+      this.$set(submitInfo,"link",this.advInfo[index].link)
+      this.$set(submitInfo,"image",this.advInfo[index].image.name)
+
+      let params = {url: "/manage/app_splash/add",data:submitInfo}
+      let res  = await this.$store.dispatch("adminHttpPost",params);
+      if(res.code==0) {
+         this.$message({
+          message: '修改成功',
+          type: 'success'
+        });
+      }
+      else{
+         this.$message.error('修改失败');
+      }
+
+    },
+     handleAvatarSuccess(res, file,fileList) {
+      this.$set(this.advInfo[this.thumbIndex].image,"name",file.response.data.filename)
+      this.$set(this.advInfo[this.thumbIndex].image,"value",file.response.data.file_url)
+      this.update(this.thumbIndex) 
+    },
+     beforeAvatarUpload(file) {
+ 
+    }
+  
+
+ 
+  },
+  computed:{
+ 
+  },
+  mounted () {
+    console.log(this.headers)
+      
+  }
+}
+</script>
+
+ 

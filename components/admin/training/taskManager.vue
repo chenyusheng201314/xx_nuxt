@@ -1,0 +1,202 @@
+<template>
+   <div class="base_body">
+ 
+      <div>班级时间：{{classManagerInfo.open_class_start_time}} 至 {{classManagerInfo.open_class_end_time}}</div>
+      <div class="swiper-container task_day">
+ 
+         <div v-for = "(item,key1) in dateInfo" :key="key1" class="swiper-wrapper " >
+   
+            <div v-for = "(item2,key2) in item" :key="key2" class="swiper-slide" style="display: inline-block;width: auto;">
+             <div class="task_month"> {{ key2 }}月</div>
+              <div v-for = "(item3,key3) in item2" :key="key3" :class="'task_days '+item3.isToday" v-on:click="editTask(key1,key2,key3)">
+                <div class="task_week">{{item3.week}}</div>
+                 <div class="task_info">
+                      {{key3}}
+
+                 </div>
+              </div>     
+            </div>
+ 
+         </div>
+ 
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+      </div>
+
+     <div class="el-dialog__header" style="padding-left:0 "><span class="el-dialog__title">今日任务</span></div>
+
+     <el-form :model="taskInfo" :rules="rules" ref="taskInfo" style="width:60%" v-if="isEdit">
+          <el-form-item label="课题"  :label-width="formLabelWidth" prop="title">
+             <el-input v-model="taskInfo.title" auto-complete="off"></el-input>
+          </el-form-item>
+          <div v-for = "(item,index) in taskInfo.contentArr" :key="index" style="position:relative;" >
+          <el-form-item 
+          :label="(index==0)?'任务':''" 
+          :label-width="formLabelWidth"  
+          :prop="'contentArr['+index+']'" 
+          :rules="{required: true, message: '必填', trigger:'blur' }">
+        
+            <el-input v-model="taskInfo.contentArr[index]" auto-complete="off"></el-input>
+
+             
+          </el-form-item>
+          <div class="add_info_more_del" v-on:click="tasksDel(index)" v-if="taskInfo.contentArr.length>1">×</div>
+
+          </div>
+          <div v-on:click="addNew()" class="base_btn_add" style="float: left; margin-left: 120px"><img src="/admin/images/app_index_add.png"> 增加</div>
+     </el-form>
+     <div style="width:60%" v-else>
+       <div class="base_form_list">
+           <div class="title">课题：</div>
+           <div class="content"> {{taskInfo.title}}</div>
+        </div>
+       
+        <div class="base_form_list">
+           <div class="title">任务：</div>
+           <div class="content">
+             <div v-for = "(item,index) in taskInfo.contentArr" :key="index" > {{taskInfo.contentArr[index]}}</div>
+           </div>
+        </div>
+    </div>
+    
+
+     <div class="clr"></div>
+     <div align="center">
+      <el-button   @click="addTasks()" class="btn_create" v-if="isEdit">保存</el-button>
+      <el-button   @click="workManager()" class="btn_create" v-else>作业</el-button>
+     </div>
+
+
+    </div>
+</template>
+<style scoped>
+.swiper-container {
+      width: 100%;
+      height: 100%;
+ }
+.swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+    }
+</style>
+<script>
+ 
+import Swiper from 'swiper';
+import 'swiper/dist/css/swiper.min.css';
+ 
+export default {
+ 
+  props: ['classManagerInfo','dateInfo','taskInfo'],
+	data() {
+		return {  
+ 
+      formLabelWidth:"120px",
+      isEdit:true,
+      taskSuccessData:{},
+      rules:{
+        title:[{ required: true, message: '必填', trigger: 'blur' }],
+      }
+		}
+	},
+  computed: {
+     
+    },
+
+	methods: {
+     addNew:function() {
+        this.taskInfo.contentArr.push("")
+     },
+     tasksDel:function(index) {
+        this.taskInfo.contentArr.splice(index,1)
+     },
+     async addTasks() {
+        this.$set(this.taskInfo,'content',this.taskInfo.contentArr.join(",")) 
+        this.$set(this.taskInfo,'require',"123")
+        
+        let params = {url: "/manage/training_class_topic/add",data:this.taskInfo}
+        let res  = await this.$store.dispatch("adminHttpPost",params);
+        if(res.code == 0) {
+           this.$message({message: '保存成功',type: 'success'});
+        }
+        else {
+          this.$message.error('保存失败');
+        }
+        this.setData()
+
+     },
+     editTask(key1,key2,key3) {
+       this.taskInfo = {}
+       key2 = key2.length==2?key2:(0+""+key2)
+       key3 = key3.length==2?key3:(0+""+key3)
+       this.$set(this.taskInfo,'date',key1+"-"+key2+"-"+key3)
+       var myDate = new Date()
+       var today = new Date(myDate.getFullYear()+"-"+(myDate.getMonth()+1)+"-"+myDate.getDate()).getTime()
+       var thisDay = new Date(key1+"-"+key2+"-"+key3).getTime()
+       var tasks = this.classManagerInfo.taskData.calendar_data.filter(function(p){
+            return p.date === (key1+"-"+key2+"-"+key3);
+       });
+       console.log(tasks[0].topic.content)
+       if(tasks[0].topic.content != undefined) {
+         this.taskSuccessData = tasks[0].topic
+         this.taskSuccessData.training_class_topic_id = tasks[0].topic.id
+         this.$set(this.taskInfo,"title",tasks[0].topic.title) 
+         this.$set(this.taskInfo,"contentArr",tasks[0].topic.content.split(","))
+       }
+       else {
+        this.taskSuccessData.training_class_topic_id = ""
+        this.$set(this.taskInfo,"title","") 
+        this.$set(this.taskInfo,"contentArr",[""])
+       }
+       
+       if(today>thisDay) {
+           this.isEdit = false
+       }
+       else {
+           this.isEdit = true
+
+       }
+     },
+     async setData() {
+        let params = {url: "/manage/training_class_topic/list",data:{training_class_id:this.classManagerInfo.id}}
+        let res  = await this.$store.dispatch("adminHttpGet",params);
+        console.log(res.data)
+        this.$set(this.classManagerInfo,'taskData',res.data)
+
+
+     },
+     workManager() {
+        var res = {}
+
+        this.taskSuccessData.training_class_id = this.classManagerInfo.id
+
+        res.taskSuccessData = this.taskSuccessData
+
+        this.$emit('taskSuccess',res) 
+     }
+  
+  },
+  created() {
+      
+  },
+  async mounted () {
+
+  },   
+}
+</script>
+
+ 

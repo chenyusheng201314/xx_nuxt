@@ -1,0 +1,107 @@
+<template>
+<div>
+    <div class="case_table">
+         <div class="row">
+       
+            <div :class="'col-md-3 '+isSelectd[index]" v-for="(vo, index) in updateInfo" :key="index" v-on:click="setSelectd(index)">
+              <div class="case_list">
+                <img :src="vo.training_cover_pc.value"/> 
+              </div>
+              <div class="case_title">{{vo.training_name}}</div>
+            </div>
+ 
+        </div>    
+  </div>
+  <div slot="footer" class="dialog-footer">
+      <el-button @click="cancel()">取 消</el-button>
+      <el-button type="primary" @click="submit()">确 定</el-button>
+    </div>
+</div>
+</template>
+ 
+
+<script>
+
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  data () {
+    return {
+      allChecked:false,
+      ids:"",
+      idsAll:"",
+      updateInfo:[],
+      orgInfo:[],
+      isSelectd:[],
+      pageInfo:{currentPage:1,pageSize:10},
+      status:[{id:1,title:"正常"},{id:2,title:"冻结"}],
+      sex:[{id:1,title:"男"},{id:0,title:"女"}],
+      searchFilter:{mobile:""},    
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+    }
+  },
+
+  
+  methods: {
+    async getData(){
+        this.searchFilter.page = this.pageInfo.currentPage;
+        this.searchFilter.psize = this.pageInfo.pageSize;
+        let params = {url: "/manage/training/training_list",data:this.searchFilter} 
+        let res  = await this.$store.dispatch("adminHttpGet",params);
+        this.updateInfo=res.data.data
+        this.pageInfo={
+            total:res.data.total,
+            pageSizes:[10, 20, 30, 400],
+            pageSize:this.pageInfo.pageSize,
+            currentPage:parseInt(res.data.page),
+        }
+    
+    },
+    setSelectd(index){
+      this.isSelectd = [] 
+      this.ids = index
+      this.$set(this.isSelectd,index,'isSelectd');
+    },
+    handleSizeChange(val) {
+      this.$set(this.pageInfo,'pageSize',val);
+      this.getData()
+    },
+    handleCurrentChange(val) {
+      this.$set(this.pageInfo,'currentPage',val);
+      this.getData() 
+    },
+
+    submit() {
+      let res = {}
+      res.visible = false
+      res.action = "getTraining"
+ 
+      if(this.ids === "") {
+        this.$message.error('请选择训练营');
+      }
+      else {
+        res.info = this.updateInfo[this.ids]  
+        this.$emit('editSuccess',res) 
+      }
+      
+    },
+    cancel:function(){
+        var res={}
+        res.visible = false
+        res.action = "getTraining"
+        res.info = {}
+        this.$emit('editSuccess',res) 
+     },
+ 
+  },
+ 
+  mounted () {
+    this.getData()
+  },
+
+ 
+}
+</script>
+

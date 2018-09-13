@@ -1,0 +1,96 @@
+@media (max-width: 1210px){
+  body {
+    width: 1200px;
+    height: auto;
+    overflow-x: auto;
+  }
+}
+@media (min-width: 1200px){
+  .container {
+    max-width: 1200px;
+  }
+}
+ul {
+  list-style: none;
+  margin-bottom: 0;
+  -webkit-padding-start: 0;
+}
+
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
+}
+.relative {
+  position: relative;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.text-overflow-one {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text-overflow-two {
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.text-overflow-three {
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.text-overflow-fore{
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+.text-overflow-five{
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+a {
+  color: #666;
+  text-decoration: none;
+}
+a:link,
+a:visited{
+  color: #666;
+  text-decoration: none;
+}
+a:hover,
+a:active {
+  color: #ff6900;
+  text-decoration: none;
+}
+
+.btn-main {
+  box-sizing: border-box;
+  color: #fff;
+  background-color: #ff6900;
+  border: 0 none;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+}
+.btn-main:hover {
+  opacity: 1;
+}
+.btn-main:focus {
+  opacity: 1;
+  box-shadow: 0 2px 2px 1px #ff6900;
+  border: 0 none;
+  outline: none;
+}

@@ -1,0 +1,73 @@
+<template>
+  <div class="col-md-12" id='app'>
+    <!--顶部广告-->
+    <div :class="['top-gg row', {'slide-up': topGg}]">{{gg}}</div>
+    <!--顶部导航-->
+    <Head />
+    <keep-alive>
+      <nuxt-child/>
+    </keep-alive>
+    <!--页脚-->
+    <Foot />
+  </div>
+</template>
+
+<script>
+  import Head from '~/components/head'
+  import Foot from '~/components/foot'
+  export default {
+    head () {
+      return {
+        title: this.seoTitle,
+        meta: [{
+          hid: 'description',
+          name: 'description',
+          content: "123"
+        }],
+        link: [{
+          href: '/css/bootstrap.css',
+          type:'text/css',
+          rel: 'stylesheet',
+        }, {
+          href: '/css/css.css',
+          type:'text/css',
+          rel: 'stylesheet',
+        }
+        ],
+        script: [{
+          src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'
+        }]
+      }
+    },
+    name: 'app',
+    data () {
+      return {
+        topGg: false,
+        gg: '广告'
+      }
+    },
+    components: {
+      Head, Foot
+    },
+    // updated () {
+    //   window.scrollTo(0, 0)
+    // },
+    mounted () {
+      // //顶部广告消失
+      setTimeout(() => {
+        this.$data.topGg = true
+        this.$data.gg = ''
+      }, 3000)
+    }
+  }
+</script>
+<style scoped>
+  .top-gg {
+    height: 120px;
+    background-color: #ff6900;
+  }
+  .slide-up {
+    height: 0;
+    transition: height 600ms;
+  }
+</style>

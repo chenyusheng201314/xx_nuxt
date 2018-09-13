@@ -1,0 +1,586 @@
+<template>
+
+  <div>
+    <p class="return_back"><span @click="back(true)"><label>&#xe642;</label>返回</span></p>
+    <!-- 个人信息-->
+    <div class="infor_list">
+      <div class="infor-left">
+        <img :src="user_info.person.photo.value" alt="">
+      </div>
+      <div class="infor-right">
+        <h3>{{user_info.person.mobile}}</h3>
+        <p>
+          <span class="span1">昵称：{{user_info.person.username}}</span>
+          <span class="span2">联系地址：{{user_info.person.address}}</span>
+          <span class="span3">所在公司：{{user_info.person.company_name}}</span>
+
+        </p>
+        <p>
+          <span class="span1">生日：{{user_info.person.birthday}}</span>
+          <span class="span2">最近登录：{{user_info.person.last_login_time}}</span>
+          <span class="span3">公司所在行业：{{user_info.person.company_industry}}</span>
+        </p>
+        <p>
+          <span class="span1">性别：{{user_info.person.sex === 0? '保密' : user_info.person.sex === 1? '男' : '女'}}</span>
+          <span class="span2">注册时间：{{user_info.person.register_time}}</span>
+          <span class="span3">现任职位：{{user_info.person.company_position}}</span>
+        </p>
+        <p>
+          <span class="span1">身份证：{{user_info.person.identification_number}}</span>
+          <span class="span2">微信：{{user_info.person.wechat === '' || user_info.person.wechat == null ? '未绑定' : user_info.person.wechat}}</span>
+          <span class="span3">从事培训年限：{{user_info.person.years_of_training}}</span>
+        </p>
+        <p>
+          <span class="span1">邮箱：{{user_info.person.email===''||  user_info.person.email == null? '未绑定' : user_info.person.email}}</span>
+          <span class="span2">QQ：{{user_info.person.qq=== '' ||  user_info.person.qq == null? '未绑定' : user_info.person.qq}}</span>
+          <span class="span3"></span>
+        </p>
+      </div>
+    </div>
+    <!-- 钱包-->
+    <ul class="wallet">
+      <li class="fen">
+        <span class="more" @click="to_jifen">
+          <img src="/admin/images/user/more.png" alt="">
+        </span>
+        <p class="name">当前积分</p>
+        <p class="detail"><span>{{user_info.person.point}}</span></p>
+      </li>
+      <li class="money" @click="to_money(2)">
+         <span class="more">
+          <img src="/admin/images/user/more.png" alt="">
+        </span>
+        <p class="name">普通钱包</p>
+        <p class="detail"><span>{{user_info.person.learn_coin}}</span>学币</p>
+      </li>
+      <li class="iosmoney" @click="to_ios(2)">
+         <span class="more">
+          <img src="/admin/images/user/more.png" alt="">
+        </span>
+        <p class="name">苹果钱包</p>
+        <p class="detail"><span>{{user_info.person.learn_ios_coin}}</span>学币</p>
+      </li>
+    </ul>
+
+    <!-- 学习轨迹-->
+    <!--1-购买的课程 2-被赠送课程 3-授权课程 4-企业课程  6-已学完课程  7-购买训练营  8-授权训练营  9-企业训练营  10-赠送记录  11-获赠记录   12-关注课程  13-关注导师  14 关注训练营-->
+    <div class="study">
+      <h3>学习轨迹</h3>
+      <ul class="study-list">
+        <li @click="to_detail(1)">
+          <p class="p1">已购课程(1)</p>
+          <p class="p2">{{user_info.learning_track.order_count}}</p>
+        </li>
+        <li @click="to_detail(3)">
+          <p class="p1">授权课程(3)</p>
+          <p class="p2">{{user_info.learning_track.person_authorization_record_course_count}}</p>
+        </li>
+        <li @click="to_detail(4)">
+          <p class="p1">企业课程(4)</p>
+          <p class="p2">{{user_info.learning_track.person_course_get_company_count}}</p>
+        </li>
+        <li @click="to_detail(2)">
+          <p class="p1">被赠送课程(2)</p>
+          <p class="p2">{{user_info.learning_track.course_given_count}}</p>
+        </li>
+        <li @click="to_detail(6)">
+          <p class="p1">学完课程(6)</p>
+          <p class="p2">{{user_info.learning_track.course_completion_count}}</p>
+        </li>
+        <li @click="to_detail(11)">
+          <p class="p1">获赠记录(11)</p>
+          <p class="p2">{{user_info.learning_track.get_given_person_count}}</p>
+        </li>
+        <li @click="to_detail(10)">
+          <p class="p1">赠送记录(10)</p>
+          <p class="p2">{{user_info.learning_track.given_person_count}}</p>
+        </li>
+        <li @click="to_detail(7)">
+          <p class="p1">已购训练营(7)</p>
+          <p class="p2">{{user_info.learning_track.training_buy_count}}</p>
+        </li>
+        <li @click="to_detail(8)">
+          <p class="p1">授权训练营(8)</p>
+          <p class="p2">{{user_info.learning_track.person_authorization_record_training_count}}</p>
+        </li>
+        <li @click="to_detail(9)">
+          <p class="p1">企业训练营(9)</p>
+          <p class="p2">{{user_info.learning_track.person_training_get_company_count}}</p>
+        </li>
+        <li @click="to_detail(12)">
+          <p class="p1">关注课程(12)</p>
+          <p class="p2">{{user_info.learning_track.course_favour_count}}</p>
+        </li>
+        <li @click="to_detail(13)">
+          <p class="p1">关注导师(13)</p>
+          <p class="p2">{{user_info.learning_track.person_teacher_follow_count}}</p>
+        </li>
+        <li @click="to_detail(14)">
+          <p class="p1">关注训练营(14)</p>
+          <p class="p2">{{user_info.learning_track.training_favour_count}}</p>
+        </li>
+      </ul>
+    </div>
+    <!-- 交易统计-->
+    <div class="study">
+      <h3>交易统计</h3>
+      <ul class="study-list study-list2">
+        <li>
+          <p class="p1">累计充值</p>
+          <p class="p3">{{user_info.transaction_statistics.recharge_money_total}} <span>学币</span></p>
+        </li>
+        <li>
+          <p class="p1">累计消费</p>
+          <p class="p3">{{user_info.transaction_statistics.order_money_total}} <span>学币</span></p>
+        </li>
+        <li>
+          <p class="p1">购买课程</p>
+          <p class="p3">{{user_info.transaction_statistics.order_course_total}} <span>学币</span></p>
+        </li>
+        <li>
+          <p class="p1">购买训练营</p>
+          <p class="p3">{{user_info.transaction_statistics.order_training_total}} <span>学币</span></p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="detail-cover" v-show="cover_show">
+      <div class="cover-con">
+          <span class="close-cover" @click="cover_close">
+            <img src="/admin/images/user/close.png" alt="">
+          </span>
+        <h3>{{cover_tit}}</h3>
+        <!-- 积分、钱包明细-->
+        <div class="about-money" v-show="about_money_show">
+          <ul class="user-info">
+            <li>
+              <img :src="per.header" alt="">
+            </li>
+            <li>
+              <p class="user-name">{{per.name}}</p>
+              <p class="user-name">{{per.mobile}}</p>
+            </li>
+            <li>
+              <p class="user-jf"><span>{{per.num}}</span> {{per.dan}}</p>
+            </li>
+          </ul>
+          <p class="tab" v-show="detail_show === 2">
+            <span :class="{active: tab_change === 2}" @click="to_money(2)">消费明细</span>
+            <span :class="{active: tab_change === 1}" @click="to_money(1)">充值明细</span>
+          </p>
+          <p class="tab" v-show="detail_show === 3">
+            <span :class="{active: tab_change === 2}" @click="to_ios(2)">消费明细</span>
+            <span :class="{active: tab_change === 1}" @click="to_ios(1)">充值明细</span>
+          </p>
+          <!-- 积分-->
+          <div v-show="detail_show === 1">
+            <ul class="detail-list">
+              <li v-for="(item,index) in jifen_list" :key="index">
+                <span :class="{sure : item.point_method_name === '+', error: item.point_method_name === '-'}">{{item.point_method_name}}{{item.point_num}}</span>
+                <span>{{item.point_type_name}}</span>
+                <span>{{item.created_at}}</span>
+              </li>
+            </ul>
+            <div class="paging">
+              <el-pagination
+                @size-change="jf_handleSizeChange"
+                @current-change="jf_handleCurrentChange"
+                :current-page.sync="jifen_paging.currentPage"
+                :page-sizes="jifen_paging.page_sizes"
+                :page-size="jifen_paging.page_size"
+                layout="prev, pager, next, sizes, jumper"
+                :total="jifen_paging.total"
+                :pager-count="5">
+              </el-pagination>
+            </div>
+          </div>
+          <!-- 普通钱包-->
+          <div v-show="detail_show === 2">
+            <ul class="detail-list">
+              <li v-for="(item,index) in pt_list" :key="index">
+                <span :class="{sure : tab_change === 1, error: tab_change === 2 }">{{tab_change === 2 ? '-' : '+' }}{{item.pay_money}}</span>
+                <span>{{item.method_name}}</span>
+                <span>{{item.pay_time}}</span>
+              </li>
+            </ul>
+            <div class="paging">
+              <el-pagination
+                @size-change="pt_handleSizeChange"
+                @current-change="pt_handleCurrentChange"
+                :current-page.sync="pt_paging.currentPage"
+                :page-sizes="pt_paging.page_sizes"
+                :page-size="pt_paging.page_size"
+                layout="prev, pager, next, sizes, jumper"
+                :total="pt_paging.total"
+                :pager-count="5">
+              </el-pagination>
+            </div>
+          </div>
+          <!-- ios钱包-->
+          <div v-show="detail_show === 3">
+            <ul class="detail-list">
+              <li v-for="(item,index) in ios_list" :key="index">
+                <span :class="{sure : tab_change === 1, error: tab_change === 2 }">{{tab_change === 2 ? '-' : '+' }}{{item.pay_money}}</span>
+                <span>{{item.method_name}}</span>
+                <span>{{item.pay_time}}</span>
+              </li>
+            </ul>
+            <div class="paging">
+              <el-pagination
+                @size-change="ios_handleSizeChange"
+                @current-change="ios_handleCurrentChange"
+                :current-page.sync="ios_paging.currentPage"
+                :page-sizes="ios_paging.page_sizes"
+                :page-size="ios_paging.page_size"
+                layout="prev, pager, next, sizes, jumper"
+                :total="ios_paging.total"
+                :pager-count="5">
+              </el-pagination>
+            </div>
+          </div>
+        </div>
+
+        <!--课程训练营等详情-->
+        <div class="about_lesson" v-show="about_lesson_show">
+          <p class="tab"
+             v-show="table_show === 1 || table_show=== 2|| table_show ===3 || table_show === 4 || table_show === 6">
+            <span :class="{active : table_show === 1}" @click="table_tab_change(1)">已购课程</span>
+            <span :class="{active : table_show === 2}" @click="table_tab_change(2)">被赠送课程</span>
+            <span :class="{active : table_show === 3}" @click="table_tab_change(3)">授权课程</span>
+            <span :class="{active : table_show === 4}" @click="table_tab_change(4)">企业课程</span>
+            <span :class="{active : table_show === 6}" @click="table_tab_change(6)">学完的课程</span>
+          </p>
+          <p class="tab" v-show="table_show === 11 || table_show === 10">
+            <span :class="{active : table_show === 11}" @click="table_tab_change(11)">获赠记录</span>
+            <span :class="{active : table_show === 10}" @click="table_tab_change(10)">赠送记录</span>
+          </p>
+          <p class="tab" v-show="table_show === 7|| table_show === 8 || table_show === 9">
+            <span :class="{active : table_show === 7}" @click="table_tab_change(7)">已购买训练营</span>
+            <span :class="{active : table_show === 8}" @click="table_tab_change(8)">授权训练营</span>
+            <span :class="{active : table_show === 9}" @click="table_tab_change(9)">企业训练营</span>
+          </p>
+          <p class="tab" v-show="table_show === 12 || table_show ===13 || table_show === 14">
+            <span :class="{active : table_show === 12}" @click="table_tab_change(12)">关注课程</span>
+            <span :class="{active : table_show === 13}" @click="table_tab_change(13)">关注导师</span>
+            <span :class="{active : table_show === 14}" @click="table_tab_change(14)">关注训练营</span>
+          </p>
+          <!-- 课程-->
+          <div v-show="table_show === 1 || table_show=== 2|| table_show ===3 || table_show === 4 || table_show === 6">
+            <lessonTable :data="user_couser_list"></lessonTable>
+            <!--分页-->
+            <div class="paging">
+              <el-pagination
+                @size-change="course_handleSizeChange"
+                @current-change="course_handleCurrentChange"
+                :current-page.sync="user_course_paging.currentPage"
+                :page-sizes="user_course_paging.page_sizes"
+                :page-size="user_course_paging.page_size"
+                layout="prev, pager, next, sizes, jumper"
+                :total="user_course_paging.total"
+                :pager-count="5">
+              </el-pagination>
+            </div>
+          </div>
+          <!--赠送与获赠-->
+          <div v-show="table_show === 10 || table_show === 11">
+            <!-- 赠送记录-->
+            <sendTable v-show="table_show === 10" :data="send_list"></sendTable>
+            <!-- 获赠记录-->
+            <getTable v-show="table_show === 11" :data="get_list"></getTable>
+            <!--分页-->
+            <div class="paging">
+              <el-pagination
+                @size-change="get_handleSizeChange"
+                @current-change="get_handleCurrentChange"
+                :current-page.sync="get_paging.currentPage"
+                :page-sizes="get_paging.page_sizes"
+                :page-size="get_paging.page_size"
+                layout="prev, pager, next, sizes, jumper"
+                :total="get_paging.total"
+                :pager-count="5">
+              </el-pagination>
+            </div>
+          </div>
+
+
+          <!-- 关注-->
+          <div v-show="table_show === 12 || table_show === 13 || table_show === 14">
+            <lessonTable v-show="table_show === 12" :data="like_lesson"></lessonTable>
+            <teacherTable v-show="table_show === 13" :data="like_teacher"></teacherTable>
+            <xlyTable v-show="table_show === 14" :data="like_xly"></xlyTable>
+            <!--分页-->
+            <div class="paging">
+              <el-pagination
+                @size-change="like_handleSizeChange"
+                @current-change="like_handleCurrentChange"
+                :current-page.sync="like_paging.currentPage"
+                :page-sizes="like_paging.page_sizes"
+                :page-size="like_paging.page_size"
+                layout="prev, pager, next, sizes, jumper"
+                :total="like_paging.total"
+                :pager-count="5">
+              </el-pagination>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<script>
+  import lessonTable from './lessonTable'
+  import teacherTable from './teacherTable'
+  import xlyTable from './xlyTable'
+  import sendTable from './sendTable'
+  import getTable from './getTable'
+  import userXlyTable from './userXlyTable'
+
+  export default {
+    name: "information",
+    props: ['user_info', 'jifen_paging', 'jifen_list', 'pt_list', 'pt_paging', 'ios_paging', 'ios_list', 'user_couser_list', 'user_course_paging', 'get_paging', 'get_list', 'send_list', 'like_lesson', 'like_teacher', 'like_xly', 'like_paging'],
+    components: {
+      lessonTable,
+      teacherTable,
+      xlyTable,
+      sendTable,
+      getTable,
+      userXlyTable
+    },
+    data() {
+      return {
+        //  展示的数据
+        show_list: [],
+        cover_tit: '积分明细',
+        cover_show: false, // 遮罩显示
+        about_money_show: false,  //钱包积分内容显示与不显示
+        about_lesson_show: true, //课程训练营相关内容显示不显示
+        tab_change: 0, // 0表示消费明细  1表示 充值明细
+        // 表格显示 1-购买的课程 2-被赠送课程 3-授权课程 4-企业-课程  6-已学完课程  7-购买训练营  8-授权训练营  9-企业训练营  10-赠送记录  11-获赠记录   12-关注课程  13-关注导师  14 关注训练营
+        table_show: '',
+        table_tab: [], //
+        //  表格数据
+        table_lists: [],
+        // 个人信息  用于积分明细和钱包明细
+        per: {
+          header: '',
+          name: '',
+          mobile: '',
+          num: '',
+          dan: ''
+        },
+        // 积分钱包 分类显示   默认显示积分  1-积分 2-普通钱包 3-苹果钱包
+        detail_show: 1,
+      }
+    },
+    methods: {
+      back(bool) {
+        this.$emit('back', bool)
+      },
+      handleSizeChange(val) {
+        this.$emit('coverSizeChange', val);
+        console.log(`每页 ${val} 条`);
+      },
+      // 当前页
+      handleCurrentChange(val) {
+        this.$emit('coverCurrentChange', val);
+        console.log(`当前页: ${val}`);
+      },
+
+      // 关闭弹窗
+      cover_close() {
+        this.cover_show = false
+      },
+      //  查看积分
+      to_jifen() {
+        const that = this;
+        //获取积分列表
+        this.$emit('get_per_jifen');
+        // 弹窗显示
+        that.cover_show = true;
+        //  积分内容显示
+        that.about_money_show = true;
+        //  课程相关的不显示
+        that.about_lesson_show = false;
+        // 标题
+        that.cover_tit = '积分明细';
+        // 表示积分
+        that.detail_show = 1;
+        // 获取头像等个人信息
+        that.per = {
+          header: that.user_info.person.photo.value,
+          name: that.user_info.person.username,
+          mobile: that.user_info.person.mobile,
+          num: that.user_info.person.point,
+          dan: '积分'
+        };
+      },
+      //  普通钱包明细
+      to_money(data) {
+        const that = this;
+        // 请求数据
+        that.$emit('to_money', data);
+        that.tab_change = data;
+        // 弹窗显示
+        that.cover_show = true;
+        // 钱包类型
+        that.detail_show = 2;
+        // 标题
+        that.cover_tit = '普通钱包';
+        //  积分内容显示
+        that.about_money_show = true;
+        //  课程相关的不显示
+        that.about_lesson_show = false;
+        // 获取头像等个人信息
+        that.per = {
+          header: that.user_info.person.photo.value,
+          name: that.user_info.person.username,
+          mobile: that.user_info.person.mobile,
+          num: that.user_info.person.learn_coin,
+          dan: '学币'
+        };
+      },
+      //  IOS钱包明细
+      to_ios(data) {
+        const that = this
+        // 钱包类型
+        that.detail_show = 3;
+        that.$emit('to_ios', data);
+        that.tab_change = data;
+        // 标题
+        that.cover_tit = 'IOS钱包';
+        // 弹窗显示
+        that.cover_show = true
+        //  积分内容显示
+        that.about_money_show = true
+        //  课程相关的不显示
+        that.about_lesson_show = false
+        // 获取头像等个人信息
+        that.per = {
+          header: that.user_info.person.photo.value,
+          name: that.user_info.person.username,
+          mobile: that.user_info.person.mobile,
+          num: that.user_info.person.learn_ios_coin,
+          dan: '学币'
+        };
+      },
+      //  查看具体的详情
+      to_detail(data) {
+        const that = this
+        that.table_show = data
+        // 弹窗显示
+        that.cover_show = true
+        //  积分内容不显示
+        that.about_money_show = false
+        //  课程相关的显示
+        that.about_lesson_show = true;
+        if (data === 1 || data === 2 || data === 3 || data === 4 || data === 6) {
+          that.cover_tit = '课程';
+          that.$emit('get_user_course', data)
+        } else if (data === 10) {
+          that.cover_tit = '赠送记录';
+          //  赠送记录
+          this.$emit('get_send', 1)
+        } else if (data === 11) {
+          that.cover_tit = '获赠记录';
+          //  获赠记录
+          this.$emit('get_send', 2)
+        } else if (data === 12) {
+          that.cover_tit = '我的关注';
+          //关注课程
+          this.$emit('get_like', 1)
+        } else if (data === 13) {
+          that.cover_tit = '我的关注';
+          //关注老师
+          this.$emit('get_like', 2)
+        } else if (data === 14) {
+          that.cover_tit = '我的关注';
+          //关注训练营
+          this.$emit('get_like', 3)
+        }
+
+      },
+      //  表格切换
+      table_tab_change(data) {
+        this.to_detail(data);
+      },
+      // 积分每页显示数量改变
+      jf_handleSizeChange(val) {
+        this.$emit('jf_handleSizeChange', val);
+      },
+      // 积分当前页改变
+      jf_handleCurrentChange(val) {
+        this.$emit('jf_handleCurrentChange', val);
+      },
+      // 普通钱包
+      pt_handleSizeChange(val) {
+        this.$emit('pt_handleSizeChange', this.tab_change, val);
+      },
+      pt_handleCurrentChange(val) {
+        this.$emit('pt_handleCurrentChange', this.tab_change, val);
+      },
+      // IOS钱包
+      ios_handleSizeChange(val) {
+        this.$emit('ios_handleSizeChange', this.tab_change, val)
+      },
+      ios_handleCurrentChange(val) {
+        this.$emit('ios_handleCurrentChange', this.tab_change, val)
+      },
+      //课程分页
+      course_handleSizeChange(val) {
+        this.$emit('course_handleSizeChange', this.table_show, val)
+      },
+      course_handleCurrentChange(val) {
+        this.$emit('course_handleCurrentChange', this.table_show, val)
+      },
+      //赠送与被赠送
+      get_handleSizeChange(val) {
+        let data;
+        if (this.table_show === 10) {
+          data = 1
+        } else if (this.table_show === 11) {
+          data = 2
+        }
+        this.$emit('get_handleSizeChange', data, val)
+      },
+      get_handleCurrentChange(val) {
+        let data;
+        if (this.table_show === 10) {
+          data = 1
+        } else if (this.table_show === 11) {
+          data = 2
+        }
+        this.$emit('get_handleCurrentChange', data, val)
+      },
+      //关注
+      like_handleSizeChange(val) {
+        let data;
+        if (this.table_show === 12) {
+          data = 1
+        } else if (this.table_show === 13) {
+          data = 2
+        } else if (this.table_show === 14) {
+          data = 3
+        }
+        this.$emit('like_handleSizeChange', data, val)
+      },
+      like_handleCurrentChange(val) {
+        let data;
+        if (this.table_show === 12) {
+          data = 1
+        } else if (this.table_show === 13) {
+          data = 2
+        } else if (this.table_show === 14) {
+          data = 3
+        }
+        this.$emit('like_handleCurrentChange', data, val)
+      },
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>

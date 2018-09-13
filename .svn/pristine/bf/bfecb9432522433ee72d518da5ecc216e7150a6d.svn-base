@@ -1,0 +1,141 @@
+<template>
+  <div class="container">
+    <topBg src="/images/test.png"></topBg>
+    <route :route="route_data"></route>
+    <div class="border" v-for="(item, index) in news" :key="index">
+      <nuxt-link class="color" :to="'/news/'+item.id">
+        <div class="position-relative d-inline-block box-cover">
+          <img class="position-absolute cover" :src="item.cover" alt="">
+        </div>
+        <div class="d-inline-block con">
+          <div class="text-overflow-one title">{{item.title}}</div>
+          <div class="text-overflow-two content">{{item.content}}</div>
+          <div class="time">{{item.time}}</div>
+          <div class="read">
+            阅读全文
+            <div class="d-inline-block triangle">▼</div>
+          </div>
+        </div>
+      </nuxt-link>
+    </div>
+    <Paging v-if="pageData.total" :key="pageData.total" :pageData="pageData" @changeList="change"></Paging>
+  </div>
+</template>
+
+<script>
+import Paging from '@/components/paging'
+import topBg from '@/components/topBg'
+import route from '@/components/localRoute'
+export default {
+  name: 'news',
+  data () {
+    return {
+      route_data: [{name: '享学科技网', path: '/'}, {name: '行业资讯', path: '/news'}],
+      news: [
+        {
+          id: 1,
+          cover: '/images/test.png',
+          title: '培训评估无法落地，你可能忘了培训评估无法落地，你可能忘了',
+          content: '百度项目价值百度项目价值百度项目价值，百度项目价值百度项目价值百度项目价值，百度项目价值百度项目价值',
+          time: '2018-09-09'
+        }, {
+          id: 1,
+          cover: '/images/test.png',
+          title: '培训评估无法落地，你可能忘了培训评估无法值百度项目价值百度项目价值，百度项目价值百度项目价值百度项目价值百度项目价值，百度项目价值百度项目价落地，你可能忘了',
+          content: '百度项目价值百度项目值百度项目价值百度项目价值，百度项目价值百度项目价值百度项目价值百度项目价值，百度项目价值百度项目价值百度项目价值百度项目价值，百度项目价值百度项目价价值百度项目价值，百度项目价值百度项目价值百度项目价值，百度项目价值百度项目价值',
+          time: '2018-09-09'
+        }
+      ],
+      pageData: {}
+    }
+  },
+  components: {
+    Paging, topBg, route
+  },
+  methods: {
+    change (current) {
+      console.log('父组件拿到页码', current)
+      // this.$data.num += 4
+      // this.$data.pageData = {
+      //   total: 13,
+      //   current: current,
+      //   visible: 8
+      // }
+    }
+  },
+  mounted () {
+    setTimeout(() => {
+      this.$data.pageData = {
+        total: 10,
+        current: 1,
+        visible: 8
+      }
+    }, 1000)
+  }
+}
+</script>
+
+<style scoped>
+  .container {
+    padding: 0;
+  }
+  .border {
+    height: 200px;
+    border: 1px solid #ddd;
+    padding: 30px 45px;
+    margin-bottom: 50px;
+  }
+  .border:hover {
+    /*box-shadow: 2px 0 4px 2px #ff0;*/
+    -moz-box-shadow:0px 1px 0px #ff0;
+    -webkit-box-shadow:0px 1px 0px #ff0;
+    box-shadow:0px 1px 0px #ff0;
+  }
+  .box-cover{
+    width: 352px;
+    height: 200px;
+    margin-right: 45px;
+  }
+  .cover{
+    width: 352px;
+    height: 200px;
+    top: -60px;
+    left: 0;
+  }
+  .con {
+    width: 63%;
+    vertical-align: top;
+  }
+  .title{
+    font-size: 20px;
+    line-height: 20px;
+    color: #ff6900;
+    margin-bottom: 18px;
+  }
+  .content{
+    margin-bottom: 30px;
+  }
+  .time {
+    float: right;
+    font-size: 15px;
+    color: #999;
+  }
+  .read {
+    color: #fff;
+    background: #999;
+    font-size: 14px;
+    width: 100px;
+    height: 24px;
+    line-height: 24px;
+    padding-left: 8px;
+  }
+  .border:hover .read {
+    background: #ff6900;
+  }
+  .triangle {
+    margin-left: 8px;
+  }
+  .color {
+    color: inherit;
+  }
+</style>

@@ -1,0 +1,306 @@
+<template>
+<div class="app_update">
+   <div class="app_update_setting">
+     <div class="app_update_title">
+       <div class="title">
+          训练营
+       </div> 
+        <div class="btn" data-toggle="modal" data-target="#myModal" v-on:click="add">
+          <img  src="/admin/images/app_index_add.png" /> 添加训练营
+       </div>
+     </div>
+      
+    <div class="training_table">
+         <div class="row">
+           
+            <div class="col-md-3 " v-for="(vo, index) in updateInfo" :key="index">
+              <div class="case_list">
+                <img :src="vo.training_cover_pc.value"/> 
+                <div class="op"><span v-on:click="edit(vo.id)">编辑</span> <span v-on:click="statusChange(vo.id)">下架</span></div>
+              </div>
+              <div class="case_title">{{vo.training_name}}</div>
+            </div>
+ 
+        </div>    
+    </div>
+     <div class="base_title">
+       <div class="title">
+          已下架
+       </div> 
+   
+     </div>
+     <div class="training_table">
+         <div class="row">
+           
+            <div class="col-md-3 " v-for="(vo, index) in updateInfo" :key="index">
+              <div class="case_list">
+                <img :src="vo.training_cover_pc.value"/> 
+                <div class="op"><span v-on:click="edit(vo.id)">编辑</span> <span v-on:click="del(index)">下架</span></div>
+              </div>
+              <div class="case_title">{{vo.training_name}}</div>
+            </div>
+ 
+        </div>    
+    </div>
+
+
+    <div class="page">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage"
+      :page-sizes="pageInfo.pageSizes"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total">
+    </el-pagination>
+    </div>
+   </div>
+ 
+
+<el-dialog title="创建训练营" :visible.sync="dialogAddVisible" width="60%">
+    <trainAdd 
+    :addInfo="addInfo" 
+    :classIds="classIds" 
+    v-on:setClassVisible = "setClassVisible"
+    v-on:addSuccess="addSuccess"/>
+</el-dialog>
+
+<el-dialog title="编辑训练营" :visible.sync="dialogEditVisible" width="60%">
+    <trainEdit 
+    :addInfo="addInfo" 
+    :classIds="classIds" 
+    :imgs="imgs"
+    :sections="sections"
+    :editInfo="editInfo"
+    v-on:setClassVisible = "setClassVisible"
+    v-on:editSuccess="editSuccess"/>
+</el-dialog>
+
+<el-dialog title="选择课程" :visible.sync="dialogClassVisible">
+    <selectClass 
+    :classIds = "classIds"
+    :classInfo = "classInfo"
+    :classPage = "classPage"
+    v-on:selectSuccess="selectSuccess"/>
+</el-dialog>
+
+ 
+
+
+
+</div>
+</template>
+
+<script>
+import selectClass from '~/components/admin/training/selectClass';
+import trainAdd from '~/components/admin/training/trainAdd';
+import trainEdit from '~/components/admin/training/trainEdit';
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  components: {
+      trainAdd,
+      trainEdit,
+      selectClass
+    },
+  data () {
+    return {
+      addInfo:{map_num:1,stage_count:'',stage_content:[],training_cover_app:{},training_cover_pc:{}},
+ 
+ 
+      status:[{id:"0",name:"全部"},{id:"1",name:"正常"},{id:"2",name:"否"}],
+      feedBackType:[{id:"0",name:"全部"},{id:"1",name:"软件出错"},{id:"2",name:"账号申诉"}],
+      pageInfo:{
+        total:400,
+        pageSizes:[10, 20, 30, 400],
+        pageSize:10,
+        currentPage:1
+      },
+      searchFilter:{tel:"",status:"1",type:"1",time1:'',time2:''},    
+      dialogTableVisible: false,
+      dialogClassVisible:false,
+      dialogAddVisible: false,
+      dialogEditVisible: false,
+      formLabelWidth: '120px',
+      saveAction:"",
+      choose:null,
+      classIds:[],
+      classInfo:[],
+      classPage:{},
+      imgs:{},
+      sections:[],
+      editInfo:{}
+    }
+  },
+  async asyncData({store}){
+      let params = {url: "/manage/training/training_list",data:{page:1,psize:100}}
+      let res  = await store.dispatch("adminHttpGet",params);
+      return {
+        updateInfo: res.data.data,
+        pageInfo:{
+          total:res.data.total,
+          pageSizes:[10, 20, 30, 400],
+          pageSize:10,
+          currentPage:parseInt(res.data.page),
+        },
+      }
+  },
+  created () {
+   
+  },
+  methods: {
+    see:function(index) {
+        this.choose = index
+        this.saveAction = "edit"
+        this.addInfo = this.updateInfo[index];
+        console.log(this.addInfo);
+
+        this.dialogTableVisible = true;
+     },
+    add:function(){
+
+        this.saveAction = "add"
+        this.addInfo = {map_num:1,stage_count:'',stage_content:[],training_cover_app:{},training_cover_pc:{}}
+        this.dialogAddVisible = true
+
+     },
+     async edit(id) {
+         this.dialogEditVisible = true;
+        this.saveAction = "edit"
+        let params = {url: "/manage/training/training_edit_get",data:{training_id:id}}
+        let res  = await this.$store.dispatch("adminHttpGet",params);     
+        this.addInfo = res.data
+        this.imgs.training_cover_app = res.data.training_cover_app
+        this.imgs.training_cover_pc = res.data.training_cover_pc
+        for (var  index in res.data.stage_content) {
+             var ids = []
+             var sec = []
+             for(var i in res.data.stage_content[index].sections) {
+                 ids.push(res.data.stage_content[index].sections[i].course_id)
+                 sec[i]={}
+                 sec[i].section_id = res.data.stage_content[index].sections[i].id
+                 sec[i].course_id = res.data.stage_content[index].sections[i].course_id
+             }
+             res.data.stage_content[index].sections = sec
+             let paramst = {url: "/manage/training/training_add_course_info",data:{course_ids:ids.join(",")}}
+             let rest  = await this.$store.dispatch("adminHttpGet",paramst);
+             this.sections[index] = rest.data
+        }
+        this.editInfo = JSON.parse(JSON.stringify(this.addInfo))
+       
+
+  
+
+
+
+
+        
+     },
+     del:function(index) {
+        this.updateInfo.splice(index,1)
+     },
+     addSuccess:function(res) {
+          this.dialogAddVisible = res.visible;
+          this.setData()
+     },
+     editSuccess:function(res) {
+          this.dialogEditVisible = res.visible;
+          this.setData()
+ 
+     },
+     selectSuccess:function(res) {
+          this.dialogClassVisible = res.visible;
+          if(res.action == "submit") {
+            this.classIds = []
+            for(var i=0;i <res.classIds.length; i++) {
+              this.classIds.push(res.classIds[i]);
+            }
+          }
+          else{
+            this.addInfo = {map_num:1,stage_count:'',stage_content:[]}
+             var arr = JSON.parse(JSON.stringify(this.classIds));
+             this.classIds = []
+            for(var i=0;i <arr.length; i++) {
+              this.classIds.push(arr[i]);
+            }
+          }
+         
+     },
+     async setClassVisible(res) {
+         let params = {url: "/manage/manage_course/course_list",data:{page:1,psize:10}}
+         let rest  = await this.$store.dispatch("adminHttpGet",params);
+         this.classPage={
+            total:rest.data.total,
+            pageSizes:[10, 20, 30, 400],
+            pageSize:10,
+            currentPage:parseInt(rest.data.page),
+         }
+         this.classInfo = rest.data.data
+         this.classIds = res.classIds
+ 
+         this.dialogClassVisible = res.visible;
+     },
+     async statusChange(id) {
+        let params = {url: "/manage/training/training_status_change",data:{trainging_id:id}}
+        let res  = await this.$store.dispatch("adminHttpPost",params);
+        if(res.code==0) {
+        this.$message({message: '下架成功',type: 'success'});
+ 
+        }
+        else {
+          this.$message.error("下架失败")
+        }
+     },
+
+ 
+     
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.currentPage=val
+      console.log(`当前页: ${val}`);
+    },
+    sortByKey: function(array, key) { //(数组、排序的列)
+      return array.sort(function(a, b) {
+        var x = a[key];
+        var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      })
+
+    }, 
+    handleAvatarSuccess(res, file,fileList) {
+      this.addInfo.logo = URL.createObjectURL(file.raw); 
+    },
+    async setData() {
+      let params = {url: "/manage/training/training_list",data:{page:1,psize:100}}
+      let res  = await this.$store.dispatch("adminHttpGet",params);
+      this.updateInfo = res.data.data
+    }
+
+
+
+ 
+  },
+  watch:{
+  
+  },
+  mounted () {
+ 
+  },
+   head () {
+    return {
+      title: "机构",
+      meta: [{
+        hid: 'description',
+        name: 'description',
+        content: "123"
+      }],
+ 
+ 
+    }
+  }
+}
+</script>
+

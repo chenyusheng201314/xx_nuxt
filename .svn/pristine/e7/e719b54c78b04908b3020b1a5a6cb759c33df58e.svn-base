@@ -1,0 +1,242 @@
+<template>
+<div class="app_preview">
+   
+   <el-form :model="addInfo" :rules="rules" ref="addInfo" >
+      <el-form-item label="案例名称" label-width="100px"  prop="title">
+        <el-input v-model="addInfo.title" auto-complete="off" ></el-input>
+      </el-form-item>
+      <div v-on:click="setImg('organization_small_logo')">
+      <el-form-item label="企业logo（小图）" label-width="100px"  prop="organization_small_logo">
+         <el-upload
+            class="avatar-uploader"
+            :action="$store.state.admin.fileAddUrl"
+            :headers="{token:$store.state.admin.token}"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload" >
+            <img v-if="addInfo.organization_small_logo.value" :src="addInfo.organization_small_logo.value" class="avatar" >
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+      </el-form-item>
+      </div>
+      <div v-on:click="setImg('organization_big_logo')">
+      <el-form-item label="企业logo（大图）" label-width="100px"  prop="organization_big_logo">
+         <el-upload
+            class="avatar-uploader"
+            :action="$store.state.admin.fileAddUrl"
+            :headers="{token:$store.state.admin.token}"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload" >
+            <img v-if="addInfo.organization_big_logo.value" :src="addInfo.organization_big_logo.value" class="avatar" >
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+      </el-form-item>
+      </div>
+      <div v-on:click="setImg('cases_content_picture')">
+      <el-form-item label="案例详情图" label-width="100px"  prop="cases_content_picture">
+         <el-upload
+            class="avatar-uploader"
+            :action="$store.state.admin.fileAddUrl"
+            :headers="{token:$store.state.admin.token}"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload" >
+            <img v-if="addInfo.cases_content_picture.value" :src="addInfo.cases_content_picture.value" class="avatar" >
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+      </el-form-item>
+      </div>
+     
+      <el-form-item label="案例概述" label-width="100px"  prop="info">
+        <el-input v-model="addInfo.description" auto-complete="off" ></el-input>
+      </el-form-item>
+      <div v-for="(vo, index) in addInfoMore" :key="index" class="add_info_more">
+        <el-form-item label="标题" label-width="100px"  :prop="'content.'+index+'.title'" :rules="{required: true, message: '标题不能为空', trigger:'blur' }">
+          <el-input v-model="addInfo.content[index].title" auto-complete="off" ></el-input>
+        </el-form-item>
+ 
+        <el-form-item label="内容" label-width="100px"  :prop="'content.'+index+'.content'" :rules="{required: true, message: '内容不能为空', trigger:'blur' }">
+          <quill-editor 
+          v-model="addInfo.content[index].content" 
+          :ref="'myQuillEditor'+index" 
+          :options="editorOption" 
+          @blur="onEditorBlur($event)" @focus="onEditorFocus(index,$event)"
+          @change="onEditorChange($event)">
+          </quill-editor>
+        </el-form-item>
+       
+        <div class="add_info_more_del" v-on:click="addInfoMoreDel(index)" v-if="addInfoMore.length>1">×</div>
+      </div>
+      <div v-on:click="addNew()" class="base_btn_add"><img src="/admin/images/app_index_add.png"> 增加</div>
+    </el-form>
+ 
+    <div class="clr"></div>
+    <div slot="footer" class="dialog-footer" style="text-align: right; margin-top: 20px;">
+      <el-button v-on:click="cancel()">取 消</el-button>
+      <el-button type="primary" v-on:click="save()">确 定</el-button>
+    </div>
+ 
+ 
+
+ </div> 
+ 
+</template>
+
+<script>
+ 
+ 
+export default {
+  
+	name: "caseEdit",
+  props: ['addInfo','formData','extFormData','addInfoMore','addInfoSamllThumb','addInfoBigThumb'],
+ 
+	data() {
+		return {
+			 rules: {
+          title:[{ required: true, message: '请输入案例名称', trigger: 'blur' }],
+          organization_small_logo:[{ required: true, message: '必填', trigger: 'blur' }],
+          organization_big_logo:[{ required: true, message: '必填', trigger: 'blur' }],
+          cases_content_picture:[{ required: true, message: '必填', trigger: 'blur' }],
+          cases_content_picture:[{ required: true, message: '必填', trigger: 'blur' }],
+          description:[{ required: true, message: '必填', trigger: 'blur' }],
+       },
+       ces:"",
+      quillUpdateImg: false,
+      editPicInfo:"",
+      thisEdit:"11",
+      saveAction:"",
+      cImg:null,
+      editorOption: {
+         modules:{
+                        toolbar:{
+                          container: [
+  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['blockquote', 'code-block'],
+
+  [{'header': 1}, {'header': 2}],               // custom button values
+  [{'list': 'ordered'}, {'list': 'bullet'}],
+  [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
+  [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
+  [{'direction': 'rtl'}],                         // text direction
+
+  [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
+  [{'header': [1, 2, 3, 4, 5, 6, false]}],
+
+  [{'color': []}, {'background': []}],          // dropdown with defaults from theme
+  [{'font': []}],
+  [{'align': []}],
+  ['link', 'image', 'video'],
+  ['clean']                                         // remove formatting button
+], 
+                          handlers: {
+                            'image': function (value) {
+                                   console.log("abc")
+                                    if (value) {
+                                         $(".upfile input").click()
+                                     
+                                    } else {
+                                        this.quill.format('image', false);
+                                    }
+                                }
+                          }
+                        }
+                    }
+ 
+       
+      }
+      
+		}
+	},
+
+   created () {
+   
+          
+     },
+	methods: {
+    onEditorBlur() { //失去焦点事件
+
+    },
+    onEditorFocus(index,e) { //获得焦点事件
+      this.thisEdit = index
+      console.log(this.thisEdit)
+      console.log(this.$refs)
+    },
+    onEditorChange() { //内容改变事件
+
+    },
+    editPic(res, file,fileList) {
+      console.log(file)
+      //this.addInfo.content[this.thisEdit].content = this.addInfo.content[this.thisEdit].content+"<img src='"+file.response.data.file_url+"' />"
+      console.log('myQuillEditor'+this.thisEdit)
+      let quill = this.$refs['myQuillEditor'+this.thisEdit].quill
+      console.log(this.$refs)
+      let length = 1
+      quill.insertEmbed(length, 'image', file.response.data.file_url)
+      quill.setSelection(length + 1)
+ 
+      
+    },
+ 
+    save: function() {
+      this.$refs['addInfo'].validate((valid) => {
+        if (valid) {
+          var res = {}
+          res.btnAaction = "save";
+          res.visible = false;
+          this.$emit('editSuccess', res);
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+
+    },
+     cancel:function(){
+        this.$refs['addInfo'].resetFields();
+        var res={}
+        res.btnAaction = "cancel";
+        res.visible = false;
+        this.$emit('editSuccess',res) 
+     },
+     addNew:function() {
+
+          this.addInfoMore.push({title:"",content:""})
+          this.addInfo.content = this.addInfoMore
+          console.log(this.addInfoMore)
+     },
+     addInfoMoreDel:function(index) {
+        this.addInfoMore.splice(index,1)
+     },
+     setImg(cimg){
+        this.cImg = cimg
+     },
+    handleAvatarSuccess(res, file,fileList) {
+      this.$set(this.addInfo[this.cImg],'name',file.response.data.filename)
+      this.$set(this.addInfo[this.cImg],'value',file.response.data.file_url)
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    setChooseImg:function(field) {
+       this.chooseImg = field; 
+       console.log(this.chooseImg)
+    },  
+  },
+  mounted () {
+     
+       
+  },
+   
+}
+</script>
+
+ 

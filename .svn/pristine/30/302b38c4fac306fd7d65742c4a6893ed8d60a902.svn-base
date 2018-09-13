@@ -1,0 +1,104 @@
+.admin-log{
+  width: calc(100% - 250px);
+  height: auto;
+  background: #F5F8FA;
+  margin-left: 250px;
+  padding: 40px 70px;
+}
+.admin-log h2{
+  border-left: 5px solid #2E4769;
+  text-indent: 20px;
+  color: #2E4769;
+  font-size: 22px;
+}
+.admin-log .log-search{
+  width: 100%;
+  height: auto;
+  padding: 0 50px 20px;
+  background: #fff;
+  margin-top: 40px;
+  overflow: hidden;
+}
+.admin-log .log-search li {
+  float: left;
+  height: 40px;
+  margin-top: 20px;
+  margin-right: 35px;
+  line-height: 40px;
+}
+.admin-log .log-search li span {
+  color: #2E4769;
+  font-size: 14px;
+  margin-right: 10px;
+}
+.admin-log .log-search li .inp {
+  width: 220px;
+  height: 40px;
+  border: 1px solid #E4EBF4;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  padding: 0 10px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  color: #2E4769;
+  font-size: 14px;
+}
+.admin-log .log-search .last-li{
+  width: 140px;
+  height: 40px;
+  background: #4667B4;
+  color: #fff;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  float: right;
+  cursor: pointer;
+}
+.admin-log table{
+  border: 1px solid #F2F2F4;
+  width: 100%;
+  margin-top: 40px;
+  background: #fff;
+}
+.admin-log table th,.admin-log table td {
+  text-align: center;
+  color: #2E4769;
+}
+.admin-log table th {
+  height: 60px;
+  font-size: 15px;
+  background: #DFE7F3;
+}
+.admin-log table td {
+  height: 50px;
+  font-size: 14px;
+}
+.admin-log table tbody tr:nth-child(even){
+  background: #F8FAFE;
+}
+.admin-log .paging{
+  margin: 20px auto;
+  text-align: center;
+}
+.paging .el-pagination .el-pager li,.el-pagination button, .el-pagination span:not([class*=suffix]) {
+  min-width: 50px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+}
+.el-pagination .el-select .el-input .el-input__inner{
+  height: 40px;
+}
+.paging  .el-pagination__sizes{
+  margin-left: 20px;
+}

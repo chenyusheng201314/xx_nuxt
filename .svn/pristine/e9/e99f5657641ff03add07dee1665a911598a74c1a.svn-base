@@ -1,0 +1,41 @@
+<template>
+  <table>
+    <tr>
+      <th>序号</th>
+      <th>导师照片</th>
+      <th>导师姓名</th>
+      <th>所属机构</th>
+      <th>入驻日期</th>
+      <th>拥有课程数</th>
+      <th>相关案例</th>
+      <th>粉丝数</th>
+      <th>状态</th>
+    </tr>
+    <tbody>
+    <tr v-for="(item,index) in data" :key="index">
+      <td width="80px">{{index + 1}}</td>
+      <td width="120px">
+        <img :src="item.organization_teacher.photo_big.value" class="teacher-header" alt="" width="68px" height="42px">
+      </td>
+      <td width="120px">{{item.organization_teacher.realname}}</td>
+      <td width="120px">{{item.organization_teacher.organization.title}}</td>
+      <td width="230px">{{item.organization_teacher.created_at}}</td>
+      <td width="120px">{{item.course_count}}</td>
+      <td width="120px">{{item.organization_cases_count}}</td>
+      <td width="120px">{{item.follow_count}}</td>
+      <td width="120px"> <span :class="{col_true : item.organization_teacher.status === 1,col_false : item.organization_teacher.status === 0}">{{item.organization_teacher.status ? '已上架' : '已下架'}}</span></td>
+    </tr>
+    </tbody>
+  </table>
+</template>
+
+<script>
+  export default {
+    name: "teacherTable",
+    props: ['data']
+  }
+</script>
+
+<style scoped>
+
+</style>

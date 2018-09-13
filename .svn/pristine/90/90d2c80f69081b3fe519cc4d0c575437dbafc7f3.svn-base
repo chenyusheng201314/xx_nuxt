@@ -1,0 +1,240 @@
+<template>
+ 
+   <div class="app_index_setting">
+     <div class="admin_setting_title">
+       <div class="title">
+          首页配置
+       </div>
+       <div class="btn"   v-on:click="addMod">
+          <img  src="/admin/images/app_index_add.png" /> 添加模块专题
+       </div>
+     </div>
+     <div class="table-responsive">
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="25%">模块</th>
+          <th width="25%">名称或描述</th>
+          <th width="25%">操作</th>
+          <th width="25%">排序</th>
+        </tr>
+        <tr>
+          <td>搜索框</td>
+          <td>{{indexInfo.searchInfo.length}}个热搜词</td>
+          <td><nuxt-link :to="{name: 'admin-app-index-setSearch'}"><span class="btn btn_set">配置</span></nuxt-link></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>Banner</td>
+          <td>{{indexInfo.bannerInfo.length}}个banner</td>
+          <td>  <nuxt-link :to="{name: 'admin-app-index-setBanner'}"> <span class="btn btn_set">配置</span></nuxt-link></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>分类导航</td>
+          <td>{{indexInfo.navInfo.length}}个分类</td>
+          <td><nuxt-link :to="{name: 'admin-app-index-setNav'}"><span class="btn btn_set">配置</span></nuxt-link></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr v-for="(item, index) in indexInfo.mod" :key="index">
+          <td>模块专题</td>
+          <td>{{item.title}}</td>
+          <td><span class="btn btn_set " v-on:click="editMod(index)">配置</span><span class="btn_del" v-on:click="delMod(index)">删除</span></td>
+          <td>
+               <img src="/admin/images/app_index_up.png" v-on:click="setSortUp(index)" v-if="index!=0" /> 
+               <img src="/admin/images/app_index_down.png" v-on:click="setSortDown(index)" v-if="mod.length!=(index+1)" /> 
+          </td>
+        </tr>
+ 
+      </tbody>
+      </table>
+    </div>
+
+   
+   <div v-loading.fullscreen.lock="fullscreenLoading" ></div>
+
+
+
+
+<el-dialog :title="(saveAction=='edit'?'编辑':'添加')+'模块专题'" :visible.sync="dialogFormVisible">
+  <el-form :model="modInfos"  :rules="rules" ref="modInfos">
+    <el-form-item label="模块专题名称" label-width="120px"  prop="title" >  
+       <el-input v-model="modInfos.title" auto-complete="off"  ></el-input>
+    </el-form-item> 
+    <el-form-item label="专题类型" label-width="120px" prop="type">
+       <el-select v-model="modInfos.type" placeholder="请选择"  >
+        <el-option
+          v-for="it in  modtype"
+          :key="it.id"
+          :label="it.title"
+          :value="it.id">
+        </el-option>
+      </el-select>
+     </el-form-item>   
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button   @click="cancel()">取 消</el-button>
+    <el-button type="primary" @click="submit('modInfos')">确 定</el-button>
+  </div>
+</el-dialog>
+
+
+
+
+</div>
+
+
+
+
+ 
+
+
+
+ 
+</template>
+
+<script>
+ 
+import AppPreview from '~/components/admin/AppPreview'
+import { Loading } from 'element-ui'; 
+ 
+export default {
+  layout: 'admin',
+  components: {
+    AppPreview
+  },
+  name: 'admin_body',
+  props: ['mod','indexInfo'],
+  data () {
+    return {
+      saveAction: '',
+      selectData:[{id:1,title:"正常"},{id:2,title:"冻结"}],
+      dialogFormVisible:false,
+      modtype:[
+          {id:1,title:"精品课程"},
+          {id:2,title:"免费专区"},
+          {id:3,title:"积分购"},
+          {id:4,title:"特价课程"},
+          {id:5,title:"最新课程"},
+          {id:6,title:"买一赠一"},
+          {id:7,title:"训练营"},
+          {id:8,title:"导师"}
+      ],
+      modInfos:{},
+      rules:{
+        title: [{ required: true, message: '请输入模块名称', trigger: 'blur' }],
+        type: [{ required: true, message: '请选择模块类型', trigger: 'blur' }],
+ 
+      },
+      fullscreenLoading: false
+
+
+    }
+  },
+
+  methods: { 
+     setting:function() {
+      let layer = this.$refs.layer
+      layer.open({
+        type: 0,
+        shadeClose: true, // 点击空白区域是否隐藏此弹出框  默认是false
+      })
+     },
+     addMod:function() {
+        this.dialogFormVisible=true;
+        this.saveAction="add";
+        this.modInfos = {}
+     },
+     async editMod(index) {
+        this.dialogFormVisible=true;
+        this.saveAction="edit"; 
+        console.log(this.mod)
+        this.modInfos = JSON.parse(JSON.stringify(this.mod[index]));
+     },
+     async delMod(index){
+        let params = {url: "/manage/app_module_topic/del",data:{id:this.mod[index].id}}
+        let res  = await this.$store.dispatch("adminHttpPost",params);
+        if(res.code==0) {
+          this.$message({message: '删除成功',type: 'success'})
+          this.setData()
+        }
+        else{
+           this.$message.error('删除成功');
+        }
+        // this.mod.splice(index, 1);
+        
+     },
+     submit(formName) {
+       this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.update();
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+     },
+     cancel() {
+        this.$refs['modInfos'].resetFields();
+        this.dialogFormVisible = false 
+        
+     },
+     async update() {
+        var thisMod = {}
+        thisMod.id = this.modInfos.id
+        thisMod.type = this.modInfos.type
+        thisMod.title = this.modInfos.title
+        let params = {url: "/manage/app_module_topic/add",data:thisMod}
+        let res  = await this.$store.dispatch("adminHttpPost",params);
+        console.log(res)
+        if(res.code==0) {
+           this.dialogFormVisible = false;
+           this.$message({message: '添加成功',type: 'success'})
+           this.setData()
+
+        }
+        else{
+           this.$message.error('添加失败');
+        }
+ 
+        
+     },
+
+    async setSortUp(index){
+      let res = await this.setSort(this.mod[index].id,"top");
+      if(res.code==0) {
+        this.fullscreenLoading = false;
+        this.setData() 
+      }
+      
+ 
+    },
+    async setSortDown(index){
+      let res = await this.setSort(this.mod[index].id,"down")
+      if(res.code==0) {
+        this.fullscreenLoading = false;
+        this.setData()
+      }      
+    },
+    async setSort(id,type) {
+       this.fullscreenLoading = true;
+       let params = {url: "/manage/app_module_topic/order",data:{id:id,type:type}}
+       let res  = await this.$store.dispatch("adminHttpPost",params);
+       return res;
+    },
+    async setData() {
+       let params = {url: "/manage/app_module_topic/list",data:{}}
+       let res  = await this.$store.dispatch("adminHttpGet",params);
+
+       this.mod = res.data.module_topic
+       this.$set(this.indexInfo,'mod',res.data.module_topic)
+       res.indexInfo = this.indexInfo
+       this.$emit('editSuccess',res) 
+    } 
+  },
+  mounted () {
+    
+  }
+}
+</script>
+

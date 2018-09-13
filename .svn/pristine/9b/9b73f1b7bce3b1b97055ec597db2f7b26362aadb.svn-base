@@ -1,0 +1,217 @@
+<template>
+<div class="app_update">
+ <div class="searchFilter">
+        <el-form :inline="true" :model="searchFilter" class="demo-form-inline">
+          <el-form-item label="导师姓名" label-width="80px">
+            <el-input v-model="searchFilter.realname" auto-complete="off"></el-input>
+          </el-form-item>
+ 
+          <el-form-item label="所属机构" label-width="80px">
+              <el-select v-model="searchFilter.organization_id" placeholder="请选择">
+                  <el-option
+                    v-for="item in orgInfo"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+           <el-form-item label="账号状态" label-width="80px">
+              <el-select v-model="searchFilter.status" placeholder="请选择">
+                  <el-option
+                    v-for="item in status"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+
+          <el-form-item label="入驻日期" label-width="80px">
+            <el-date-picker
+      v-model="searchFilter.register_start_time"
+      type="date"
+      placeholder="选择日期">
+          </el-date-picker> -
+          <el-date-picker
+      v-model="searchFilter.register_end_time"
+      type="date"
+      placeholder="选择日期">
+          </el-date-picker>
+          </el-form-item>
+
+
+      <el-form-item class="fRight">
+          <el-button   @click="getData()" class="btn_search">搜索</el-button>
+    
+      </el-form-item>
+
+        </el-form>
+
+       
+     </div>
+     <div class="table-responsive">
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="5%">序号</th>
+          <th width="5%">导师图片</th>
+          <th width="5%">导师姓名</th>
+          <th width="8%">所属机构</th>
+          <th width="10%">入驻日期</th>
+          <th width="8%">拥有课程数</th>
+          <th width="8%">相关案例</th>
+          <th width="8%">粉丝数</th>
+          <th width="8%">状态</th>
+
+        </tr>
+        <tr v-for="(vo, index) in updateInfo" :key="index">
+          <td><el-radio v-model="ids" :label="index">{{index+1}}</el-radio></td>
+          <td><div class="head_img"><img :src="vo.photo_small.value" /></div></td>
+          <td>{{vo.realname}}</td>
+          <td>{{vo.organization_id}}</td>
+          <td>{{vo.created_at}}</td>
+          <td>{{vo.course_count}}</td>
+          <td>{{vo.organization_cases_count}}</td>
+          <td>{{vo.follow_count}}</td>
+          <td><div v-if="vo.status == 1">正常</div><div v-else>冻结</div></td>
+    
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="page">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage"
+      :page-sizes="pageInfo.pageSizes"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total">
+    </el-pagination>
+    </div>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="cancel()">取 消</el-button>
+      <el-button type="primary" @click="submit()">确 定</el-button>
+    </div>
+ 
+</div>
+</template>
+ 
+
+<script>
+
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  props:['addInfo'],
+  data () {
+    return {
+      allChecked:false,
+      ids:"",
+      idsAll:"",
+      updateInfo:[],
+      orgInfo:[],
+      pageInfo:{currentPage:1,pageSize:10},
+      status:[{id:1,title:"正常"},{id:2,title:"冻结"}],
+      sex:[{id:1,title:"男"},{id:0,title:"女"}],
+      searchFilter:{mobile:""},    
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+    }
+  },
+  created(){
+    console.log(this.addInfo)
+  },
+  
+  methods: {
+    async getData(){
+        this.searchFilter.page = this.pageInfo.currentPage;
+        this.searchFilter.psize = this.pageInfo.pageSize;
+        let params = {url: "/manage/organization_teacher/list",data:this.searchFilter} 
+        let res  = await this.$store.dispatch("adminHttpGet",params);
+
+        let paramsOrg = {url: "/manage/organization/list",data:{page:1,psize:10}}
+        let resOrg  = await this.$store.dispatch("adminHttpGet",paramsOrg);
+
+        this.updateInfo=res.data.data
+
+        this.orgInfo = resOrg.data.data
+        this.pageInfo={
+            total:res.data.total,
+            pageSizes:[10, 20, 30, 400],
+            pageSize:this.pageInfo.pageSize,
+            currentPage:parseInt(res.data.page),
+        }
+    
+    },
+    handleSizeChange(val) {
+      this.$set(this.pageInfo,'pageSize',val);
+      this.getData()
+    },
+    handleCurrentChange(val) {
+      this.$set(this.pageInfo,'currentPage',val);
+      this.getData() 
+    },
+    remove(val) { 
+      var index = this.ids.indexOf(val); 
+      if (index > -1) { 
+       this.ids.splice(index, 1); 
+      } 
+    },
+    setAll() {
+      if(this.allChecked == true) {
+          for(var i in this.updateInfo){
+            var index = this.ids.indexOf(this.updateInfo[i].id); 
+            if (index == -1) { 
+              this.ids.push(this.updateInfo[i].id);
+            } 
+          }
+        　　
+       }
+    },
+    submit() {
+      let res = {}
+      res.visible = false
+      res.action = "getTch"
+
+      if(this.ids === "") {
+        this.$message.error('请选择导师');
+      }
+      else {
+        res.info = this.updateInfo[this.ids]  
+        this.$emit('editSuccess',res) 
+      }
+ 
+    },
+    cancel:function(){
+
+        var res={}
+        res.visible = false
+        res.action = "getTch"
+        res.info = {}
+        
+        this.$emit('editSuccess',res) 
+     },
+ 
+  },
+ 
+  mounted () {
+    this.getData()
+  },
+  watch: {
+    allChecked: function (val) {
+      this.setAll()
+      if(val == false) {
+          this.ids = []  
+      }
+    },
+ 
+  
+  },
+ 
+}
+</script>
+

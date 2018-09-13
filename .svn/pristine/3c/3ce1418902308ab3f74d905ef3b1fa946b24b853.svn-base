@@ -1,0 +1,308 @@
+
+.admin-role{
+  width: calc(100% - 250px);
+  height: auto;
+  background: #F5F8FA;
+  margin-left: 250px;
+  padding: 40px 70px;
+}
+.admin-role h2,.role-cover .role-con h2{
+  border-left: 5px solid #2E4769;
+  text-indent: 20px;
+  color: #2E4769;
+  font-size: 22px;
+}
+.admin-role .role-search{
+  width: 100%;
+  height: auto;
+  padding: 0 50px 20px;
+  background: #fff;
+  margin-top: 40px;
+  overflow: hidden;
+}
+.admin-role .role-search li {
+  float: left;
+  height: 40px;
+  margin-top: 20px;
+  margin-right: 35px;
+  line-height: 40px;
+}
+.admin-role .role-search li span {
+  color: #2E4769;
+  font-size: 14px;
+  margin-right: 10px;
+}
+.admin-role .role-search li .inp {
+  width: 220px;
+  height: 40px;
+  border: 1px solid #E4EBF4;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  padding: 0 10px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  color: #2E4769;
+  font-size: 14px;
+}
+.admin-role .role-search li.last-li{
+  float: right;
+}
+.admin-role .role-search li.last-li span{
+  display: inline-block;
+  width: 140px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  cursor: pointer;
+}
+.admin-role .role-search li.last-li .add{
+  background: #71C945;
+}
+.admin-role .role-search li.last-li .search{
+  background: #4667B4;
+}
+.admin-role table{
+  border: 1px solid #F2F2F4;
+  width: 100%;
+  margin-top: 40px;
+  background: #fff;
+}
+.admin-role table th,.admin-role table td {
+  text-align: center;
+  color: #2E4769;
+}
+.admin-role table th {
+  height: 60px;
+  font-size: 15px;
+  background: #DFE7F3;
+}
+.admin-role table td {
+  height: 50px;
+  font-size: 14px;
+}
+.admin-role table tbody tr:nth-child(even){
+  background: #F8FAFE;
+}
+.admin-role table td .p1{
+  width: 500px;
+  height: 50px;
+  line-height: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 0;
+}
+.admin-role table td span{
+  display: inline-block;
+  width: 70px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  font-size: 14px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+.admin-role table td .td-edit{
+  background: #A6BCD9;
+  color: #4667B4;
+}
+.admin-role table td .td-see{
+  background: #FFF4D5;
+  color: #EFB920;
+}
+.admin-role table td .td-delete{
+  background: #FFEEEF;
+  color: #F65B79;
+  display: inline-block;
+  width: 70px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  font-size: 14px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+.td-delete.el-button{
+  padding: 0;
+}
+.admin-role .paging{
+  margin: 20px auto;
+  text-align: center;
+}
+.paging .el-pagination .el-pager li,.el-pagination button, .el-pagination span:not([class*=suffix]) {
+  min-width: 50px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+}
+.el-pagination .el-select .el-input .el-input__inner{
+  height: 40px;
+}
+.paging  .el-pagination__sizes{
+  margin-left: 20px;
+}
+.role-cover{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0,0,0,0.4);
+}
+.role-cover .role-con{
+  width: 1000px;
+  height: auto;
+  overflow: hidden;
+  background: #fff;
+  padding: 40px 50px;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  margin: 100px auto;
+  position: relative;
+}
+.role-cover .role-con .add-con{
+  width: 520px;
+  height: auto;
+  margin: 20px auto;
+}
+.role-cover .role-con .add-con li{
+  margin-top: 20px;
+}
+.role-cover .role-con .add-con li .li-left{
+  float: left;
+  width: 80px;
+  text-align: right;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  color: #2E4769;
+  margin-right: 15px;
+}
+.role-cover .role-con .add-con li input{
+  width: 300px;
+  height: 40px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border: 1px solid #E4EBF4;
+  font-size: 14px;
+  color: #2E4769;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  padding: 0 10px;
+  margin-right: 5px;
+}
+.role-cover .role-con .add-con li label{
+  font-size: 14px;
+  color: #F65B79;
+}
+.role-cover .role-con .add-con li  .jurisdiction{
+  width: 300px;
+  height: 400px;
+  overflow-y: scroll;
+  background: #F5F8FA;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+}
+.jurisdiction .jurisdiction-all{
+  position: relative;
+  overflow: hidden;
+  padding: 10px 25px;
+}
+ .jurisdiction .jurisdiction-all .jurisdiction-cover{
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.1);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1001;
+}
+
+.role-cover .role-con .add-con li .jurisdiction .p{
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin-top: 5px;
+}
+.role-cover .role-con .add-con li .jurisdiction .p img{
+  margin-right: 5px;
+  cursor: pointer;
+}
+.role-cover .role-con .add-con li .jurisdiction .p span{
+  color: #2E4769;
+  font-size: 14px;
+}
+.role-cover .role-con .add-con li .jurisdiction .p1{
+  margin-top: 20px;
+}
+.role-cover .role-con .add-con li .jurisdiction .p1:first-child{
+  margin-top: 0;
+}
+.role-cover .role-con .add-con li .jurisdiction .p2{
+  text-indent: 20px;
+}
+.role-cover .role-con .add-con li .jurisdiction .p3{
+  text-indent: 40px;
+}
+.role-cover .role-con .add-con li .jurisdiction .p4{
+  text-indent: 60px;
+}
+.role-cover .role-con .add-con li .add-save {
+  width: 260px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  background: #71C945;
+  margin: 50px auto;
+  cursor: pointer;
+}
+.role-cover .role-con .close
+{
+  display: block;
+  position: absolute;
+  right: 40px;
+  top: 20px;
+  cursor: pointer;
+}

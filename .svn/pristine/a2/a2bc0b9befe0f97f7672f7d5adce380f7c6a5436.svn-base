@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+    <script src="/css/swiper.min.css"></script>
+	<script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
+ <script src="/js/swiper.min.js"></script>
+<script src="/js/index.js"></script>
+</head>
+<body>
+ 
+   
+  <div class="swiper-container" >
+   <ul class="swiper-wrapper">
+      <li class="swiper-slide"><a href="/home-case-index-catId-12.html">别墅案例</a></li>
+      <li class="swiper-slide"><a href="/team-7.html">别墅设计师</a></li>
+      <li class="swiper-slide"><a href="#">别墅工地</a></li>
+      <li class="swiper-slide"><a href="/home-myhouse-index-catId-13.html">你家楼盘</a></li>
+      <li class="swiper-slide"><a href="#">别墅工艺</a></li>
+      <li class="swiper-slide"><a href="#">别墅材料</a></li>
+      <li class="swiper-slide"><a href="#">品质管理</a></li>
+      <li class="swiper-slide"><a href="/news-14.html">VR体验</a></li>
+      <li class="swiper-slide"><a href="/home-customized-index-catId-3.html">软装定制</a></li>
+      <li class="swiper-slide"><a href="#">核心优势</a></li>
+      <li class="swiper-slide"><a href="#">开工仪式</a></li>
+      <li class="swiper-slide"><a href="#">客户评价</a></li>
+      <li class="swiper-slide"><a href="#">别墅百科</a></li>
+      <li class="swiper-slide"><a href="/home-zt-info-id-46-catId-27.html">品牌故事</a></li>    
+   </ul>
+</div>                                  
+                  
+ 
+</body>
+</html>

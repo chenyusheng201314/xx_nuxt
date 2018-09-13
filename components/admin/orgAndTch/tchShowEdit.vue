@@ -1,0 +1,168 @@
+<template>
+<div class="app_preview">
+ 
+
+   <el-form :model="addInfo" :rules="rules" ref="addInfo" >
+      <el-form-item label="导师秀内容" label-width="100px"  prop="content">
+        <el-input v-model="addInfo.content" auto-complete="off" ></el-input>
+      </el-form-item>
+      <el-form-item label="" label-width="100px"  prop="images">
+            <el-upload
+            :action="$store.state.admin.fileAddUrl"
+            :headers="{token:$store.state.admin.token}"
+            list-type="picture-card"
+            :on-preview="handlePictureCardPreview"
+            :on-success="handleAvatarSuccess"
+            :on-remove="handleRemove">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="addInfo.images" alt="">
+          </el-dialog>
+          
+      </el-form-item>
+      <el-form-item label="导师" label-width="100px"  prop="info">
+         <el-select v-model="addInfo.atOrt" placeholder="请选择机构" @change="getTch">
+            <el-option
+              v-for="item in orgInfo "
+
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select v-model="addInfo.organization_teacher_id" placeholder="请选择导师" no-data-text="该机构暂无导师">
+            <el-option
+              v-for="item in tchs "
+              :key="item.id"
+              :label="item.realname"
+              :value="item.id">
+            </el-option>
+          </el-select>
+      </el-form-item>
+      <el-form-item label="地标" label-width="100px"  prop="info">
+        <el-input v-model="addInfo.address" auto-complete="off" ></el-input>
+      </el-form-item>
+  
+    </el-form>
+    <div class="clr"></div>
+    <div slot="footer" class="dialog-footer" style="text-align: right">
+      <el-button v-on:click="cancel()">取 消</el-button>
+      <el-button type="primary" v-on:click="save()">确 定</el-button>
+    </div>
+
+ </div> 
+ 
+</template>
+
+<script>
+ 
+ 
+ 
+export default {
+	name: "caseEdit",
+  props: ['addInfo','orgInfo'],
+	data() {
+		return {
+			 rules: {
+          content:[{ required: true, message: '请输入导师秀内容', trigger: 'blur' }],
+          name:[{ required: true, message: '请输入导师姓名', trigger: 'blur' }],
+          title: [{ required: true, message: '请输入导师头衔', trigger: 'blur' }],
+       },
+      saveAction:"",
+      chooseImg:"",
+      dialogImageUrl: '',
+      dialogVisible: false,
+      orgs: [{
+          id: '选项1',
+          name: '黄金糕'
+        }, {
+          id: '选项2',
+          name: '双皮奶'
+        }, {
+          id: '选项3',
+          name: '蚵仔煎'
+        }, {
+          id: '选项4',
+          name: '龙须面'
+        }, {
+          value: '选项5',
+          name: '北京烤鸭'
+      }],
+      tchs:[],
+
+      
+		}
+	},
+  computed: {
+     
+    },
+	methods: {
+    onEditorBlur() { //失去焦点事件
+    },
+    onEditorFocus() { //获得焦点事件
+    },
+    onEditorChange() { //内容改变事件
+    },
+    save: function() {
+      this.$refs['addInfo'].validate((valid) => {
+        if (valid) {
+          var res = {}
+          res.btnAaction = "save";
+          res.visible = false;
+          this.$emit('editSuccess', res);
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+
+
+    },
+    async getTch(){     
+        this.$set(this.addInfo,'organization_teacher_id', null)
+        let params = {url: "/manage/organization_teacher/list",data:{organization_id:this.addInfo.atOrt}}
+        let res  = await this.$store.dispatch("adminHttpGet",params);
+        this.tchs = res.data.data 
+    },
+   cancel:function(){
+        
+        this.$refs['addInfo'].resetFields();
+        var res={}
+        res.btnAaction = "cancel";
+        res.visible = false;
+        this.$emit('editSuccess',res) 
+     },
+ 
+ 
+     handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        console.log(file.url)
+        this.addInfo.images = file.url;
+        this.dialogVisible = true;
+      },
+   
+      handleAvatarSuccess(res, file,fileList) {
+       if(this.addInfo.images=='') {
+         this.$set(this.addInfo,'images', file.response.data.filename)
+       } 
+       else {
+         this.$set(this.addInfo,'images',this.addInfo.images+','+file.response.data.filename)
+       }
+      
+      },
+    setChooseImg:function(field) {
+       this.chooseImg = field; 
+       console.log(this.chooseImg)
+    },  
+  },
+  mounted () {
+     
+  },
+   
+}
+</script>
+
+ 

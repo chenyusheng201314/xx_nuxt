@@ -1,0 +1,46 @@
+<template>
+  <div>
+    <div class="route">当前位置：</div>
+    <div class="cursor-pointer route-data" v-for="(item, index) in route" :key="index">
+      <router-link :to="item.path">
+        {{item.name}} <span v-show="index !== route.length-1"> >&nbsp;&nbsp;</span>
+      </router-link>
+    </div>
+  </div>
+</template>
+<script>
+
+export default {
+  name: 'localRoute',
+  props: ['route'],
+  data () {
+    return {
+      // route: [{name: '享学科技网', path: '/'}],
+      change_params: 0
+    }
+  },
+  methods: {
+  },
+  mounted () {
+    // console.log('local页的router', this.$router)
+    // console.log('local页的route', this.$router)
+  }
+}
+</script>
+
+<style scoped>
+  .route {
+    display: inline-block;
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 45px;
+  }
+  .route-data {
+    display: inline-block;
+    font-size: 15px;
+    color: #333;
+  }
+  .route-data:hover {
+    color: #ff6900;
+  }
+</style>

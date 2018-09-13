@@ -1,0 +1,392 @@
+<template>
+<div class="app_preview">
+  
+   <el-form :model="addInfo" :rules="rules" ref="addInfo" >
+    
+      <el-form-item label="训练营名称" :label-width="formLabelWidth"  prop="training_name">
+        <el-input v-model="addInfo.training_name" auto-complete="off" ></el-input>
+      </el-form-item>
+
+      <el-form-item label="*训练营封面 （APP） " :label-width="formLabelWidth"  prop="training_cover_app">
+         <el-upload
+            class="avatar-uploader"
+            :action="$store.state.admin.fileAddUrl"
+            :headers="{token:$store.state.admin.token}"
+            :show-file-list="false"
+            :on-success="appAvatarSuccess"
+            :before-upload="beforeAvatarUpload" >
+            <img v-if="addInfo.training_cover_app.value" :src="addInfo.training_cover_app.value" class="avatar" >
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+      </el-form-item>
+
+      <el-form-item label="*训练营封面（PC）" :label-width="formLabelWidth"  prop="training_cover_pc">
+         <el-upload
+            class="avatar-uploader"
+            :action="$store.state.admin.fileAddUrl"
+            :headers="{token:$store.state.admin.token}"
+            :show-file-list="false"
+            :on-success="pcAvatarSuccess"
+            :before-upload="beforeAvatarUpload" >
+            <img v-if="addInfo.training_cover_pc.value" :src="addInfo.training_cover_pc.value" class="avatar" >
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+      </el-form-item>
+
+      <el-form-item label="训练营现价" :label-width="formLabelWidth"  prop="cost_price">
+        <el-input v-model="addInfo.cost_price" auto-complete="off" ></el-input>
+      </el-form-item>
+      <el-form-item label="训练营现价" :label-width="formLabelWidth"  prop="pay_price">
+        <el-input v-model="addInfo.pay_price" auto-complete="off" ></el-input>
+      </el-form-item>
+ 
+      <el-form-item label="上架状态" :label-width="formLabelWidth" prop="status">
+              <el-select v-model="addInfo.status" placeholder="请选择">
+                  <el-option
+                    v-for="item in status"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+     </el-form-item>
+
+
+      <el-form-item label="训练营简介" :label-width="formLabelWidth"  prop="training_description">
+        <el-input v-model="addInfo.training_description" auto-complete="off" ></el-input>
+      </el-form-item>
+
+      <el-form-item label="详情介绍 (APP)" :label-width="formLabelWidth" prop="content_app">
+        <quill-editor 
+          v-model="addInfo.content_app" 
+          ref="myQuillEditor" 
+          
+          @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
+          @change="onEditorChange($event)"   >
+         </quill-editor>
+      </el-form-item>
+
+      <el-form-item label="详情介绍 (PC)" :label-width="formLabelWidth" prop="content_pc">
+        <quill-editor 
+          v-model="addInfo.content_pc" 
+          ref="myQuillEditor"   
+          @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
+          @change="onEditorChange($event)"   >
+        </quill-editor>
+      </el-form-item>
+      <div class="el-dialog__header"><span class="el-dialog__title">关卡设置</span></div>
+      <div  class="training_more">
+        <div class="stage_img">
+            <img :src="stage_pic.value">          
+        </div>
+        <div class="stage_content">
+          <div class="stage_set">
+            <el-form-item label="选择地图" :label-width="formLabelWidth"  prop="map_num">
+               <el-select v-model="addInfo.map_num"   placeholder="请选择">
+                  <el-option
+                    v-for="item in stage_map"
+                    :key="item.id"
+                    :label="item.map_name"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+            </el-form-item>
+
+            <el-form-item label="训练营关卡数" :label-width="formLabelWidth"   prop="stage_count">
+               <el-select v-model="addInfo.stage_count" :value="1" placeholder="请选择" @change="setStage" >
+                  <el-option
+                    v-for="item in stage_count"
+                    :key="item.stage_count"
+                    :label="item.stage_name"
+                    :value="item.stage_count">
+                  </el-option>
+                </el-select>
+            </el-form-item>
+      
+          </div>
+
+          <div v-for="(it,index) in addInfo.stage_content" :key="index" class="stage_content_son">
+
+               <el-form-item label="训练营简介" 
+               :label-width="formLabelWidth"  
+               :prop="'stage_content['+index+'].stage_name'" 
+               :rules="{required: true, message: '必填', trigger:'blur' }">
+
+                  <el-input v-model="it.stage_name" auto-complete="off" ></el-input>
+               </el-form-item>
+               <el-form-item label="关卡欢迎词"
+               :label-width="formLabelWidth"  
+               :prop="'stage_content['+index+'].stage_description'" 
+               :rules="{required: true, message: '必填', trigger:'blur' }">
+
+                  <el-input v-model="it.stage_description" auto-complete="off" ></el-input>
+               </el-form-item>
+               <el-form-item label="关卡积分奖励" 
+               :label-width="formLabelWidth"  
+               :prop="'stage_content['+index+'].stage_score'" 
+               :rules="{required: true, message: '必填', trigger:'blur' }">
+                  <el-input v-model="it.stage_score" auto-complete="off" ></el-input>
+               </el-form-item>
+
+               <el-form-item label="通关完成度" 
+               :label-width="formLabelWidth"  
+               :prop="'stage_content['+index+'].stage_pct'" 
+               :rules="{required: true, message: '必填', trigger:'blur' }">
+               <el-select v-model="it.stage_pct"   placeholder="请选择">
+                  <el-option
+                    v-for="i in 10"
+                    :key="i"
+                    :label="i*10+'%'"
+                    :value="Number(i*10).toFixed(1)">
+                  </el-option>
+                </el-select>
+                 </el-form-item>
+                
+                <b>关卡课程</b>
+                <el-checkbox-group v-model="delClassIndex[index]">
+                  <table class="sections">
+                     <tbody>
+                       <tr v-for="(item, ind) in  sections[index]" :key="ind">
+                         <td><el-checkbox :label="ind">{{""}}</el-checkbox></td>
+                         <td><img :src="item.cover" /></td>
+                         <td>{{item.course_name}}</td>
+                         <td>{{item.price}}学币</td>
+                         <td>{{item.media_time}}</td>
+                       </tr>
+                     </tbody>
+                  </table>
+                </el-checkbox-group>
+                <el-form-item  
+               :label-width="formLabelWidth"  
+               :prop="'stage_content['+index+'].sections'" 
+               :rules="{required: true, message: '关卡课程必填', trigger:'blur' }"></el-form-item>
+                <div v-on:click="delClass(index)" class="base_btn_del" style="margin-left: 10px">删除</div>
+                <div v-on:click="addClass(index)" class="base_btn_add"><img src="/admin/images/app_index_add.png"> 增加</div>
+
+                <div class="clr"></div>
+
+           
+          </div>
+
+<div class="clr"></div>
+        </div>        
+
+        
+      </div>
+      
+    </el-form>
+    <div class="clr"></div>
+    <div slot="footer" class="dialog-footer" align="right">
+      <el-button v-on:click="cancel()">取 消</el-button>
+      <el-button type="primary" v-on:click="save()">确 定</el-button>
+    </div>
+
+ </div> 
+ 
+</template>
+
+<script>
+ 
+ 
+ 
+export default {
+	name: "caseEdit",
+  props: ['addInfo','classIds'],
+	data() {
+		return {
+			 rules: {
+          training_name:[{ required: true, message: '必填', trigger: 'blur' }],
+          training_cover_app: [{ required: true, message: '必填', trigger: 'blur' }],
+          training_cover_pc: [{ required: true, message: '必填', trigger: 'blur' }],
+          cost_price: [{ required: true, message: '必填', trigger: 'blur' }],
+          pay_price: [{ required: true, message: '必填', trigger: 'blur' }],
+          status: [{ required: true, message: '必填', trigger: 'blur' }],
+          training_description: [{ required: true, message: '必填', trigger: 'blur' }],
+          content_app: [{ required: true, message: '必填', trigger: 'blur' }],
+          content_pc: [{ required: true, message: '必填', trigger: 'blur' }],
+          stage_count: [{ required: true, message: '必填', trigger: 'blur' }],
+          map_num: [{ required: true, message: '必填', trigger: 'blur' }],
+       },
+      formLabelWidth:"120px",
+      status:[{id:1,title:"上架"},{id:0,title:"下架"}],
+      stage_map:[{id:1,title:"海盗船长",imgUrl:""},{id:2,title:"海盗导航",imgUrl:""}],
+      stage_count:[{id:3,title:"3个关卡"},{id:4,title:"4个关卡"},{id:5,title:"5个关卡"}],
+      stage_count_int:1,
+      saveAction:"",
+      chooseImg:"",
+      editorOption:{},
+      stageIndex:"",
+      stage_content:{},
+      sections:[],
+      delClassIndex:[[],[],[],[],[]],
+      imgs:{},
+      addInfoCopy:{},
+      stage_pic:{}
+		}
+	},
+  async created() {
+     let params = {url: "/manage/training/training_map_list",data:{}}
+     let res  = await this.$store.dispatch("adminHttpGet",params);
+     this.stage_map =  res.data
+     let params_g = {url: "/manage/training/training_map_stage_list",data:{map_id:this.addInfo.map_num}}
+     let res_g  = await this.$store.dispatch("adminHttpGet",params_g);
+     this.stage_count = res_g.data
+     this.stage_pic = res_g.data[0].stage_pic
+  },
+  computed: {
+     
+    },
+	methods: {
+    onEditorBlur() { //失去焦点事件
+    },
+    onEditorFocus() { //获得焦点事件
+    },
+    onEditorChange() { //内容改变事件
+    },
+    async save() {
+      this.$refs['addInfo'].validate((valid) => {
+        if (valid) {
+          this.update()         
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+
+    },
+    async update() {
+      this.addInfoCopy = JSON.parse(JSON.stringify(this.addInfo))
+      
+      this.$set(this.addInfoCopy,'stage_content',JSON.stringify(this.addInfoCopy.stage_content))
+      this.$set(this.addInfoCopy,'training_cover_app',JSON.parse(JSON.stringify(this.addInfoCopy.training_cover_app.name)))
+      this.$set(this.addInfoCopy,'training_cover_pc',JSON.parse(JSON.stringify(this.addInfoCopy.training_cover_pc.name)))
+      let params = {url: "/manage/training/training_add",data:this.addInfoCopy}
+      let res  = await this.$store.dispatch("adminHttpPost",params);
+      var rest = {}
+      rest.visible = false;
+      if(res.code==0) {
+        this.$message({message: '添加成功',type: 'success'});
+        this.$emit('addSuccess', rest);
+      }
+      else {
+        this.$message.error("保存失败")
+      }
+      
+    },
+    setStage() {
+        this.addInfo.stage_content = []
+        for (var i = 0; i < this.addInfo.stage_count; i++) {
+           this.$set(this.addInfo.stage_content,i,{});
+           this.$set(this.addInfo.stage_content[i],'sections',[]);
+           //this.$set(this.addInfo.stage_content[i],'classIds',[]);
+        }
+        var thisStage_count = this.addInfo.stage_count
+        var tasks = this.stage_count.filter(function(p){
+            return p.stage_count === thisStage_count;
+        });
+        this.stage_pic = tasks[0].stage_pic
+  
+    },
+    cancel:function(){
+        this.$refs['addInfo'].resetFields();
+        var res={}
+        res.btnAaction = "cancel";
+        res.visible = false;
+        this.$emit('addSuccess',res) 
+     },
+     addClass:function(index) {
+           this.stageIndex = index;
+           var res = {}
+           res.visible = true
+           res.classIds = []
+           var arr = JSON.parse(JSON.stringify(this.addInfo.stage_content[index].sections))
+
+           for (var  index in arr){
+               res.classIds.push(arr[index].course_id)
+            }
+   
+           this.$emit('setClassVisible',res);
+     },
+     delClass(index) {
+
+        console.log(this.delClassIndex[index])
+        for (var i in this.delClassIndex[index]){
+          this.sections[index].splice(this.delClassIndex[index][i],1)
+          this.addInfo.stage_content[index].sections.splice(this.delClassIndex[index][i],1)
+        }
+        this.delClassIndex[index] = []
+  
+     },
+     addInfoMoreDel:function(index) {
+        this.addInfoMore.splice(index,1)
+     },
+    appAvatarSuccess(res, file,fileList) {
+      this.$set(this.addInfo.training_cover_app,'name',file.response.data.filename)
+      this.$set(this.addInfo.training_cover_app,'value',file.response.data.file_url)
+    },
+    pcAvatarSuccess(res, file,fileList) {
+      this.$set(this.addInfo.training_cover_pc,'name',file.response.data.filename)
+      this.$set(this.addInfo.training_cover_pc,'value',file.response.data.file_url)
+ 
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/gif' || file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    setChooseImg:function(field) {
+       this.chooseImg = field; 
+ 
+    },
+    returnFloat(value){
+      var value=Math.round(parseFloat(value)*100)/100;
+      var s=value.toString().split(".");
+      if(s.length==1){
+        value=value.toString()+".00";
+        return value;
+      }
+      if(s.length>1){
+        if(s[1].length<2){
+          value=value.toString()+"0";
+        }
+        return value;
+      }
+    }
+  },
+  mounted () {
+ 
+  },
+  watch: {
+    classIds:async function (val) {
+      var vvsl = []
+      for (var  index in val){
+           vvsl.push({course_id:val[index]})
+       }
+
+      this.$set(this.addInfo.stage_content[this.stageIndex],'sections',JSON.parse(JSON.stringify(vvsl)));
+
+
+
+       
+      let params = {url: "/manage/training/training_add_course_info",data:{course_ids:val.join(",")}}
+      let res  = await this.$store.dispatch("adminHttpGet",params);
+      console.log(res)
+      this.$set(this.sections,this.stageIndex,res.data);
+
+
+    
+ 
+ 
+    }
+  }
+   
+}
+</script>
+
+ 

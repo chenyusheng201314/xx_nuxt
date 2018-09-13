@@ -1,0 +1,285 @@
+.admin-medal {
+  width: calc(100% - 250px);
+  height: auto;
+  background: #F5F8FA;
+  margin-left: 250px;
+  padding: 40px 70px;
+}
+
+.admin-medal h2 {
+  border-left: 5px solid #2E4769;
+  text-indent: 20px;
+  color: #2E4769;
+  font-size: 22px;
+}
+
+.admin-medal .medal-search {
+  width: 100%;
+  height: auto;
+  padding: 0 50px 20px;
+  background: #fff;
+  margin-top: 40px;
+  overflow: hidden;
+}
+
+.admin-medal .medal-search li {
+  float: left;
+  height: 40px;
+  margin-top: 20px;
+  margin-right: 35px;
+  line-height: 40px;
+}
+
+.admin-medal .medal-search li span {
+  color: #2E4769;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.admin-medal .medal-search li .inp {
+  width: 220px;
+  height: 40px;
+  border: 1px solid #E4EBF4;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  padding: 0 10px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  color: #2E4769;
+  font-size: 14px;
+}
+
+.admin-medal .medal-search li.last-li {
+  width: 140px;
+  height: 40px;
+  background: #4667B4;
+  color: #fff;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  float: right;
+  margin-right: 0;
+  cursor: pointer;
+}
+
+.admin-medal table {
+  border: 1px solid #F2F2F4;
+  width: 100%;
+  margin-top: 40px;
+  background: #fff;
+}
+
+.admin-medal table th, .admin-medal table td {
+  text-align: center;
+  color: #2E4769;
+}
+
+.admin-medal table th {
+  height: 60px;
+  font-size: 15px;
+  background: #DFE7F3;
+}
+
+.admin-medal table td {
+  height: 60px;
+  font-size: 15px;
+}
+
+.admin-medal table td .header {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  margin-right: 5px;
+}
+
+.admin-medal table tbody tr:nth-child(even) {
+  background: #F8FAFE;
+}
+
+.admin-medal .paging {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.paging .el-pagination .el-pager li, .el-pagination button, .el-pagination span:not([class*=suffix]) {
+  min-width: 50px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+}
+
+.el-pagination .el-select .el-input .el-input__inner {
+  height: 40px;
+}
+
+.paging .el-pagination__sizes {
+  margin-left: 20px;
+}
+
+.admin-medal .medal-rule {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.admin-medal .medal-rule li {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  padding: 20px 0;
+  background: #fff;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  margin-top: 20px;
+  position: relative;
+}
+.admin-medal .medal-rule li .delete{
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+.admin-medal .medal-rule li p{
+  float: left;
+  margin-right: 90px;
+  height: auto;
+  font-size: 16px;
+  margin-bottom: 0;
+}
+.admin-medal .medal-rule li .p1{
+  height: 40px;
+  line-height: 40px;
+  border-left: 10px solid #4667B4;
+  color: #4667B4;
+  text-indent: 20px;
+}
+.admin-medal .medal-rule li .p1 input{
+  width: 200px;
+  height: 40px;
+  border: 1px solid #E4EBF4;
+  color: #4667B4;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+}
+.admin-medal .medal-rule li .p1 span{
+  width: 150px;
+  display: inline-block;
+}
+
+.admin-medal .medal-rule li .p2{
+  height: 40px;
+  line-height: 40px;
+  color: #2E4769;
+}
+
+.admin-medal .medal-rule li .p2 span{
+  margin-left: 20px;
+  margin-right: 20px;
+  color: #F65B79;
+}
+.admin-medal .medal-rule li .p3{
+  margin-right: 50px;
+}
+.admin-medal .medal-rule li .p4{
+  color: #2E4769;
+  height: 40px;
+  line-height: 40px;
+}
+.admin-medal .medal-rule li .p4 span{
+  width: 150px;
+  display: inline-block;
+}
+.admin-medal .medal-rule li .last-p{
+  float: right;
+}
+.admin-medal .medal-rule li .last-p span{
+  display: inline-block;
+  margin-right: 50px;
+  width: 150px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  cursor: pointer;
+}
+.admin-medal .medal-rule li .last-p .save{
+  background: #71C945;
+  color: #fff;
+}
+.admin-medal .medal-rule li .last-p .edit{
+  background: #A6BCD9;
+  color: #4667B4;
+}
+.admin-medal .medal-rule li p .avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.admin-medal .medal-rule li p  .avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.admin-medal .medal-rule li p  .avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+}
+.admin-medal .medal-rule li p .avatar {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+.add-btn{
+  width: 175px;
+  height: 45px;
+  border: 1px dashed #A6BCD9;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  text-align: center;
+  line-height: 45px;
+  color: #A6BCD9;
+  font-size: 14px;
+  cursor: pointer;
+}

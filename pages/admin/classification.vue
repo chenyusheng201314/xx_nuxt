@@ -1,0 +1,381 @@
+<!--
+    author : cys
+-->
+<template>
+  <div>
+    <LeftNav :data="leftNav"></LeftNav>
+    <div class="classification" v-loading="loading">
+      <h2>
+        <span>课程分类管理</span>
+        <div class="add-first" :class="{true: add_type,false:!add_type}" @click="add_first">+ 添加一级分类</div>
+      </h2>
+      <div class="lists">
+        <div v-for="(item,index) in show_lists" :key="index + 'div'"
+             v-dragging="{item: item, list: show_lists,group:'item'}">
+          <!--未编辑状态-->
+          <div class="lists-tit" v-show="!item.isEdit">
+            <div class="left">
+              <span class="span1">{{item.sort_name}}</span>
+              <span class="span2">上架课程总数 {{item.all_course}}</span>
+            </div>
+            <div class="right">
+              <span class="edit" @click="list_edit(index)">编辑</span>
+              <img src="/admin/images/class/down.png" alt="" class="select-down" :class="{choose: item.child_show}"
+                   @click="select_down(index)">
+              <img src="/admin/images/class/solt.png" alt="" class="solt">
+            </div>
+          </div>
+          <!--编辑状态-->
+          <div class="lists-tit" v-show="item.isEdit">
+            <img @click="delete_first(item)" class="tit-delete" src="/admin/images/class/delete.png" alt="">
+            <div class="left">
+              <span class="span1">第{{index + 1}}章</span>
+              <input type="text" class="inp" v-model="item.sort_name">
+              <span class="span2">上架课程总数 {{item.all_course}}</span>
+            </div>
+            <div class="right">
+              <span class="add-title" @click="add_second(index)">+ 添加二级分类</span>
+              <span class="save" @click="list_save(index,item)">保存</span>
+              <img src="/admin/images/class/solt.png" alt="" class="solt" style="margin-right: 80px">
+            </div>
+          </div>
+          <!--未编辑状态-->
+          <ul class="list" v-show="item.child_show && !item.isEdit">
+            <li v-for="(it,ind) in item.second_sorts" :key="ind + 'li'">
+              <span class="span1">{{ind + 1}}</span>
+              <span class="span1 span-name">{{it.sort_name}}</span>
+              <span class="span1">上架课程数 {{it.all_course}}</span>
+            </li>
+          </ul>
+          <!--编辑状态-->
+          <ul class="list" v-show="item.isEdit">
+            <li v-for="(it,ind) in item.second_sorts" :key="ind + 'li'">
+              <div class="left">
+                <span class="span1">{{ind + 1}}</span>
+                <input type="text" class="inp" v-model="it.sort_name">
+                <span class="span1">上架课程数 {{it.all_course}}</span>
+              </div>
+              <div class="right">
+                <span class="delete" @click="delete_one(index,ind,it)">删除</span>
+                <img src="/admin/images/class/to-up.png" alt="" @click="to_up(index,ind)"
+                     :class="{m_r_75: ind === (item.second_sorts.length - 1), m_r_45 : ind !== 0}"
+                     v-show="ind !== 0">
+                <img src="/admin/images/class/to-down.png" @click="to_down(index,ind)" alt=""
+                     :class="{m_r_75 : ind === 0}"
+                     v-show="ind !== (item.second_sorts.length - 1)">
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import LeftNav from '~/components/admin/LeftNav'
+  import '~/static/admin/css/classification.css'
+  import VueDND from 'awe-dnd'
+  import Vue from 'vue'
+  import axios from 'axios'
+
+  Vue.use(VueDND);
+
+  export default {
+    layout: 'admin',
+    name: "classification",
+    components: {
+      LeftNav
+    },
+    data() {
+      return {
+        leftNav: [
+          {
+            name: '视频库',
+            link: '/admin/video',
+            active: false
+          }, {
+            name: '课程管理',
+            link: '/admin/class',
+            active: false
+          }, {
+            name: '课程分类管理',
+            link: '/admin/classification',
+            active: true
+          },
+        ],
+        add_type: true,
+        loading: false,
+      }
+    },
+    async asyncData({store}) {
+      let params = {
+        url: '/manage/manage_course/course_sort_list'
+      };
+      let res = await store.dispatch('adminHttpGet', params);
+      console.log('11111',res);
+      res.data.forEach(function (val, key) {
+        val.isEdit = false;
+        val.child_show = false;
+      });
+      return {
+        show_lists: res.data
+      }
+    },
+    methods: {
+      // 获取列表信息
+      async get_list_info() {
+        const that = this;
+        that.loading = true;
+        let params = {
+          url: '/manage/manage_course/course_sort_list'
+        };
+        let res = await that.$store.dispatch('adminHttpGet_noData', params);
+        console.log(res);
+        res.data.forEach(function (val, key) {
+          val.isEdit = false;
+          val.child_show = false;
+        });
+        if (res) {
+          that.loading = false;
+        }
+        that.show_lists = res.data;
+      },
+
+      //   增加一级标题
+      add_first() {
+        const that = this;
+        let len = that.show_lists.length;
+        if (that.add_type) {
+          axios({
+            method: 'post',
+            url: '/manage/manage_course/course_first_sort_add',
+            baseURL: that.$store.state.admin.baseUrl,
+            headers: {
+              token: that.$store.state.admin.token,
+            },
+            data: {
+              sort_name: '默认名称'
+            }
+          }).then((res) => {
+            if (res.data.code === 0) {
+              that.get_list_info()
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
+        }
+
+      },
+      // 删除一级标题
+      delete_first(item) {
+        const that = this;
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if (item.all_course !== 0) {
+            this.$message({
+              type: 'error',
+              message: '无法删除有课程的分类!'
+            });
+          } else {
+            axios({
+              method: 'post',
+              url: '/manage/manage_course/course_first_sort_del',
+              baseURL: that.$store.state.admin.baseUrl,
+              headers: {
+                token: that.$store.state.admin.token,
+              },
+              data: {
+                id: item.id
+              }
+            }).then((res) => {
+              if (res.data.code === 0) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                });
+                that.get_list_info()
+              }
+            }).catch((err) => {
+              console.log(err);
+            })
+          }
+        }).catch(() => {
+        })
+
+
+      },
+      // 编辑
+      list_edit(ind) {
+        this.show_lists[ind].isEdit = true
+      },
+      // 保存
+      list_save(ind, item) {
+        const that = this;
+        let tmp = [], json = {};
+        // 排序
+        item.second_sorts.forEach(function (val, key) {
+          json = {
+            sort: key,
+            second_id: val.id,
+            sort_name: val.sort_name
+          };
+          tmp.push(json);
+        });
+        axios({
+          method: 'post',
+          url: '/manage/manage_course/course_sort_save',
+          baseURL: that.$store.state.admin.baseUrl,
+          headers: {
+            token: that.$store.state.admin.token,
+          },
+          data: {
+            first_sort_id: item.id,
+            first_sort_title: item.sort_name,
+            second_sort_content: JSON.stringify(tmp)
+          }
+        }).then((res) => {
+          console.log(res);
+          that.show_lists[ind].isEdit = false;
+          that.get_list_info();
+        }).catch((err) => {
+          console.log(err);
+        })
+
+      },
+      //  下拉
+      select_down(index) {
+        this.show_lists[index].child_show = !this.show_lists[index].child_show
+      },
+      //删除二级标题
+      delete_one(index, ind, it) {
+        const that = this;
+        console.log(it);
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if (it.all_course === 0) {
+            if (it.second_id !== -1) {
+              axios({
+                method: 'post',
+                url: '/manage/manage_course/course_second_sort_del',
+                baseURL: that.$store.state.admin.baseUrl,
+                headers: {
+                  token: that.$store.state.admin.token
+                },
+                data: {
+                  id: it.second_id
+                }
+              }).catch((err) => {
+                console.log(err);
+              }).then((res) => {
+                console.log(res);
+              })
+            }
+            //  页面上做删除
+            that.show_lists[index].second_sorts.splice(ind, 1);
+          } else {
+            this.$message({
+              type: 'error',
+              message: '无法删除有课程的分类!'
+            });
+          }
+        }).catch(() => {
+
+        });
+      },
+
+      // 增加二级标题
+      add_second(index) {
+        let json = {
+          sort_name: '',
+          all_course: 0,
+          id: -1,
+          sort: 0,
+        };
+        this.show_lists[index].second_sorts.unshift(json)
+      },
+
+      //  二级标题的排序
+      // 向上
+      to_up(index, ind) {
+        const that = this;
+        // 交换顺序
+        that.show_lists[index].second_sorts.splice(ind - 1, 1, ...that.show_lists[index].second_sorts.splice(ind, 1, that.show_lists[index].second_sorts[ind - 1]));
+
+      },
+      //  向下
+      to_down(index, ind) {
+        const that = this;
+        // 交换顺序
+        that.show_lists[index].second_sorts.splice(ind, 1, ...that.show_lists[index].second_sorts.splice(ind + 1, 1, that.show_lists[index].second_sorts[ind]));
+      },
+    },
+    watch: {
+      show_lists: function () {
+        const that = this;
+        let len = that.show_lists.length;
+        if (len > 30) {
+          that.add_type = false
+        } else {
+          that.add_type = true
+        }
+      }
+    },
+    mounted() {
+      // 拖拽排序
+      const that = this;
+      let this_id, top_id, down_id, len;
+      this.$dragging.$on('dragged', ({value}) => {
+        this_id = value.item.id;
+        // console.log(value.item);
+        // console.log(value.list);
+      });
+      this.$dragging.$on('dragend', () => {
+        that.show_lists.forEach(function (val, key) {
+          if (val.id === this_id) {
+            len = key
+          }
+        });
+        // 获取ID
+        if (len === 0) {
+          top_id = 0;
+          down_id = that.show_lists[len + 1].id
+        } else if (len > 0 && len < that.show_lists.length - 1) {
+          top_id = that.show_lists[len - 1].id;
+          down_id = that.show_lists[len + 1].id
+        } else if (len === that.show_lists.length - 1) {
+          top_id = that.show_lists[len - 1].id;
+          down_id = 0
+        }
+
+        axios({
+          method: 'post',
+          url: '/manage/manage_course/course_first_sort_change',
+          baseURL: that.$store.state.admin.baseUrl,
+          headers: {
+            token: that.$store.state.admin.token,
+          },
+          data: {
+            this_id: this_id,
+            top_id: top_id,
+            down_id: down_id,
+          }
+        }).then((res) => {
+          console.log(res);
+        }).catch((err) => {
+          console.log(err);
+        })
+      })
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

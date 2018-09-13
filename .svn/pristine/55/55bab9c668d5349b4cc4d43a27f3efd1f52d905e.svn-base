@@ -1,0 +1,105 @@
+<template>
+<div class="app_preview">
+   <div class="swiper-container-s">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+   
+ 	<div class="app_preview_search">
+      {{indexInfo.searchInfo[0].title}}
+ 	</div>
+ 
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" v-for="(banner, index) in indexInfo.bannerInfo" :key="index">
+            <img :src="banner.image.value" class="swiper_banner">
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+     </div>
+ 
+    <div class="app_preview_nav">
+        <ul>
+           <li v-for="(nav, index) in indexInfo.navInfo" :key="index">
+           	<img :src="nav.image.value">
+           	<h3>{{nav.title}}</h3>
+           </li>
+        </ul>
+ 	</div>
+ 
+ 	<div class="app_preview_modules" v-for="(modules, index) in indexInfo.mod" :key="index">
+       <h3><span>全部</span>{{modules.title}}</h3>
+       
+        <ul v-if="modules.type ==2 || modules.type ==3">
+           <li v-for="(item, index) in modules.content" :key="index">
+           	<img :src="item.course.cover.value">
+           	<h4>{{item.course.course_name}}</h4>
+           	<p>{{item.realname}}|{{item.title}}</p>
+           	<p>{{item.course.section_num}}课时|时长{{item.course.media_time}}小时</p>
+           	<p>{{item.course.price}}学币</p>
+           </li>
+        </ul>
+        <ul v-else-if="modules.type ==7">
+           <li v-for="(item, index) in modules.content" :key="index">
+            <img :src="item.training_cover_app.value">
+            <h4>{{item.training_name}}</h4>
+            <p>{{item.pay_price}}学币</p>
+           </li>
+        </ul>
+
+ 	</div>
+ 
+
+ </div>
+</div>
+<!--div class="swiper-scrollbar"></div-->
+</div>
+ </div>    
+ 
+</template>
+
+<script>
+import Swiper from 'swiper';
+import 'swiper/dist/css/swiper.min.css';
+export default {
+	name: "app_preview",
+  props: ['mod','indexInfo'],
+	data() {
+		return {
+			search:"最新敏捷力课程",
+			banners: [],
+			nav:[ ],
+	 
+		}
+	},
+	mounted() {
+	 var swiper_s = new Swiper('.swiper-container-s', {
+      direction: 'vertical',
+      slidesPerView: 'auto',
+      freeMode: true,
+      scrollbar: {
+        el: '.swiper-scrollbar',
+      },
+      mousewheel: true,
+    });
+	
+    var mySwiper = new Swiper('.swiper-container', {
+      pagination: {
+        el: '.swiper-pagination',
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      autoplay: true,
+      loop: true
+    })
+
+ 
+  },
+
+
+
+}
+</script>
+
+ 

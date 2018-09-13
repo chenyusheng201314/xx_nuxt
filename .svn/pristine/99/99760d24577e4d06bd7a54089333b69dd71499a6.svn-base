@@ -1,0 +1,70 @@
+{
+  "_from": "vue-js-grid@^1.0.1",
+  "_id": "vue-js-grid@1.0.1",
+  "_inBundle": false,
+  "_integrity": "sha512-YOCRATqtab8DWzaVVRrTRD81+Q6brafsDlRro3Y6miM6aQc/Mi3dZcj1mjDooUlBnJlFcYYlC50eD6j4vaYfHA==",
+  "_location": "/vue-js-grid",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "vue-js-grid@^1.0.1",
+    "name": "vue-js-grid",
+    "escapedName": "vue-js-grid",
+    "rawSpec": "^1.0.1",
+    "saveSpec": null,
+    "fetchSpec": "^1.0.1"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/vue-js-grid/-/vue-js-grid-1.0.1.tgz",
+  "_shasum": "3d09314d7e8108a5a585ff02bea8ef5a7aefd1ec",
+  "_spec": "vue-js-grid@^1.0.1",
+  "_where": "F:\\project\\xiangxue\\nuxt_project",
+  "author": {
+    "name": "euvl",
+    "email": "yev.vlasenko@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/euvl/vue-js-grid/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Vue.js responsive grid plugin",
+  "devDependencies": {
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.0.0",
+    "babel-preset-latest": "^6.0.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "cross-env": "^3.0.0",
+    "css-loader": "^0.25.0",
+    "file-loader": "^0.9.0",
+    "node-sass": "^4.5.0",
+    "sass-loader": "^5.0.1",
+    "uglifyjs-webpack-plugin": "^0.4.6",
+    "vue": "^2.0.0",
+    "vue-loader": "^11.1.4",
+    "vue-template-compiler": "^2.0.0",
+    "webpack": "^2.2.0",
+    "webpack-dev-server": "^2.2.0"
+  },
+  "homepage": "https://github.com/euvl/vue-js-grid#readme",
+  "keywords": [
+    "vue"
+  ],
+  "main": "dist/index.js",
+  "name": "vue-js-grid",
+  "peerDependencies": {
+    "vue": "^2.0.0"
+  },
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/euvl/vue-js-grid.git"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+  },
+  "version": "1.0.1"
+}

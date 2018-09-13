@@ -1,0 +1,791 @@
+<!--
+  author：cys
+-->
+<template>
+  <div>
+    <leftNav :data="leftNav"></leftNav>
+    <div class="promotion">
+      <h2>最新上架</h2>
+      <ul class="promotion-search" v-loading.fullscreen.lock="fullscreenLoading">
+        <li>
+          <span>课程分类</span>
+          <el-select v-model="search_info.first_sort_id" placeholder="请选择" class="m-r-15">
+            <el-option
+              v-for="(item,index) in search_info.fir_select"
+              :key="index"
+              :label="item.sort_name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select v-model="search_info.second_sort_id" placeholder="请选择">
+            <el-option
+              v-for="(item,index) in search_info.sec_select"
+              :key="index"
+              :label="item.sort_name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </li>
+        <li>
+          <span>课程名称</span>
+          <input type="text" class="inp" v-model="search_info.lesson_name">
+        </li>
+        <li>
+          <span>主导讲师</span>
+          <el-select v-model="search_info.jg_id" placeholder="请选择" class="m-r-15">
+            <el-option
+              v-for="(item,index) in search_info.jigou_select"
+              :key="index"
+              :label="item.title"
+              :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select v-model="search_info.teacher_id" placeholder="请选择">
+            <el-option
+              v-for="(item,index) in search_info.teacher_select"
+              :key="index"
+              :label="item.realname"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </li>
+        <li>
+          <span>上架状态</span>
+          <el-select v-model="search_info.status" placeholder="请选择">
+            <el-option
+              v-for="(item,index) in search_info.type_select"
+              :key="index"
+              :label="item.tit"
+              :value="item.num">
+            </el-option>
+          </el-select>
+        </li>
+        <li class="last-li">
+          <span class="btn-add" @click="cover_show(true)">添加</span>
+          <span class="btn-search" @click="list_search">搜索</span>
+        </li>
+      </ul>
+      <table>
+        <tr>
+          <th>序号</th>
+          <th>课程封面</th>
+          <th>视频名称</th>
+          <th>主导讲师</th>
+          <th>单价（学币）</th>
+          <th>参与活动</th>
+          <th>上架状态</th>
+          <th>操作</th>
+          <th></th>
+        </tr>
+        <tbody>
+        <tr v-for="(item,index) in lesson_lists" :key="index">
+          <td width="100px">{{index + 1}}</td>
+          <td width="150px"><img :src="item.course.cover.value" alt="" width="68px" height="42px"></td>
+          <td width="400px">
+            <p class="name">{{item.course.course_name}}</p>
+          </td>
+          <td width="150px">{{item.course.teacher}}</td>
+          <td width="150px">{{item.course.price}}</td>
+          <td width="200px">
+            <!--精品-->
+            <img src="/admin/images/promotion/iocn-jing.png" alt="" v-show="item.course.is_jp === 1">
+            <!--最新-->
+            <img src="/admin/images/promotion/icon-new.png" alt="" v-show="item.course.is_new === 1">
+            <!--买一增一-->
+            <img src="/admin/images/promotion/icon-zeng.png" alt="" v-show="item.course.is_activity === 1">
+            <!--折扣-->
+            <img src="/admin/images/promotion/icon-zhe.png" alt="" v-show="item.course.is_activity === 2">
+            <!--免费-->
+            <img src="/admin/images/promotion/icon-free.png" alt="" v-show="item.course.is_activity === 3">
+            <!--积分-->
+            <img src="/admin/images/promotion/icon-fen.png" alt="" v-show="item.course.is_activity === 4">
+          </td>
+          <td width="120px">
+            <span class="col-true" v-show="item.course.status === 1">已上架</span>
+            <span class="col-false" v-show="item.course.status === 0">已下架</span>
+          </td>
+          <td width="120px"><span class="detele-one" @click="detele_one(index,item)">删除</span></td>
+          <td class="last-td">
+            <img src="/admin/images/promotion/up.png" alt="" v-show="index !== 0" @click="up(index,item.id)">
+            <img src="/admin/images/promotion/down.png" alt="" v-show="index !== lesson_lists.length - 1"
+                 @click="down(index,item.id)">
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <!--分页-->
+      <div class="paging">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="paging.currentPage"
+          :page-sizes="paging.page_sizes"
+          :page-size="paging.page_size"
+          layout="prev, pager, next, sizes, jumper"
+          :total="paging.total"
+          :pager-count="5">
+        </el-pagination>
+      </div>
+
+      <div class="promotion-cover" v-show="coveIsShow">
+        <div class="cover-con">
+           <span class="close-cover" @click="cover_show(false)">
+          <img src="/admin/images/class/close.png" alt="">
+      </span>
+          <h2>选择课程</h2>
+          <ul class="promotion-search">
+            <li>
+              <span>课程分类</span>
+              <el-select v-model="add_search.first_sort_id" placeholder="请选择" class="m-r-15">
+                <el-option
+                  v-for="(item,index) in add_search.fir_select"
+                  :key="index"
+                  :label="item.sort_name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+              <el-select v-model="add_search.second_sort_id" placeholder="请选择">
+                <el-option
+                  v-for="(item,index) in add_search.sec_select"
+                  :key="index"
+                  :label="item.sort_name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </li>
+            <li>
+              <span>主导讲师</span>
+              <el-select v-model="add_search.jg_id" placeholder="请选择" class="m-r-15">
+                <el-option
+                  v-for="(item,index) in add_search.jigou_select"
+                  :key="index"
+                  :label="item.title"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+              <el-select v-model="add_search.teacher_id" placeholder="请选择" class="m-r-15">
+                <el-option
+                  v-for="(item,index) in add_search.teacher_select"
+                  :key="index"
+                  :label="item.realname"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </li>
+            <li>
+              <span>课程名称</span>
+              <input type="text" class="inp" v-model="add_search.lesson_name">
+            </li>
+            <li>
+              <span>上架状态</span>
+              <el-select v-model="add_search.status" placeholder="请选择" class="m-r-15">
+                <el-option
+                  v-for="(item,index) in add_search.type_select"
+                  :key="index"
+                  :label="item.tit"
+                  :value="item.num">
+                </el-option>
+              </el-select>
+            </li>
+            <li class="last-li">
+              <span class="btn-search" @click="fun_add_search">搜索</span>
+            </li>
+          </ul>
+          <table>
+            <tr>
+              <th>
+                <img src="/admin/images/promotion/no-choose.png" alt="" class="img-choose" v-show="!all_choose_type"
+                     @click="all_choose(true)">
+                <img src="/admin/images/promotion/choose.png" alt="" class="img-choose" v-show="all_choose_type"
+                     @click="all_choose(false)">
+              </th>
+              <th>序号</th>
+              <th>课程封面</th>
+              <th>视频名称</th>
+              <th>主导讲师</th>
+              <th>单价（学币）</th>
+              <th>销量</th>
+              <th>上架状态</th>
+            </tr>
+            <tbody>
+            <tr v-for="(item,index) in choose_lists" :key="index">
+              <td width="80px">
+                <img src="/admin/images/promotion/no-choose.png" alt="" v-show="!item.isChoose && !item.is_activity"
+                     class="img-choose"
+                     @click="choose_one(index,true,item.id)">
+
+                <img src="/admin/images/promotion/choose.png" alt="" v-show="item.isChoose && !item.is_activity "
+                     class="img-choose"
+                     @click="choose_one(index,false,item.id)">
+                <img src="/admin/images/promotion/disable-choose.png" alt="" class="img-choose"
+                     v-show="item.is_activity">
+              </td>
+              <td width="80px">{{index + 1}}</td>
+              <td width="150px"><img :src="item.cover.value" alt="" width="68px" height="42px"></td>
+              <td width="400px">
+                <p class="name">{{item.course_name}}</p>
+              </td>
+              <td width="150px">{{item.organization_teacher.realname}}</td>
+              <td width="150px">{{item.price}}</td>
+              <td width="150px">{{item.sales}}</td>
+              <td>
+                <span class="col-true" v-show="item.status === 1">已上架</span>
+                <span class="col-false" v-show="item.status === 0">已下架</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <!--分页-->
+          <div class="paging">
+            <el-pagination
+              @size-change="size_change"
+              @current-change="handle_change"
+              :current-page.sync="paging2.currentPage"
+              :page-sizes="paging2.page_sizes"
+              :page-size="paging2.page_size"
+              layout="prev, pager, next, sizes, jumper"
+              :total="paging2.total"
+              :pager-count="5">
+            </el-pagination>
+          </div>
+          <div class="btn-sure" @click="sure_add">确认添加</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import leftNav from '~/components/admin/LeftNav'
+  import '~/static/admin/css/promotion.css'
+  import axios from 'axios'
+
+  export default {
+    layout: 'admin',
+    name: "index",
+    components: {
+      leftNav
+    },
+    data() {
+      return {
+        leftNav: [
+          {
+            name: '最新上架',
+            link: '/admin/promotion',
+            active: true
+          },
+          {
+            name: '精品课程',
+            link: '/admin/promotion/boutique',
+            active: false
+          },
+          {
+            name: '特价课程',
+            link: '/admin/promotion/special',
+            active: false
+          },
+          {
+            name: '积分购',
+            link: '/admin/promotion/integral',
+            active: false
+          },
+          {
+            name: '买一赠一',
+            link: '/admin/promotion/present',
+            active: false
+          },
+          {
+            name: '免费专区',
+            link: '/admin/promotion/free',
+            active: false
+          },
+          {
+            name: '课程赠送文案',
+            link: '/admin/promotion/document',
+            active: false
+          }
+        ],
+        // 全选
+        all_choose_type: false,
+        //  选择课程列表弹窗
+        coveIsShow: false,
+        //已选课程列表
+        already_choose: [],
+        //
+        fullscreenLoading: false
+      }
+    },
+
+    async asyncData({store}) {
+      // 获取课程列表
+      let list_data = {
+        url: '/manage/course_activity/course_new_list',
+        data: {
+          page: 1,
+          psize: 10,
+          first_sort_id: '',
+          second_sort_id: '',
+          course_name: '',
+          teacher_id: '',
+          organization_id: '',
+          status: ''
+        }
+      };
+      let res_list = await store.dispatch("adminHttpGet", list_data);
+
+      // 获取一级课程分类
+      let fir_params = {
+        url: '/manage/manage_course/course_add_sort_list',
+        data: {
+          father_id: 0
+        }
+      };
+      let fir_res = await store.dispatch("adminHttpGet", fir_params);
+      fir_res.data.unshift({id: '', sort_name: '全部'});
+
+      // 获取机构信息
+      let jg = {
+        url: '/manage/manage_course/course_organization_list'
+      };
+      let jg_res = await store.dispatch("adminHttpGet", jg);
+      jg_res.data.unshift({id: '', title: '全部'});
+      console.log('机构', jg_res);
+
+      // 获取选择的视频库列表
+      let video_params = {
+        url: '/manage/manage_course/course_list',
+        data: {
+          first_sort_id: '',
+          second_sort_id: '',
+          course_name: '',
+          teacher_id: '',
+          organization_id: '',
+          status: '',
+          activity_type: '',
+          page: 1,
+          psize: 10,
+        }
+      };
+      let video_res = await store.dispatch("adminHttpGet", video_params);
+      video_res.data.data.forEach(function (val, key) {
+        val.isChoose = false;
+      });
+
+      return {
+        // 课程列表
+        lesson_lists: res_list.data.data,
+
+        // 课程分页
+        paging: {
+          currentPage: 1,  //当前页
+          page_sizes: [10, 20, 30], //每页显示多少条下拉
+          page_size: 10,// 默认显示多少条
+          total: res_list.data.total
+        },
+        // 课程列表搜索
+        search_info: {
+          first_sort_id: '',
+          fir_select: fir_res.data,
+          lesson_name: '',
+          second_sort_id: '',
+          sec_select: [{id: '', sort_name: '全部'}],
+          teacher_id: '',
+          teacher_select: [{id: '', realname: '全部'}],
+          status: '',
+          type_select: [
+            {num: '', tit: '全部'},
+            {num: 1, tit: '已上架'},
+            {num: 0, tit: '已下架'},
+          ],
+          jg_id: '',
+          jigou_select: jg_res.data,
+        },
+        // 新增课程搜索
+        add_search: {
+          first_sort_id: '',
+          fir_select: fir_res.data,
+          lesson_name: '',
+          second_sort_id: '',
+          sec_select: [{id: '', sort_name: '全部'}],
+          teacher_id: '',
+          teacher_select: [{id: '', realname: '全部'}],
+          status: '',
+          type_select: [
+            {num: '', tit: '全部'},
+            {num: 1, tit: '已上架'},
+            {num: 0, tit: '已下架'},
+          ],
+          jg_id: '',
+          jigou_select: jg_res.data,
+        },
+        // 选择视频视频库
+        choose_lists: video_res.data.data,
+        //  选择视频视频库分页
+        paging2: {
+          currentPage: 1,  //当前页
+          page_sizes: [10, 20, 30], //每页显示多少条下拉
+          page_size: 10,// 默认显示多少条
+          total: video_res.data.total
+        },
+      }
+    },
+
+    watch: {
+      // 列表根据一级课程获取二级课程分类
+      'search_info.first_sort_id': async function () {
+        const that = this;
+        that.search_info.second_sort_id = '';
+        if (that.search_info.first_sort_id === '') {
+          that.search_info.sec_select = [{id: '', sort_name: '全部'}]
+        } else {
+          let sec_params = {
+            url: '/manage/manage_course/course_add_sort_list',
+            data: {
+              father_id: that.search_info.first_sort_id
+            }
+          };
+          let sec_res = await that.$store.dispatch("adminHttpGet", sec_params);
+          if (sec_res.data) {
+            sec_res.data.unshift({id: '', sort_name: '全部'});
+            that.search_info.sec_select = sec_res.data
+          } else {
+            that.search_info.sec_select = [{id: '', sort_name: '全部'}]
+          }
+        }
+      },
+      //  根据机构获取机构下面的教师
+      'search_info.jg_id': async function () {
+        const that = this;
+        that.search_info.teacher_id = '';
+        if (that.search_info.jg_id === '') {
+          that.search_info.teacher_select = [{id: '', realname: '全部'}]
+        } else {
+          let tea_params = {
+            url: '/manage/manage_course/course_organization_teacher_list',
+            data: {
+              organization_id: that.search_info.jg_id
+            }
+          };
+          let res = await that.$store.dispatch("adminHttpGet", tea_params);
+          console.log('老师', res);
+          res.data.unshift({id: '', realname: '全部'});
+          that.search_info.teacher_select = res.data
+        }
+      },
+      // 添加课程--一级课程改变二级课程变化
+      'add_search.first_sort_id': async function () {
+        const that = this;
+        that.add_search.second_sort_id = '';
+        if (that.add_search.first_sort_id === '') {
+          that.add_search.sec_select = [{id: '', sort_name: '全部'}]
+        } else {
+          let sec_params = {
+            url: '/manage/manage_course/course_add_sort_list',
+            data: {
+              father_id: that.add_search.first_sort_id
+            }
+          };
+          let sec_res = await that.$store.dispatch("adminHttpGet", sec_params);
+          if (sec_res.data) {
+            sec_res.data.unshift({id: '', sort_name: '全部'});
+            that.add_search.sec_select = sec_res.data
+          } else {
+            that.add_search.sec_select = [{id: '', sort_name: '全部'}]
+          }
+        }
+      },
+      // 添加课程--机构下面的导师
+      'add_search.jg_id': async function () {
+        const that = this;
+        that.add_search.teacher_id = '';
+        if (that.add_search.jg_id === '') {
+          that.add_search.teacher_select = [{id: '', realname: '全部'}]
+        } else {
+          let tea_params = {
+            url: '/manage/manage_course/course_organization_teacher_list',
+            data: {
+              organization_id: that.add_search.jg_id
+            }
+          };
+          let res = await that.$store.dispatch("adminHttpGet", tea_params);
+          console.log('老师', res);
+          res.data.unshift({id: '', realname: '全部'});
+          that.add_search.teacher_select = res.data
+        }
+      },
+    },
+    methods: {
+      //获取信息
+      async get_list() {
+        const that = this;
+        that.fullscreenLoading = true;
+        let params = {
+          url: '/manage/course_activity/course_new_list',
+          data: {
+            page: that.paging.currentPage,
+            psize: that.paging.page_size,
+            first_sort_id: that.search_info.first_sort_id,
+            second_sort_id: that.search_info.second_sort_id,
+            course_name: that.search_info.lesson_name,
+            teacher_id: that.search_info.teacher_id,
+            organization_id: that.search_info.jg_id,
+            status: that.search_info.status
+          }
+        };
+        let res = await that.$store.dispatch("adminHttpGet", params);
+        if (res) {
+          that.fullscreenLoading = false
+        }
+        that.paging.total = res.data.total;
+        that.lesson_lists = res.data.data;
+
+      },
+
+      // 获取视频库信息
+      async get_video_list() {
+        const that = this;
+        that.fullscreenLoading = true;
+        let i = 0;
+        let video_params = {
+          url: '/manage/manage_course/course_list',
+          data: {
+            first_sort_id: that.add_search.first_sort_id,
+            second_sort_id: that.add_search.second_sort_id,
+            course_name: that.add_search.lesson_name,
+            teacher_id: that.add_search.teacher_id,
+            organization_id: that.add_search.jg_id,
+            status: that.add_search.status,
+            activity_type: '',
+            page: that.paging2.currentPage,
+            psize: that.paging2.page_size,
+          }
+        };
+        let video_res = await that.$store.dispatch("adminHttpGet", video_params);
+        if (video_res) {
+          that.fullscreenLoading = false
+        }
+        video_res.data.data.forEach(function (val, key) {
+          val.isChoose = false;
+        });
+        that.already_choose.forEach(function (val, key) {
+          video_res.data.data.forEach(function (vv, kk) {
+            if (val === vv.id) {
+              vv.isChoose = true;
+            }
+          })
+        });
+        video_res.data.data.forEach(function (vv, kk) {
+          if (vv.isChoose && !vv.is_activity) {
+            i += 0
+          } else if (!vv.isChoose && !vv.is_activity) {
+            i += 1
+          }
+        });
+        // 全选
+        if (i === 0) {
+          that.all_choose_type = true
+        } else {
+          that.all_choose_type = false
+        }
+        that.choose_lists = video_res.data.data;
+        that.paging2.total = video_res.data.total;
+      },
+      //  分页
+      handleSizeChange(val) {
+        this.paging.page_size = val;
+        this.get_list()
+      },
+      handleCurrentChange(val) {
+        // 当前页
+        this.paging.currentPage = val;
+        this.get_list()
+      },
+      // 列表搜索
+      list_search() {
+        this.get_list();
+      },
+      fun_add_search() {
+        this.get_video_list()
+      },
+      //  删除
+      detele_one(ind, item) {
+        const that = this
+        console.log(item);
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          axios({
+            method: 'post',
+            url: '/manage/course_activity/course_new_del',
+            baseURL: that.$store.state.admin.baseUrl,
+            headers: {
+              token: that.$store.state.admin.token,
+            },
+            data: {
+              id: item.id,
+              course_id: item.course_id
+            }
+          }).then((res) => {
+            if (res.data.code === 0) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!',
+              });
+              that.get_list();
+            }
+          }).catch((err) => {
+            console.log(err)
+          });
+
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      //  位置移动上
+      up(ind, id) {
+        const that = this;
+        this.lesson_lists.splice(ind, 1, ...that.lesson_lists.splice(ind - 1, 1, that.lesson_lists[ind]));
+        // 接口
+        axios({
+          url: '/manage/course_activity/course_new_up',
+          baseURL: that.$store.state.admin.baseUrl,
+          method: 'post',
+          headers: {
+            token: that.$store.state.admin.token,
+          },
+          data: {
+            id: id
+          }
+        }).then((res) => {
+          if (res.data.code === 0) {
+            this.$message({
+              message: '操作成功!',
+              type: 'success'
+            })
+          }
+        }).catch((err) => {
+          console.log(err);
+        })
+      },
+      //  位置移动下
+      down(ind, id) {
+        const that = this;
+        this.lesson_lists.splice(ind, 1, ...that.lesson_lists.splice(ind + 1, 1, that.lesson_lists[ind]));
+        // 接口
+        axios({
+          url: '/manage/course_activity/course_new_down',
+          baseURL: that.$store.state.admin.baseUrl,
+          method: 'post',
+          headers: {
+            token: that.$store.state.admin.token,
+          },
+          data: {
+            id: id
+          }
+        }).then((res) => {
+          if (res.data.code === 0) {
+            this.$message({
+              message: '操作成功!',
+              type: 'success'
+            })
+          }
+        }).catch((err) => {
+          console.log(err);
+        })
+      },
+      //  分页2
+      size_change(val) {
+        this.paging.page_size = val;
+        this.get_video_list();
+      },
+      handle_change(val) {
+        // 当前页
+        this.paging.currentPage = val;
+        this.get_video_list();
+      },
+      //  全选
+      all_choose(bool) {
+        const that = this;
+        that.all_choose_type = bool;
+        $.each(that.choose_lists, function (key, val) {
+          if (!val.is_activity) {
+            val.isChoose = bool;
+            if (bool) {
+              that.already_choose.push(val.id)
+            } else {
+              that.already_choose.splice(that.already_choose.indexOf(val.id), 1)
+            }
+          }
+        });
+      },
+      //  选择一个
+      choose_one(ind, bool, id) {
+        const that = this;
+        let i = 0;
+        that.choose_lists[ind].isChoose = bool;
+        if (bool) {
+          that.already_choose.push(id);
+        } else {
+          let len = that.already_choose.indexOf(id);
+          that.already_choose.splice(len, 1);
+        }
+        console.log(that.already_choose);
+        $.each(that.choose_lists, function (key, val) {
+          if (!val.isChoose && !val.is_activity) {
+            i++
+          }
+        });
+        if (i === 0) {
+          that.all_choose_type = true
+        } else {
+          that.all_choose_type = false
+        }
+      },
+      //  增加课程
+      cover_show(bool) {
+        this.coveIsShow = bool
+      },
+      //  确认增加
+      sure_add() {
+        const that = this;
+        if (that.already_choose.join(',') === '') {
+          this.$message.error('请选择课程');
+        } else {
+          axios({
+            method: 'post',
+            url: '/manage/course_activity/course_new_add',
+            baseURL: that.$store.state.admin.baseUrl,
+            headers: {
+              token: that.$store.state.admin.token
+            },
+            data: {
+              course_ids: that.already_choose.join(',')
+            }
+          }).then((res) => {
+            console.log(res);
+            if (res.data.code === 0) {
+              that.coveIsShow = false;
+              that.get_list();
+              that.already_choose = [];
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
+        }
+      },
+    },
+    mounted() {
+
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>
