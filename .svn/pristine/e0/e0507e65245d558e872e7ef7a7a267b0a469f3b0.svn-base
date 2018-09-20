@@ -1,0 +1,586 @@
+<!--
+  author：cys
+-->
+<template>
+  <div>
+    <LeftNav :data="lefNav"></LeftNav>
+    <div class="admin-role">
+      <h2>角色管理</h2>
+      <ul class="role-search">
+        <li>
+          <span>角色名称</span>
+          <input type="text" class="inp" v-model="search_info.name">
+        </li>
+        <li>
+          <span>创建时间</span>
+          <el-date-picker
+            v-model="search_info.time"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
+        </li>
+        <li class="last-li">
+          <span class="add" @click="add_role">创建角色</span>
+          <span class="search" @click="search">搜索</span>
+        </li>
+      </ul>
+      <table>
+        <tr>
+          <th width="150px">序号</th>
+          <th width="250px">角色名称</th>
+          <th width="500px">相关人员</th>
+          <th width="250px">最后登录时间</th>
+          <th>操作</th>
+        </tr>
+        <tbody>
+        <tr v-for="(item,index) in role_lists" :key="index">
+          <td>{{index + 1}}</td>
+          <td>{{item.role_name}}</td>
+          <td>
+            <p class="p1">
+              <template v-for="it in item.manage">
+                {{it.username}}
+              </template>
+            </p>
+          </td>
+          <td>{{item.created_at}}</td>
+          <td>
+            <span class="td-edit" @click="user_edit(index)">编辑</span>
+            <span class="td-see" @click="user_see(index)">查看</span>
+            <el-button class="td-delete" type="text" @click="delete_one(item.role_id)">删除</el-button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div class="paging">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="paging.currentPage"
+          :page-sizes="paging.page_sizes"
+          :page-size="paging.page_size"
+          layout="prev, pager, next, sizes, jumper"
+          :total="paging.total"
+          :pager-count="5"
+          v-loading.fullscreen.lock="fullscreenLoading"
+        >
+        </el-pagination>
+      </div>
+
+      <div class="role-cover" v-show="cover_show">
+        <div class="role-con">
+          <span class="close" @click="close_cover">
+            <img src="/admin/images/class/close.png" alt="">
+        </span>
+          <h2>创建角色</h2>
+          <ul class="add-con">
+            <li>
+              <span class="li-left"><label>*</label>角色名称</span>
+              <input type="text" v-model="add_user.name" :disabled="isSee">
+              <label v-show="add_user.name === ''">必填项不能为空</label>
+            </li>
+            <li>
+              <span class="li-left"><label>*</label>角色权限</span>
+              <div class="jurisdiction">
+                <div class="jurisdiction-all">
+                  <div class="jurisdiction-cover" v-show="isSee"></div>
+                  <div class="p1 p" v-for="(item,index) in jurisdiction" :key="index">
+                    <img src="/admin/images/role/no-choose.png" alt="" v-show="!item.isChoose"
+                         @click="choose(true,index)">
+                    <img src="/admin/images/role/choose.png" alt="" v-show="item.isChoose" @click="choose(false,index)">
+                    <span>{{item.privilege_title}}</span>
+                    <div class="p2 p" v-show="item.son" v-for="(it2,ind2) in item.son" :key="ind2">
+                      <img src="/admin/images/role/no-choose.png" alt="" v-show="!it2.isChoose"
+                           @click="choose(true,index,ind2)">
+                      <img src="/admin/images/role/choose.png" alt="" v-show="it2.isChoose"
+                           @click="choose(false,index,ind2)">
+                      <span>{{it2.privilege_title}}</span>
+                      <div class="p3 p" v-show="it2.son" v-for="(it3,ind3) in it2.son" :key="ind3">
+                        <img src="/admin/images/role/no-choose.png" alt="" v-show="!it3.isChoose"
+                             @click="choose(true,index,ind2,ind3)">
+                        <img src="/admin/images/role/choose.png" alt="" v-show="it3.isChoose"
+                             @click="choose(false,index,ind2,ind3)">
+                        <span>{{it3.privilege_title}}</span>
+                        <div class="p4 p" v-show="it3.son" v-for="(it4,ind4) in it3.son" :key="ind4">
+                          <img src="/admin/images/role/no-choose.png" alt="" v-show="!it4.isChoose"
+                               @click="choose(true,index,ind2,ind3,ind4)">
+                          <img src="/admin/images/role/choose.png" alt="" v-show="it4.isChoose"
+                               @click="choose(false,index,ind2,ind3,ind4)">
+                          <span>{{it4.privilege_title}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </li>
+            <li v-show="!isSee">
+              <div class="add-save" @click="add_one">保存</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import LeftNav from '~/components/admin/LeftNav';
+  import '~/static/admin/css/role.css'
+  import axios from 'axios'
+
+  export default {
+    layout: 'admin',
+    name: "role",
+    components: {
+      LeftNav
+    },
+    data() {
+      return {
+        fullscreenLoading: false,
+        lefNav: [
+          {
+            name: '员工账号',
+            link: '/admin/account',
+            active: false
+          }, {
+            name: '角色管理',
+            link: '/admin/role',
+            active: true
+          }, {
+            name: '日志',
+            link: '/admin/log',
+            active: false
+          },
+        ],
+        isSee: false,
+        search_info: {
+          name: '',
+          time: []
+        },
+        cover_show: false,
+
+        // 添加人员
+        add_user: {
+          name: '',
+          //  已经选择的权限
+          isChoose_list: [],
+        }
+      }
+    },
+    // 初始化数据
+    async asyncData({store}) {
+      // 获取数据列表
+      let params = {
+        url: "/manage/acl/role_list",
+        data: {
+          page: 1,
+          psize: 10,
+          role_name: '',
+          start_time: '',
+          end_time: '',
+        }
+      };
+      let res = await store.dispatch("adminHttpGet", params)
+      console.log(res)
+
+      // 获取权限树
+      let params2 = {
+        url: "/manage/acl/privilege_list", data: {
+          token: store.state.admin.token
+        }
+      };
+      let res2 = await store.dispatch("adminHttpGet", params2)
+
+      // 给权限树添加是否选择的效果
+      function add_type(data) {
+        data.forEach(function (val, key) {
+          val.isChoose = false
+          if (val.son) {
+            data = val.son;
+            add_type(data)
+          } else {
+            return
+          }
+        });
+      }
+
+      add_type(res2.data);
+
+
+      return {
+        // 列表
+        role_lists: res.data.data,
+        role_id: '',
+        // 分页
+        paging: {
+          total: res.data.total,
+          currentPage: 1,  //当前页
+          page_sizes: [10, 20, 50], //每页显示多少条下拉
+          page_size: 10,// 默认显示多少条
+        },
+        //  权限树
+        jurisdiction: res2.data,
+      };
+
+    },
+
+    methods: {
+
+      //  分页
+      async _paging() {
+        const that = this
+        that.fullscreenLoading = true
+        let params = {
+          url: "/manage/acl/role_list", data: {
+            page: that.paging.currentPage,
+            psize: that.paging.page_size,
+            role_name: that.search_info.name,
+            start_time: that.search_info.time[0],
+            end_time: that.search_info.time[1],
+          }
+        };
+        let res = await that.$store.dispatch("adminHttpGet", params)
+        console.log(res);
+        if (res) {
+          that.fullscreenLoading = false
+        }
+        that.role_lists = res.data.data
+        that.paging.total = res.data.total
+      },
+      //  上下页
+      handleSizeChange(val) {
+        this.paging.page_size = val;
+        this._paging()
+      },
+      //  每页多少条
+      handleCurrentChange(val) {
+        // 当前页
+        this.paging.currentPage = val;
+        this._paging()
+      },
+      //  搜索
+      search() {
+        this._paging()
+      },
+
+      //选择
+      choose() {
+        const that = this;
+        let ind1 = arguments[1],
+          ind2 = arguments[2],
+          ind3 = arguments[3],
+          ind4 = arguments[4],
+          bool = arguments[0];
+
+        // 子级选择时父级
+        function choose1() {
+          let num = 0;
+          $.each(that.jurisdiction[ind1].son, function (key, val) {
+            if (val.isChoose) {
+              num++
+            } else {
+              num += 0
+            }
+            if (num !== 0) {
+              that.jurisdiction[ind1].isChoose = true
+            }
+          })
+        }
+
+        // 子级选择时父级
+        function choose2() {
+          let num = 0;
+          $.each(that.jurisdiction[ind1].son[ind2].son, function (key, val) {
+            if (val.isChoose) {
+              num++
+            } else {
+              num += 0
+            }
+            if (num !== 0) {
+              that.jurisdiction[ind1].son[ind2].isChoose = true
+            }
+          })
+        }
+
+        // 子级选择时父级
+        function choose3() {
+          let num = 0;
+          $.each(that.jurisdiction[ind1].son[ind2].son[ind3].son, function (key, val) {
+            if (val.isChoose) {
+              num++
+            } else {
+              num += 0
+            }
+            if (num !== 0) {
+              that.jurisdiction[ind1].son[ind2].son[ind3].isChoose = true
+            }
+          })
+        }
+
+        // 父级选择是自己全选
+        switch (arguments.length) {
+          case 2:
+            that.jurisdiction[ind1].isChoose = bool;
+            if (that.jurisdiction[ind1].son) {
+              change(that.jurisdiction[ind1].son, bool);
+            } else {
+              that.jurisdiction[ind1].isChoose = bool
+            }
+            break;
+          case 3:
+            that.jurisdiction[ind1].son[ind2].isChoose = bool;
+            if (that.jurisdiction[ind1].son[ind2].son) {
+              change(that.jurisdiction[ind1].son[ind2].son, bool);
+            } else {
+              that.jurisdiction[ind1].son[ind2].isChoose = bool
+            }
+            choose1();
+            break;
+          case 4:
+            that.jurisdiction[ind1].son[ind2].son[ind3].isChoose = bool;
+            if (that.jurisdiction[ind1].son[ind2].son[ind3].son) {
+              change(that.jurisdiction[ind1].son[ind2].son[ind3].son, bool);
+            } else {
+              that.jurisdiction[ind1].son[ind2].son[ind3].isChoose = bool
+            }
+            choose2();
+            choose1();
+            break;
+          case 5:
+            that.jurisdiction[ind1].son[ind2].son[ind3].son[ind4].isChoose = bool;
+            choose3();
+            choose2();
+            choose1();
+            break;
+        }
+
+        function change(data, type) {
+          data.forEach(function (val, key) {
+            val.isChoose = type;
+            if (val.son) {
+              data = val.son;
+              change(data, type)
+            } else {
+              return
+            }
+          })
+        }
+      },
+      //  关闭弹窗
+      close_cover() {
+        this.cover_show = false
+      },
+      //  创建角色
+      add_role() {
+        const that = this
+        that.cover_show = true;
+        that.role_id = '';
+        that.isSee = false;
+        that.add_user.name = '';
+        init(that.jurisdiction);
+
+
+        function init(data) {
+          $.each(data, function (key, val) {
+            val.isChoose = false
+            if (val.son) {
+              data = val.son;
+              init(data)
+            } else {
+              return
+            }
+          })
+        }
+
+      },
+      //编辑
+      async user_edit(index) {
+        const that = this;
+        // 遮罩
+        that.user_see(index);
+        that.isSee = false;
+        that.role_id = that.role_lists[index].role_id;
+        console.log(that.role_id);
+
+      },
+      //查看
+      async user_see(index) {
+        const that = this;
+        let id = that.role_lists[index].role_id;
+        //初始化
+        that.add_user.isChoose_list = [];
+        that.add_user.name = '';
+
+        // 遮罩
+        that.cover_show = true;
+        // 加载动画
+        that.fullscreenLoading = true
+        // 不可选择
+        that.isSee = true;
+        that.add_user.name = that.role_lists[index].role_name;
+        // 请求
+        let params = {
+          url: '/manage/acl/role_info',
+          data: {
+            role_id: id
+          }
+        };
+        let res = await that.$store.dispatch("adminHttpGet", params);
+        if (res.code === 0) {
+          //关闭加载
+          that.fullscreenLoading = false;
+          //  获取id
+          that.get_id(res.data);
+          that.set_choose(that.jurisdiction)
+        }
+      },
+      // 获取当前用户权限id的方法
+      get_id(data) {
+        const that = this;
+        $.each(data, function (key, val) {
+          if (that.add_user.isChoose_list.indexOf(val.privilege_id) === -1) {
+            that.add_user.isChoose_list.push(val.privilege_id)
+          }
+          if (val.son) {
+            data = val.son
+            that.get_id(data)
+          } else {
+            return
+          }
+        })
+      },
+      // 查看，编辑给已有状态添加选择效果
+      set_choose(data) {
+        const that = this;
+        $.each(data, function (key, val) {
+          if (that.add_user.isChoose_list.indexOf(val.privilege_id) !== -1) {
+            val.isChoose = true
+          } else {
+            val.isChoose = false
+          }
+
+          if (val.son) {
+            data = val.son;
+            that.set_choose(data)
+          } else {
+            return
+          }
+
+        })
+      },
+
+      // 删除一个
+      delete_one(id) {
+        const that = this
+        const h = this.$createElement;
+        this.$msgbox({
+          title: '提示',
+          message: h('p', null, [
+            h('span', null, '确定删除此条信息么? '),
+          ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          beforeClose: (action, instance, done) => {
+            done();
+          }
+        }).then(async action => {
+          let res = await that.post_axios('/manage/acl/role_del', {
+            role_id: id
+          });
+          if (res.data.code === 0) {
+            that._paging()
+          }
+        });
+      },
+
+      //  保存添加的人员
+      add_one() {
+        const that = this;
+        // 初始化
+        that.add_user.isChoose_list = [];
+        // 选择已勾选的
+        find_type(that.jurisdiction);
+        if (that.add_user.isChoose_list !== [] && that.add_user.name !== '') {
+          // 发送请求
+          axios({
+            url: that.$store.state.admin.baseUrl + '/manage/acl/role_add',
+            method: 'post',
+            headers: {token: that.$store.state.admin.token},
+            data: {
+              role_id: that.role_id,
+              role_name: that.add_user.name,
+              role_status: 1,
+              privilege_id: that.add_user.isChoose_list.join(',')
+            }
+          }).then(function (res) {
+            console.log(res.data);
+            if (res.data.code === 0) {
+              that.$message({
+                message: '保存成功!',
+                type: 'success'
+              });
+              // 添加完成之后 初始化
+              that.cover_show = false;
+              that.add_user.name = '';
+              that.add_user.isChoose_list = [];
+              that.paging.currentPage = 1;
+              that.paging.page_size = 10;
+              that._paging()
+            } else {
+              that.$message.error(res.data.message);
+            }
+          }).catch((error) => {
+            console.log(error)
+          })
+        }
+
+        function find_type(data) {
+          $.each(data, function (key, val) {
+            if (val.isChoose) {
+              if (that.add_user.isChoose_list.indexOf(val.privilege_id) === -1) {
+                that.add_user.isChoose_list.push(val.privilege_id)
+              }
+            }
+            if (val.son) {
+              data = val.son;
+              find_type(data)
+            }
+          })
+        }
+
+      },
+      //  请求
+      async post_axios(url, data) {
+        const that = this;
+        return axios({
+          url: that.$store.state.admin.baseUrl + url,
+          method: 'post',
+          headers: {token: that.$store.state.admin.token},
+          data: data
+        }).then((res) => {
+          return res
+        }).catch((error) => {
+          return error
+        })
+      }
+
+    },
+
+    mounted() {
+
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

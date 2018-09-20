@@ -1,0 +1,500 @@
+<template>
+  <div class="class-list">
+    <topBg src="/images/test.png"></topBg>
+    <localRoute :route="route_data"></localRoute>
+    <!--分类-->
+    <ul class="class-condition">
+      <li>
+        <span class="li-tit">课程分类：</span>
+        <span class="li-choose-all" @click="choose_class('全部')" :class="{active:all_choose_type}">全部</span>
+        <span class="li-choose" :class="{active:item.type}" v-for="(item,index) in class_list"
+              @click="choose_class(item.con,index)" :key="index">{{item.con}}</span>
+      </li>
+      <li>
+        <span class="li-tit">优惠活动：</span>
+        <span class="li-choose-all" @click="choose_discounts('全部')" :class="{active:all_discounts_type}">全部</span>
+        <span class="li-choose" :class="{active:item.type}" v-for="(item,index) in discounts_list"
+              @click="choose_discounts(item.con,index)" :key="index">{{item.con}}</span>
+      </li>
+      <li>
+        <span class="li-tit">培训费用：</span>
+        <span class="li-choose-all" @click="choose_price('全部')" :class="{active:all_price_type}">全部</span>
+        <span class="li-choose" :class="{active:item.type}" v-for="(item,index) in price_list"
+              @click="choose_price(item.con,index)" :key="index">{{item.con}}</span>
+      </li>
+    </ul>
+    <DetailList :lesson_list="lesson_list"></DetailList>
+  </div>
+</template>
+
+<script>
+  import topBg from '@/components/topBg'
+  import localRoute from '@/components/localRoute'
+  import DetailList from './list-list'
+
+  export default {
+    name: 'list',
+    components: {
+      DetailList,
+      topBg,
+      localRoute
+    },
+    data() {
+      return {
+        type: 1,
+        route_data: [{name: '享学科技网', path: '/'}, {name: '课程分类', path: '/class/list'}],
+        // 现在位置
+        now_class_list: '全部',
+        // 全选
+        all_choose_type: true,
+        // 条件筛选课程分类
+        class_list: [
+          {con: '领导力学习', type: false},
+          {con: '内训师', type: false},
+          {con: '绩效改进', type: false},
+          {con: '企业管理', type: false},
+          {con: '公开课', type: false},
+          {con: '企业内训TDF', type: false}
+        ],
+        // 条件筛选活动
+        discounts_list: [
+          {con: '限时免费', type: false},
+          {con: '买一赠一', type: false},
+          {con: '特价课程', type: false},
+          {con: '最新课程', type: false},
+          {con: '积分购', type: false}
+        ],
+        // 条件筛选价格
+        price_list: [
+          {con: '100以下', type: false},
+          {con: '100-300', type: false},
+          {con: '300-500', type: false},
+          {con: '500-1000', type: false},
+          {con: '1000以上', type: false}
+        ],
+        // 课程详细列表
+        lesson_list: [
+          {
+            id: 1,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          },
+          {
+            id: 2,
+            cover: '/images/class/class-cover.png',
+            tit: '中国培训行业发展趋势解读',
+            teacher: '崔连斌',
+            position: '留美人力资源开发博士',
+            num: '6课时',
+            time: '1.6小时',
+            now_price: 299,
+            old_price: 599,
+            src: 'javascript:;'
+          }
+        ],
+        // 分页信息
+        paging_info: {
+          total: 5, // 总数
+          page_size: 1, // 每页显示条目个数  和total配合使用
+          current_page: 1 // 当前页
+        },
+        // 活动全选
+        all_discounts_type: true,
+        // 价格全选
+        all_price_type: true
+      }
+    },
+    // 初始化数组
+    async asyncData({store}) {
+
+    },
+    methods: {
+      choose_now_list: function (val) {
+        this.now_class_list = val
+      },
+      // all_choose_change(data) {
+      //   this.all_choose_type = data
+      //   console.log(data);
+      // },
+
+      // 课程分类选择条件
+      choose_class(val, index) {
+        const that = this;
+        const {choose_now_list, class_list} = this;
+        // 当前课程
+        choose_now_list(val);
+        // 添加选择之后的效果
+        if (val === "全部") {
+          that.$emit('all_choose_type', true);
+          class_list.forEach(function (v, key) {
+            v.type = false;
+          });
+        } else {
+          that.$emit('all_choose_type', false);
+
+          class_list.forEach(function (v, key) {
+            if (key === index) {
+              v.type = true;
+            } else {
+              v.type = false;
+            }
+          });
+        }
+      },
+
+      // 价格选择条件
+      choose_price(val, index) {
+        const that = this;
+        const {price_list} = this;
+        // 添加选择之后的效果
+        if (val === "全部") {
+          price_list.forEach(function (v, key) {
+            v.type = false;
+            that.all_price_type = true;
+          });
+        } else {
+          that.all_price_type = false;
+          price_list.forEach(function (v, key) {
+            if (key === index) {
+              v.type = true;
+            } else {
+              v.type = false;
+            }
+          });
+        }
+      },
+
+      // 优惠活动选择条件
+      choose_discounts(val, index) {
+        const that = this;
+        const {discounts_list} = this;
+        // 添加选择之后的效果
+        if (val === "全部") {
+          discounts_list.forEach(function (v, key) {
+            v.type = false;
+            that.all_discounts_type = true;
+          });
+        } else {
+          that.all_discounts_type = false;
+          discounts_list.forEach(function (v, key) {
+            if (key === index) {
+              v.type = true;
+            } else {
+              v.type = false;
+            }
+          });
+        }
+      },
+    },
+    mounted() {
+      const that = this;
+      that.type = this.$route.query.type;
+      if (that.type === 1) {
+        that.now_class_list = '全部'
+      } else {
+        this.all_choose_type = false;
+        $.each(that.class_list, function (key, val) {
+          if (key === that.type - 2) {
+            that.now_class_list = val.con;
+            val.type = true
+          } else {
+            val.type = false
+          }
+        })
+      }
+      console.log(that.now_class_list)
+    }
+
+  }
+</script>
+
+<style scoped>
+  .class-list {
+    width: 1250px;
+    margin: 0 auto;
+  }
+
+  .class-condition {
+    width: 1200px;
+    height: auto;
+    border: 1px solid #dcdcdc;
+    padding: 0;
+  }
+
+  .class-condition li {
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid #dcdcdc;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    padding: 0 45px;
+  }
+
+  .class-condition li:last-child {
+    border-bottom: none;
+  }
+
+  li .li-tit {
+    font-size: 15px;
+    color: #333;
+    font-weight: bold;
+  }
+
+  li .li-choose-all {
+    display: inline-block;
+    border: 1px solid #ff6900;
+    padding: 3px 5px;
+    font-size: 15px;
+    color: #ff6900;
+    line-height: 15px;
+    margin-right: 25px;
+    cursor: pointer;
+  }
+
+  li .li-choose {
+    display: inline-block;
+    font-size: 15px;
+    color: #666;
+    padding: 5px 8px;
+    line-height: 15px;
+    background: #fff;
+    cursor: pointer;
+    margin-right: 25px;
+  }
+
+  li .li-choose:hover {
+    background: #ff6900;
+    color: #fff;
+  }
+
+  li .active {
+    background: #ff6900;
+    color: #fff;
+  }
+</style>

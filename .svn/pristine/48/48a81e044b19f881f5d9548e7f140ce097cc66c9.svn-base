@@ -1,0 +1,320 @@
+<template>
+ 
+   <div class="app_index_setting">
+     <div class="admin_setting_title">
+       <div class="title">
+          导航配置
+       </div>
+   
+       <div class="btn"   v-on:click="addM" style="display: none">
+          <img  src="/admin/images/app_index_add.png" /> <span v-if="row==1">添加</span><span v-else>取消</span>第二行
+       </div>
+     </div>
+
+    
+     <div class="banner_info" v-for="(item, index) in sortNavInfo" :key="index">
+         <div class="thumb" v-on:click="setThumbIndex(index)">
+           <el-upload
+            class="avatar-uploader-nav"
+            :action="$store.state.admin.fileAddUrl"
+            :headers="{token:$store.state.admin.token}"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload" >
+            <img v-if="item.image.value" :src="item.image.value" class="avatar">
+            <img src="/admin/images/app_setBanner_01.png" v-else  />
+          </el-upload>
+ 
+            <p>尺寸 500x800</p>
+         </div>
+         <div class="banner_info_r">
+         <div class="info_more">
+            <span class="label">标题</span> 
+            <div class="in_sel">
+            <el-input v-model="item.title" placeholder="请输入内容"></el-input>
+            </div>
+          <span class="label">链接</span> 
+            <div class="in_sel in_hasel">
+             <el-select v-model="item.link_type"  placeholder="请选择" @visible-change="getTypeVal(item,$event)">
+                <el-option-group
+                  v-for="group in typeInfo"
+                  :key="group.name"
+                  :label="group.name">
+                  <el-option
+                    v-for="item in group.type"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                  </el-option>
+                </el-option-group>
+              </el-select>
+              <el-input v-model="item.link"   placeholder="请输入内容" v-if="item.link_type == 11 || item.link_type == 12"></el-input>
+              <el-input v-model="item.info" :disabled="true" placeholder="请输入内容" v-else></el-input>
+           </div>
+          
+         </div>
+         <div class="banner_sort">
+           <img src="/admin/images/app_index_up.png" v-on:click="setSortUp(index)" v-if="index!=0"  /> 
+           <img src="/admin/images/app_index_down.png" v-on:click="setSortDown(index)" v-if="indexInfo.navInfo.length!=(index+1)" /> 
+         </div>
+         </div>
+   
+     </div> 
+
+    <div class="app_index_setting_btn">
+         <span v-on:click="back()" class="back">返回</span> 
+        <span v-on:click='submit()'>保存</span>
+    </div>
+
+
+         <el-dialog title="选择导师" :visible.sync="dialogTchVisible" width="70%">
+          <selectTch 
+          v-on:editSuccess="editSuccess"/>
+      </el-dialog>
+      <el-dialog title="选择训练营" :visible.sync="dialogTrainingVisible" width="70%">
+          <selectTraining 
+          v-on:editSuccess="editSuccess"/>
+      </el-dialog>
+      <el-dialog title="选择课程" :visible.sync="dialogClassVisible" width="70%">
+          <selectClass 
+          :dialogClassVisible = "dialogClassVisible"
+          v-on:editSuccess="editSuccess"/>
+      </el-dialog>
+
+   </div>
+
+
+ 
+</template>
+
+<script>
+import Vue from 'vue';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+import AppPreview from '~/components/admin/AppPreview'
+import selectTch from '~/components/admin/app/selectTch' 
+import selectTraining from '~/components/admin/app/selectTraining'
+import selectClass from '~/components/admin/app/selectClass'  
+ 
+export default {
+  layout: 'admin',
+  components: {
+    AppPreview,
+    selectTch,
+    selectTraining,
+    selectClass
+  },
+  name: 'admin_body',
+  props: ['indexInfo','indexInfoBack'],
+  data () {
+    return {
+      options: [{
+          value: 1,
+          label: 'WAP活动页地址'
+        }, {
+          value: 2,
+          label: '自定义外链'
+        } ],
+        value: '',
+        imageUrl:'',
+        thumbIndex:'',
+        row:1,
+        dialogTchVisible:false,
+      dialogTrainingVisible:false,
+      dialogClassVisible:false
+      
+    }
+  },
+   async asyncData({store}){
+ 
+      let params2 = {url: "/manage/app_banner/link_type",data:{}}
+      let type  = await store.dispatch("adminHttpGet",params2);
+     
+      return {
+        typeInfo:type.data
+      }
+  },
+
+  methods: {
+    back(){
+      this.$set(this.indexInfo,"navInfo",JSON.parse(JSON.stringify(this.indexInfoBack.navInfo)))
+      this.$router.push({name:'admin-app-index'})
+    },
+    addM:function() {
+       this.indexInfo.navInfo.splice(5, 5);
+       this.row=1
+    
+     },
+     async submit(){
+        var submitInfo = JSON.parse(JSON.stringify(this.indexInfo.navInfo))
+
+        var vis = false
+        for(var i in submitInfo) {
+           if(submitInfo[i].image === "" || submitInfo[i].link_type ==="" || submitInfo[i].title === "") {
+              vis = true
+           }
+        }
+        if(vis) {
+          this.$message.error('所有导航信息不能为空');
+          return false
+        }
+        for(var i in submitInfo) {
+          this.$set(submitInfo[i],"image",submitInfo[i].image.name)
+        }
+        console.log(this.indexInfo.navInfo)
+
+        let params = {url: "/manage/app_category_navigate/add",data:{data:JSON.stringify(submitInfo.reverse()),row:1}}
+        let res  = await this.$store.dispatch("adminHttpPost",params);
+        if(res.code==0) {
+          this.$message({
+          message: '保存成功',
+          type: 'success'
+        });
+        }
+        else{
+           this.$message.error('保存失败');
+        }
+     },
+     
+    sortByKey: function(array, key) { //(数组、排序的列)
+      return array.sort(function(a, b) {
+        var x = a[key];
+        var y = b[key];
+        return ((x < y) ? 1 : ((x > y) ? -1 : 0));
+      })
+    },
+    setSortUp:function(index){
+      let t = JSON.parse(JSON.stringify(this.indexInfo.navInfo[index].order_num));
+      this.$set(this.indexInfo.navInfo[index],'order_num',JSON.parse(JSON.stringify(this.indexInfo.navInfo[index-1].order_num)))
+      this.$set(this.indexInfo.navInfo[index-1],'order_num',JSON.parse(JSON.stringify(t)))
+  
+    },
+    setSortDown:function(index){
+      let t = this.indexInfo.navInfo[index].order_num;
+      this.indexInfo.navInfo[index].order_num = this.indexInfo.navInfo[index+1].order_num;
+      this.indexInfo.navInfo[index+1].order_num = t;
+    },
+    save:function() {
+      console.log(this.indexInfo.navInfo)
+    },
+    setThumbIndex:function(index) {
+      this.thumbIndex = index;
+    },
+    handleAvatarSuccess(res, file,fileList) {
+      this.$set(this.indexInfo.navInfo[this.thumbIndex].image,"name",file.response.data.filename)
+      this.$set(this.indexInfo.navInfo[this.thumbIndex].image,"value",file.response.data.file_url)
+ 
+    },
+    beforeAvatarUpload(file) {
+       
+    },
+    getTypeVal(banner,event){
+      if(event==true || banner.link_type === "") {
+        return false
+      }
+ 
+      
+      banner.isDis = true
+      this.selected = banner
+      if(banner.link_type == 11 || banner.link_type == 12 ) {
+        banner.isDis = false
+ 
+      }
+      else if(banner.link_type == 21){
+        this.dialogTchVisible = true
+        this.$set(banner,'info','请选择导师')
+        banner.info = "请选择导师"
+      }
+      else if(banner.link_type == 22){
+        banner.link = ""
+        this.$set(banner,'info','全部导师列表')
+      }
+      else if(banner.link_type == 31){
+        this.dialogTrainingVisible = true
+        this.$set(banner,'info','请选择训练营')
+ 
+      }
+      else if(banner.link_type == 32){
+        banner.link = ""
+        this.$set(banner,'info','全部训练营')
+ 
+      }
+      else if(banner.link_type == 41){
+        this.dialogClassVisible = true
+        this.$set(banner,'info','请选择课程')
+ 
+      }
+      else if(banner.link_type == 42){
+        banner.link = ""
+        this.$set(banner,'info','全部课程列表')
+ 
+      }
+      else {
+         banner.link = ""
+         let obj = {};
+         obj = this.typeInfo[3].type.find((item)=>{    
+            return item.id === banner.link_type;//比如：选项2
+         });
+         this.$set(banner,'info',obj.name)
+  
+      }
+ 
+    },
+    editSuccess:function(res){
+       eval(this[res.action])(res) 
+    },
+    getTch(res) {
+      this.dialogTchVisible = res.visible
+      this.selected.info = res.info.realname
+      this.selected.link = res.info.id
+      console.log(res)
+    },
+    getClass(res) {
+      this.dialogClassVisible = res.visible
+      this.selected.info = res.info.course_name
+      this.selected.link = res.info.id
+      console.log(res)
+    },
+    getTraining(res) {
+      this.dialogTrainingVisible = res.visible
+      this.selected.info = res.info.training_name
+      this.selected.link = res.info.id
+      console.log(res)
+    },
+  
+
+ 
+  },
+  computed:{
+    sortNavInfo:function(){
+       return this.sortByKey(this.indexInfo.navInfo,'order_num');
+    }
+  },
+  mounted () {
+     console.log(this.indexInfo.navInfo)
+     for (var i = 0; i < this.indexInfo.navInfo.length; i++) {
+
+
+          var type = this.indexInfo.navInfo[i].link_type
+          if(type == 21) {
+            this.indexInfo.navInfo[i].info = this.indexInfo.navInfo[i].info.realname;
+          }
+          else if(type == 41) {
+            this.indexInfo.navInfo[i].info = this.indexInfo.navInfo[i].info.course_name;
+          }
+          else if(type == 31){
+            this.indexInfo.navInfo[i].info = this.indexInfo.navInfo[i].info.training_name;
+          }
+          else {
+
+          }
+     }
+      
+  }
+}
+</script>
+
+<style src>
+  
+</style>

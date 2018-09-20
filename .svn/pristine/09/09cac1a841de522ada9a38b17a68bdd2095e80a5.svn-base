@@ -1,0 +1,273 @@
+<template>
+<div class="app_update">
+   <div class="app_update_setting">
+     <div class="app_update_title">
+       <div class="title">
+          案例
+       </div> 
+        <div class="btn" data-toggle="modal" data-target="#myModal" v-on:click="add">
+          <img  src="/admin/images/app_index_add.png" /> 添加案例
+       </div>
+     </div>
+      
+    <div class="case_table">
+         <div class="row">
+           
+            <div class="col-md-3 " v-for="(vo, index) in updateInfo" :key="index">
+              <div class="case_list">
+                <img :src="vo.organization_big_logo.value"/> 
+                <div class="op">
+                  <span v-on:click="delStar(vo.id)" v-if="vo.is_star"><img src="/admin/images/base_is_star1.png" ></span>
+                  <span v-on:click="addStar(vo.id)"  v-else> <img src="/admin/images/base_is_star0.png" ></span>
+                  <img src="/admin/images/base_edit.png" v-on:click="edit(vo.id)">
+                  <img src="/admin/images/base_del.png" v-on:click="del(vo.id)">
+                </div>
+              </div>
+              <div class="case_title">{{vo.title}} {{vo.is_star}}</div>
+            </div>
+ 
+        </div>    
+    </div>
+    <div class="page">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage"
+      :page-sizes="pageInfo.pageSizes"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total">
+    </el-pagination>
+    </div>
+   </div>
+ 
+
+<el-dialog :title="(saveAction=='edit'?'编辑':'添加')+'案例'" :visible.sync="dialogFormVisible">
+    <caseEdit 
+    :addInfo="addInfo" 
+    :formData="formData" 
+    :extFormData="extFormData" 
+    :addInfoMore="addInfoMore" 
+    :addInfoSamllThumb="addInfoSamllThumb"
+    :addInfoBigThumb="addInfoBigThumb"
+    v-on:editSuccess="editSuccess"/>
+</el-dialog>
+
+ 
+
+ 
+
+
+
+</div>
+</template>
+
+<script>
+import caseEdit from '~/components/admin/orgAndTch/caseEdit';
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  components: {
+      caseEdit
+    },
+  data () {
+    return {
+      tableHead:[
+         {title:"机构logo",field:"logo",width:"8%"},
+         {title:"机构名称",field:"name",width:"8%"},
+         {title:"机构账号",field:"accountNum",width:"8%"},
+         {title:"注入时间",field:"addtime",width:"8%"},
+         {title:"拥有导师数",field:"hasTch",width:"8%"},
+         {title:"拥有课程数",field:"HasClass",width:"8%"},
+         {title:"账号状态",field:"status",width:"8%"},
+      ],
+      formData:[
+         {title:"案例名称",field:"name",fieldType:"Input"},
+         {title:"企业logo （小图） ",field:"samllLogo",fieldType:"UploadImg"},
+         {title:"企业logo （大图） ",field:"bigLogo",fieldType:"UploadImg"},
+         {title:"案例概述",field:"info",fieldType:"Input"},
+      ],
+      extFormData:[{title:"标题",field:"title",fieldType:"Input"}, {title:"内容",field:"content",fieldType:"Input"}],
+      sortTableHead:[],
+      addInfo:{},
+      addInfoMore:[{title:"",content:""}],
+      addInfoSamllThumb:"",
+      addInfoBigThumb:"",
+ 
+      status:[{id:"0",name:"全部"},{id:"1",name:"正常"},{id:"2",name:"否"}],
+      feedBackType:[{id:"0",name:"全部"},{id:"1",name:"软件出错"},{id:"2",name:"账号申诉"}],
+      pageInfo:{
+        total:400,
+        pageSizes:[10, 20, 30, 400],
+        pageSize:10,
+        currentPage:1
+      },
+      searchFilter:{tel:"",status:"1",type:"1",time1:'',time2:''},    
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+      saveAction:"",
+      choose:null
+    }
+  },
+  async asyncData({store}){
+      let params = {url: "/manage/organization_cases/list",data:{page:1,psize:10}}
+      let res  = await store.dispatch("adminHttpGet",params);
+      return {
+        updateInfo: res.data.data,
+        pageInfo:{
+          total:res.data.total,
+          pageSizes:[10, 20, 30, 400],
+          pageSize:10,
+          currentPage:parseInt(res.data.page),
+        },
+      }
+  },
+  created () {
+  
+  },
+  methods: {
+ 
+    add:function(){
+        this.addInfo = {organization_small_logo:{},organization_big_logo:{},cases_content_picture:{}}
+        this.addInfoMore = [{title:"",content:""}];
+        this.addInfo.content = this.addInfoMore
+        this.saveAction = "add"
+        this.dialogFormVisible = true
+     },
+     async edit(id) {
+       console.log(id)
+        let params = {url: "/manage/organization_cases/show",data:{ids:id}}
+        let res  = await this.$store.dispatch("adminHttpGet",params);
+        console.log(res)
+        this.addInfo = res.data[0]
+        this.$set(this.addInfo,'content',this.addInfo.case_content)
+  
+
+
+        this.addInfoMore = this.addInfo.case_content
+        this.dialogFormVisible = true;
+     },
+     async del(id) {
+        let params = {url: "/manage/organization_cases/del",data:{id:id}}
+        let res  = await this.$store.dispatch("adminHttpPost",params);
+        this.setData()
+     },
+     async addStar(id) {
+        console.log(id)
+        let params = {url: "/manage/organization_cases/add_star",data:{id:id}}
+        let res  = await this.$store.dispatch("adminHttpPost",params);
+        this.setData()
+     },
+     async delStar(id) {
+      console.log(id)
+        let params = {url: "/manage/organization_cases/del_star",data:{id:id}}
+        let res  = await this.$store.dispatch("adminHttpPost",params);
+        this.setData()
+     },
+     async editSuccess(res) {
+          
+          this.dialogFormVisible = res.visible;
+          if(res.btnAaction == 'save') {
+            var submitInfo = JSON.parse(JSON.stringify(this.addInfo))
+            delete submitInfo.case_content
+            delete submitInfo.organization_cases_content
+            delete submitInfo.updated_at
+            delete submitInfo.case_content
+            submitInfo.content = []
+            
+
+            console.log(submitInfo.content)
+            for(var i in this.addInfo.content) {
+              submitInfo.content.push({})
+              this.$set(submitInfo.content[i],'title',this.addInfo.content[i].title)
+              this.$set(submitInfo.content[i],'content',this.addInfo.content[i].content)
+            }
+           
+            
+
+
+            this.$set(submitInfo,'content',JSON.stringify(submitInfo.content))
+            this.$set(submitInfo,'organization_small_logo',submitInfo.organization_small_logo.name)
+            this.$set(submitInfo,'organization_big_logo',submitInfo.organization_big_logo.name)
+            this.$set(submitInfo,'cases_content_picture',submitInfo.cases_content_picture.name)
+ 
+            let params = {url: "/manage/organization_cases/add",data:submitInfo}
+            let res  = await this.$store.dispatch("adminHttpPost",params);
+            if(res.code == 0) {
+              this.$message({message: '保存成功',type: 'success'});
+              this.setData()  
+
+            }
+            else {
+              this.$message.error('保存失败');
+            }
+            
+          }
+     
+     },
+ 
+     
+    handleSizeChange(val) {
+      this.pageInfo.pageSize = val;
+      this.setData();
+    },
+    handleCurrentChange(val) {
+      this.pageInfo.currentPage = val;
+      this.setData()
+    },
+    sortByKey: function(array, key) { //(数组、排序的列)
+      return array.sort(function(a, b) {
+        var x = a[key];
+        var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      })
+
+    }, 
+    handleAvatarSuccess(res, file,fileList) {
+      this.addInfo.logo = URL.createObjectURL(file.raw); 
+    },
+    async setData() {
+      this.searchFilter.page = this.pageInfo.currentPage;
+      this.searchFilter.psize = this.pageInfo.pageSize;
+      let params = {url: "/manage/organization_cases/list",data:this.searchFilter}
+      let res  = await this.$store.dispatch("adminHttpGet",params);
+      this.pageInfo.page = parseInt(res.data.page);
+      this.pageInfo.total = res.data.total;
+      this.updateInfo = res.data.data   
+    }
+
+ 
+  },
+  computed:{
+  
+  },
+  mounted () {
+     console.log(this.updateInfo)
+
+
+     
+  },
+  head () {
+    return {
+      title: "案例",
+      meta: [{
+        hid: 'description',
+        name: 'description',
+        content: "123"
+      }],
+      link: [
+          {
+            href: '/admin/css/cropper.min.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+        ],
+        script: [
+          {src: '/admin/js/cropper.min.js'},
+        ]
+    }
+  }
+}
+</script>
+

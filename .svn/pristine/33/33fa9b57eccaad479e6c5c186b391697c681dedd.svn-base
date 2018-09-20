@@ -1,0 +1,282 @@
+<template>
+<div class="app_update">
+   <div class="app_update_setting">
+     <div class="app_update_title">
+       <div class="title">
+          充值订单
+       </div>
+     </div>
+     <div class="searchFilter">
+        <el-form :inline="true" :model="searchFilter" class="demo-form-inline">
+          <el-form-item label="订单编号" label-width="80px">
+            <el-input v-model="searchFilter.order_number" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="账号" label-width="80px">
+            <el-input v-model="searchFilter.mobile" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="入驻日期" label-width="80px">
+            <el-date-picker
+      v-model="searchFilter.start_in_time"
+      type="date"
+      value-format = "yyyy-MM-dd 00:00:00"
+      placeholder="选择日期">
+          </el-date-picker> -
+          <el-date-picker
+      v-model="searchFilter.end_in_time"
+      type="date"
+      value-format = "yyyy-MM-dd 23:59:59"
+      placeholder="选择日期">
+          </el-date-picker>
+          </el-form-item>
+
+          <el-form-item label="企业名称" label-width="80px">
+            <el-input v-model="searchFilter.orderId" auto-complete="off"></el-input>
+          </el-form-item>
+
+
+      <el-form-item class="fRight">
+          <el-button   @click="exportTable()" class="btn_create">导出EXCEL</el-button>
+          <el-button   @click="search()" class="btn_search">搜索</el-button>
+    
+      </el-form-item>
+
+        </el-form>
+
+       
+     </div>
+     <div class="table-responsive">
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="8%">序号</th>
+          <th v-for="(item, index) in tableHead" :key="index" :width="item.width">{{item.title}}</th>
+          <th width="20%">操作</th>
+        </tr>
+        <tr v-for="(vo, index) in sortUpdateInfo" :key="index">
+          <td>{{index+1}}</td>
+          <td v-for="(item, index) in tableHead" :key="index">{{vo[item.field]}}</td>
+          <td style="text-align: left">
+             <span class="btn_see" v-on:click="see(index)">查看</span>
+             <span class="btn_setting" v-on:click="editPrice(index)">修改价格</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="page">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage"
+      :page-sizes="pageInfo.pageSizes"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total">
+    </el-pagination>
+    </div>
+   </div>
+
+
+ 
+
+
+<el-dialog  :visible.sync="dialogTableVisible" class='order_see'>
+  <div class="order_dialog_left">
+     <div class="base_title">
+         <div class="title">
+            企业信息
+         </div>  
+       </div>
+    <el-form :model="addInfo">
+      <el-form-item :label="item.title" :label-width="formLabelWidth" v-for="(item, index) in tableHead" :key="index">
+           {{addInfo[item.field]}}
+      </el-form-item>
+    </el-form>
+    <div class="base_title">
+         <div class="title">
+            订单信息
+         </div>  
+       </div>
+  </div>
+  <div class="order_dialog_right">
+     <div class="base_title">
+         <div class="title">
+            开票信息
+         </div>  
+       </div>
+    <el-form :model="addInfo">
+      <el-form-item :label="item.title" :label-width="formLabelWidth" v-for="(item, index) in tableHead" :key="index">
+           {{addInfo[item.field]}}
+      </el-form-item>
+    </el-form>
+     <div class="base_title">
+         <div class="title">
+            课程信息
+         </div>  
+       </div>
+ 
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="8%">序号</th>
+          <th width="20%">123</th>
+          <th width="20%">操作</th>
+        </tr>
+        <tr>
+          <td>{{index+1}}</td>
+          <td>123</td>
+          <td >112233</td>
+        </tr>
+        </tbody>
+      </table>
+
+  </div>
+  <div class="clr"></div>
+</el-dialog>
+ 
+
+
+
+</div>
+</template>
+<style>
+.el-dialog__header {display:none}
+</style>
+
+<script>
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  data () {
+    return {
+      tableHead:[
+         {title:"订单编号",field:"oderId",width:"10%"},
+         {title:"账号",field:"acc",width:"12%"},
+         {title:"企业名称",field:"companyName",width:"12%"},
+         {title:"下单时间",field:"addtime",width:"10%"},
+         {title:"订单金额（元）",field:"price",width:"10%"},
+         {title:"合同金额（元）",field:"cPrice",width:"10%"},
+         {title:"订单状态",field:"status",width:"10%"},
+      ],
+      formData:[
+         {title:"*导师姓名",field:"name",fieldType:"Input",init:""},
+         {title:"*导师头衔",field:"title",fieldType:"Password",init:""},
+         {title:"导师英文名",field:"enName",fieldType:"Input",init:""},
+         {title:"*所属机构",field:"atOrg",fieldType:"Select",selectData:[{id:1,title:"正常"},{id:2,title:"冻结"}],init:1},
+         {title:"*导师状态",field:"status",fieldType:"Select",selectData:[{id:1,title:"正常"},{id:2,title:"冻结"}],init:1},
+         {title:"*导师小图",field:"samllThumb",fieldType:"UploadImg",init:""},
+         {title:"*导师大图",field:"bigThumb",fieldType:"UploadImg",init:""},
+         {title:"*导师标签",field:"tag",fieldType:"Input",init:""},
+         {title:"*导师简介",field:"info",fieldType:"Input",init:""},
+         {title:"*导师擅长领域",field:"atField",fieldType:"Input",init:""},
+         {title:"*授课风格",field:"style",fieldType:"Input",init:""},
+         {title:"*导师详情--APP端",field:"contentApp",fieldType:"editor",init:""},
+         {title:"*导师详情--PC端",field:"contentPC",fieldType:"editor",init:""},
+         {title:"*参与项目",field:"item",fieldType:"Input",init:""},
+      ],
+  
+      sortTableHead:[],
+      addInfo:{},
+      updateInfo: [
+        {id:"1",oderId:"123",acc:"Android",companyName:"120",price:130,cPrice:110,addtime:"2018-01-02",status:1},
+        {id:"1",oderId:"123",acc:"Android",companyName:"120",price:130,cPrice:110,addtime:"2018-01-02",status:1},
+        {id:"1",oderId:"123",acc:"Android",companyName:"120",price:130,cPrice:110,addtime:"2018-01-02",status:1},
+        {id:"1",oderId:"123",acc:"Android",companyName:"120",price:130,cPrice:110,addtime:"2018-01-02",status:1},
+      ],
+      status:[{id:"0",name:"全部"},{id:"1",name:"正常"},{id:"2",name:"否"}],
+      feedBackType:[{id:0,name:"全部"},{id:1,name:"软件出错"},{id:2,name:"账号申诉"}],
+      pageInfo:{
+        total:400,
+        pageSizes:[10, 20, 30, 400],
+        pageSize:10,
+        currentPage:1
+      },
+      searchFilter:{orderId:"22",acc:"",from:0,time1:'',time2:''},    
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+
+    }
+  },
+  methods: {
+    see:function(index) {
+        this.choose = index
+        this.saveAction = "edit"
+        this.addInfo = this.updateInfo[index];
+        console.log(this.addInfo);
+        this.dialogTableVisible = true;
+     },
+    editPrice:function() {
+
+     },
+    exportTable() {
+        require.ensure([], () => {
+            const { export_json_to_excel } = require('~/plugins/Export2Excel');
+            const tHeader = ['订单编号', '账号', '充值金额', '下单时间', '订单状态','支付渠道'];
+            const filterVal = ['oderId', 'acc', 'money', 'addtime','status','from'];
+            const list = this.updateInfo;
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '充值订单');
+          })
+    },
+    formatJson(filterVal, jsonData) {
+          return jsonData.map(v => filterVal.map(j => v[j]))
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.currentPage=val
+      console.log(`当前页: ${val}`);
+    },
+    sortByKey: function(array, key) { //(数组、排序的列)
+      return array.sort(function(a, b) {
+        var x = a[key];
+        var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      })
+    }, 
+ 
+  },
+  computed:{
+    sortUpdateInfo:function(){
+       return this.sortByKey(this.updateInfo,'sort');
+    }
+  },
+  mounted () {
+      for (var i = 0; i < this.formData.length; i++) {
+          this.addInfo[this.formData[i].field]=this.formData[i].init;
+      }
+      this.sortTableHead = JSON.parse(JSON.stringify(this.tableHead))
+      this.sortTableHead =  this.sortByKey(this.sortTableHead,'sort');
+  },
+  watch: {
+ 
+  
+  },
+   head () {
+    return {
+      title: "导师",
+      meta: [{
+        hid: 'description',
+        name: 'description',
+        content: "123"
+      }],
+ 
+      script: [{
+        src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'
+      }, {
+        src: '/admin/js/ueditor/ueditor.config.js'
+      }, {
+        src: '/admin/js/ueditor/ueditor.all.min.js'
+      },{
+        src: '/admin/js/ueditor/lang/zh-cn/zh-cn.js'
+      }
+
+      ]
+    }
+  }
+}
+</script>

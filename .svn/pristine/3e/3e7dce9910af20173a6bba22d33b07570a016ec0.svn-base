@@ -1,0 +1,198 @@
+<template>
+<div class="admin_body">
+    <div class="admin_body_title">数据概述</div>
+    <div class="summary">
+        <ul>
+          <li>
+            <h3>注册用户数</h3>
+            <p>70857</p>
+          </li>
+          <li>
+            <h3>注册用户数</h3>
+            <p>70857</p>
+          </li>
+          <li>
+            <h3>注册用户数</h3>
+            <p>70857</p>
+          </li>
+          <li>
+            <h3>注册用户数</h3>
+            <p class="text-danger"><span>￥</span>70857</p>
+          </li>
+          <li>
+            <h3>注册用户数</h3>
+            <p class="text-danger">70857<span>学币</span></p>
+          </li>
+        </ul>
+    </div>
+    <div class="admin_body_title">功能与业务</div>
+    <div class="admin_body_service row">
+
+        <div class="admin_body_service_s col-md-3">
+           <nuxt-link to="/admin/app" target = "_blank">
+           <img src="/admin/images/main_body_server_bi.png">
+           <h3>BI功能</h3>
+           <p>运营数据呈现</p>
+         </nuxt-link>
+        </div>
+        <div class="admin_body_service_s col-md-3">
+           <nuxt-link to="/admin/app" target = "_blank">
+           <img src="/admin/images/main_body_server_app.png">
+           <h3>APP管理</h3>
+           <p>运营数据呈现</p>
+         </nuxt-link>
+        </div>
+        <div class="admin_body_service_s col-md-3">
+           <nuxt-link to="/admin/app" target = "_blank">
+           <img src="/admin/images/main_body_server_pc.png">
+           <h3>PC管理</h3>
+           <p>运营数据呈现</p>
+         </nuxt-link>
+        </div>
+        <div class="admin_body_service_s col-md-3">
+           <nuxt-link to="/admin/class" target = "_blank">
+           <img src="/admin/images/main_body_server_kc.png">
+           <h3>课程</h3>
+           <p>运营数据呈现</p>
+         </nuxt-link>
+        </div>
+        <div class="admin_body_service_s col-md-3">
+           <nuxt-link to="/admin/training" target = "_blank">
+           <img src="/admin/images/main_body_server_bi.png">
+           <h3>训练营</h3>
+           <p>运营数据呈现</p>
+         </nuxt-link>
+        </div>
+        <div class="admin_body_service_s col-md-3">
+           <nuxt-link to="/admin/user" target = "_blank">
+           <img src="/admin/images/main_body_server_user.png">
+           <h3>用户管理</h3>
+           <p>运营数据呈现</p>
+         </nuxt-link>
+        </div>
+        <div class="admin_body_service_s col-md-3">
+           <nuxt-link to="/admin/orgAndTch" target = "_blank">
+           <img src="/admin/images/main_body_server_ds.png">
+           <h3>机构及导师</h3>
+           <p>运营数据呈现</p>
+         </nuxt-link>
+        </div>
+        <div class="admin_body_service_s col-md-3">
+           <nuxt-link to="/admin/app" target = "_blank">
+           <img src="/admin/images/main_body_server_qy.png">
+           <h3>企业管理</h3>
+           <p>运营数据呈现</p>
+         </nuxt-link>
+        </div>
+        <div class="admin_body_service_s col-md-3">
+           <nuxt-link to="/admin/recharge" target = "_blank">
+           <img src="/admin/images/main_body_server_cz.png">
+           <h3>充值管理</h3>
+           <p>运营数据呈现</p>
+         </nuxt-link>
+        </div>
+        <div class="admin_body_service_s col-md-3">
+           <nuxt-link to="/admin/order"  target = "_blank">
+           <img src="/admin/images/main_body_server_bi.png">
+           <h3>订单数据</h3>
+           <p>运营数据呈现</p>
+         </nuxt-link>
+        </div>
+        <div class="admin_body_service_s col-md-3">
+           <nuxt-link to="/admin/account" target = "_blank">
+           <img src="/admin/images/main_body_server_set.png">
+           <h3>基础设置</h3>
+           <p>运营数据呈现</p>
+         </nuxt-link>
+        </div>
+
+    </div>
+    <div class="admin_body_title">功能与业务</div>
+    <div class="admin_body_m3 row">
+        <div class="admin_body_m3_s bg01 col-md-3">
+           <nuxt-link to="/admin/sale" target = "_blank"><h3>促销活动</h3>
+           <p>课程营销活动</p></nuxt-link>
+        </div>
+
+        <div class="admin_body_m3_s bg02 col-md-3">
+          <nuxt-link to="/admin/setInt" target = "_blank"> <h3>积分</h3>
+           <p>积分获取及消耗规则</p></nuxt-link>
+        </div>
+
+        <div class="admin_body_m3_s bg03 col-md-3">
+           <h3>勋章体系</h3>
+           <p>勋章管理及发放规则</p>
+        </div>
+
+        <div class="admin_body_m3_s bg04 col-md-3">
+           <nuxt-link to="/admin/invite" target = "_blank"><h3>邀请好友</h3>
+           <p>用户邀请好友获奖励</p></nuxt-link>
+        </div>
+
+
+        <div class="admin_body_m3_s bg05 col-md-3">
+           <nuxt-link to="/admin/sendMsg" target = "_blank"><h3>消息推送</h3>
+           <p>给用户推送消息</p></nuxt-link>
+        </div>
+
+
+
+    </div>
+
+</div>
+</template>
+
+<script>
+
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  data () {
+    return {
+      title: '广告',
+
+    }
+  },
+  methods: {
+
+
+  },
+  mounted () {
+      console.log(this.$store.state.token)
+
+
+  },
+   head () {
+    return {
+      title: this.seoTitle,
+      meta: [{
+        hid: 'description',
+        name: 'description',
+        content: "123"
+      }],
+      link: [
+        {
+          href: '/css/css.css',
+          type:'text/css',
+          rel: 'stylesheet',
+        },{
+          href: '/static/css/bootstrap.css',
+          type:'text/css',
+          rel: 'stylesheet',
+        }
+      ],
+      script: [{
+        src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'
+      }, {
+        src: '/js/index.js'
+      }, {
+        src: 'http://rubaxa.github.io/Sortable/Sortable.js'
+      }
+
+      ]
+    }
+
+  }
+}
+</script>
+

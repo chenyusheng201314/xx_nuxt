@@ -1,0 +1,479 @@
+<template>
+   <div class="base_body">
+     <div class="searchFilter">
+        <el-form :inline="true" :model="memberFilter" class="demo-form-inline">
+          <el-form-item label="用户昵称" label-width="80px">
+            <el-input v-model="memberFilter.username" auto-complete="off" clearable></el-input>
+          </el-form-item>
+<el-form-item label="账号" label-width="80px">
+            <el-input v-model="memberFilter.mobile" auto-complete="off" clearable></el-input>
+          </el-form-item>
+<el-form-item label="真实姓名" label-width="80px">
+            <el-input v-model="memberFilter.realname" auto-complete="off" clearable></el-input>
+          </el-form-item>
+
+          <el-form-item label="性别" label-width="90px">
+              <el-select v-model="memberFilter.sex" placeholder="请选择" clearable>
+                  <el-option
+                    v-for="item in sex"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+          <el-form-item label="入班时间" label-width="80px">
+            <el-date-picker
+      v-model="memberFilter.start_in_time"
+      type="date"
+      value-format="yyyy-MM-dd"
+      placeholder="选择日期">
+          </el-date-picker> -
+          <el-date-picker
+      v-model="memberFilter.end_in_time"
+      type="date"
+      value-format="yyyy-MM-dd"
+      placeholder="选择日期">
+          </el-date-picker>
+          </el-form-item>
+      <el-form-item class="fRight">
+          <el-button   @click="setData()" class="btn_search">搜索</el-button>
+      </el-form-item>
+        </el-form>
+     </div>
+
+     <div class="table-responsive">
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="8%"> 序号</th>
+          <th width="8%">用户</th>
+          <th width="8%">真实姓名</th>
+          <th width="8%">性别</th>
+          <th width="8%">入班时间</th>
+          <th width="8%">闯关进度</th>
+          <th width="8%">闯关总经验值</th>
+          <th width="8%">本周经验值</th>
+          <th width="8%">今日经验值</th>
+          <th width="8%">作业提交次数</th>
+          <th width="15%">操作</th>
+        </tr>
+     
+        <tr v-for="(vo, index) in classManagerInfo.classMember" :key="index">
+          <td>{{index+1}}</td>
+          <td  align="left"><div class="head_img"><img :src="vo.person.photo.value"></div>{{vo.person.username}}</td>
+          <td>
+            <el-input 
+            v-model="vo.realname" 
+            placeholder="请输入内容" 
+            :maxlength = "5"
+            v-if="isShowInput[index] == true" 
+            @blur="updateRealname(vo.person_id,vo.training_id,vo.training_class_id,vo.realname,index)"> 
+            </el-input>
+            <div v-if="isShowInput[index]!=true">{{vo.realname}}<img src="/admin/images/bi.png" v-on:click="setRealname(vo.id,index)" /></div> </td>
+          <td>{{$store.state.admin.sex[vo.person.sex]}}</td>
+          <td>{{vo.join_time}}</td>
+          <td>{{vo.learn_pct}}</td>
+          <td>{{vo.experience_total}}</td>
+          <td>{{vo.continuous_check_in_day}}</td>
+          <td>{{vo.continuous_check_in_day}}</td>
+          <td>{{vo.continuous_check_in_day}}</td>
+          <td>
+            <div class="btn_see" v-on:click="see(vo.person_id,vo.training_id,vo.training_class_id)">查看</div>
+            <div class="btn_setting" v-on:click="updateExp(vo.person_id,vo.training_class_id,vo.realname)">曾减经验值</div></td>
+        </tr>
+        </tbody>
+      </table>
+    </div> 
+    <div class="page">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="classManagerInfo.memberPage.currentPage"
+      :page-sizes="classManagerInfo.memberPage.pageSizes"
+      :page-size="classManagerInfo.memberPage.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="classManagerInfo.memberPage.total">
+    </el-pagination>
+    </div>
+     <div class="clr"></div>
+    <div slot="footer" class="dialog-footer">
+      <el-button v-on:click="cancel()">取 消</el-button>
+    </div>
+    <el-dialog title="班级学员信息" :visible.sync="dialogMemberVisible" append-to-body>
+   
+         <div class="memeber_info_user">
+            <div class="memeber_user_header"><img :src="memberInfo.person.photo.value"/></div>
+            <div class="memeber_user_info">
+               <div class="title">用户账号：{{memberInfo.person.username}}   {{memberInfo.join_time}}入班</div>  
+               <ul>
+                 <li>昵称：cherry</li>
+
+<li>所在公司：{{memberInfo.person.company_name}}</li>
+
+<li>现任职位：{{memberInfo.person.company_position}}</li>
+
+<li>姓名：{{memberInfo.realname}}</li>
+
+<li>身份证号：{{memberInfo.person.identification_number}}</li>
+
+<li>邮箱：{{memberInfo.person.email}}</li>
+
+<li>从事培训年限：{{memberInfo.person.years_of_training}}年</li>
+
+<li>生日：{{memberInfo.person.birthday}}</li>
+<li>性别：{{$store.state.admin.sex[memberInfo.person.sex]}}</li>
+
+               </ul>
+            </div>
+         </div>
+        <div class="clr"></div>
+        <div class="el-dialog__header"><span class="el-dialog__title">Ta的学习情况</span> </div>
+        <div class="learn_status">
+          <div class="learn_status_info">
+            今日获得经验值<span>{{memberInfo.rank_list.today.experience_value}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            本周获得经验值<span>{{memberInfo.rank_list.week.experience_value}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            总经验值 <b v-on:click="expDetail()">明细>></b><span>{{memberInfo.rank_list.all.experience_value}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            作业提交次数<span>{{memberInfo.rank_list.all.experience_value}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            闯关进度<span>{{memberInfo.rank_list.all.task_count}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            今日排名<span>{{memberInfo.rank_list.all.rank}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            本周排名<span>{{memberInfo.rank_list.all.rank}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            总排名<span>{{memberInfo.rank_list.all.rank}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            作业总得分<span>{{memberInfo.rank_list.all.fraction_total}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            被点赞总数<span>{{memberInfo.rank_list.all.digg_up_total}}</span>
+          </div>
+        </div>
+        <div class="clr"></div>
+        <div class="el-dialog__header"><span class="el-dialog__title">Ta的作业</span> </div>
+      
+        <div class="work_list" v-for="(vo, index) in workInfo" :key="index">
+              <div class="work_list_binfo">
+               
+                   <div style="float: right" class="has_score" v-if="vo.fraction_status==1">
+                      <b>{{vo.fraction}}</b> 经验值  <div v-if="vo.come_late == 0">未按时提交</div>
+                   </div>
+                   <div style="float: right" class="has_score" v-else-if="vo.fraction_status==2">
+                      <b>{{vo.fraction}}</b> 经验值  <div v-if="vo.come_late == 0">未按时提交</div>
+                   </div>
+                   <div style="float: right" class="has_score" v-else>
+                    <b>未批改</b>    <div v-if="vo.come_late == 0">未按时提交</div>
+                   </div>
+                   <span class="work_list_honer" style="display: block;">{{vo.training_class_topic.title}}</span> 
+                   <span class="work_list_time">{{vo.created_at}}</span>
+               </div>
+              <div class="work_list_content">{{vo.content}}</div>
+             <div class="work_list_imgs">
+                      <ul>
+                        <li v-for="(item, index) in vo.photos" :key="index"><img :src="item.value.value"/></li>
+                       </ul>
+               </div>
+              <div class="work_list_address">
+                赞：{{vo.digg_up}} &nbsp;&nbsp;&nbsp;  评论：{{vo.comment_count}}
+              </div>
+        
+         </div>
+          <div class="page">
+              <el-pagination
+                @size-change="handleSizeChangeWork"
+                @current-change="handleCurrentChangeWork"
+                :current-page="pageInfo.currentPage"
+                :page-sizes="pageInfo.pageSizes"
+                :page-size="pageInfo.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="pageInfo.total">
+              </el-pagination>
+              </div>
+
+ <div class="clr"></div>
+    <div slot="footer" class="dialog-footer" style="text-align: right">
+      <el-button v-on:click="dialogMemberVisible = false">取 消</el-button>
+    </div>
+    </el-dialog>
+    
+
+    <el-dialog title="曾减经验值" :visible.sync="dialogSorceVisible" append-to-body width="40%">
+      <p>增减经验值请根据线下学员行为，合理增减经验值，一旦增加或扣减经验值成功，不可修改。</p>
+       <el-form :model="scoreInfo" :rules="rulesScore" ref="scoreInfo" >
+      <el-form-item label="学员姓名" :label-width="120+'px'">
+         {{scoreInfo.realname}}
+      </el-form-item>
+      <el-form-item label="经验值" :label-width="120+'px'"  prop="experience_value">
+         <el-select v-model="scoreInfo.method"  placeholder="请选择"  style="display: inline-block; width:170px">
+                <el-option :key="1" label="增加" :value="1"></el-option>
+                <el-option :key="0" label="减少" :value="0"></el-option>
+          </el-select> &nbsp;&nbsp;&nbsp;&nbsp;
+         <el-input type="number" v-model.number="scoreInfo.experience_value" auto-complete="off" style="display: inline-block;width:170px"></el-input>经验值
+      </el-form-item>
+      <el-form-item label="原因" :label-width="120+'px'"  prop="remark">
+         <el-input v-model="scoreInfo.remark" auto-complete="off" style="display: inline-block;width:200px"></el-input>
+      </el-form-item>
+
+      </el-form>  
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogSorceVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitScore()">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="总经验值明细" :visible.sync="dialogExpVisible" append-to-body width="40%">
+           <ul class="exp_detail">
+             <li v-for="(item,index) in expDetailInfo" :key="index">
+              <span class="green" v-if="item.method==1">+{{item.experience_value}}</span>
+              <span class="red" v-else>-{{item.experience_value}}</span>
+              <span>{{item.remark}}</span>
+              <span>{{item.updated_at}}</span>
+            </li>
+           </ul>
+           <div class="page">
+              <el-pagination
+                @size-change="handleSizeExp"
+                @current-change="handleCurrentExp"
+                :current-page="pageInfoExp.currentPage"
+                :page-sizes="pageInfoExp.pageSizes"
+                :page-size="pageInfoExp.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="pageInfoExp.total">
+              </el-pagination>
+              </div>
+    </el-dialog>
+
+
+
+
+
+
+
+
+
+
+</div>
+ 
+</template>
+
+<script>
+ 
+ 
+ 
+export default {
+ 
+  props: ['classManagerInfo'],
+	data() {
+		return {
+			memberFilter:{},
+      memberPage : {
+          pageSize:10,
+          currentPage:1,
+        },
+      classMember:[],  
+      isShowInput:{},
+      sex:[{id:1,name:"男"},{id:2,name:"女"}],
+      dialogMemberVisible:false,
+      dialogSorceVisible:false,
+      dialogExpVisible:false,
+      memberInfo:{person:{photo:{}},rank_list:{today:{},week:{},all:{}}},
+      workInfo:{},
+      pageInfo:{
+          total:0,
+          pageSizes:[10, 20, 30, 400],
+          pageSize:10,
+          currentPage:1,
+      },
+      pageInfoExp:{
+          total:0,
+          pageSizes:[10, 20, 30, 400],
+          pageSize:10,
+          currentPage:1,
+      },
+      scoreInfo:{method:1},
+      rulesScore: {
+          experience_value:[
+          { required: true, message: '请输入正确的经验值', trigger: 'blur' },
+          { type:'number', message: '经验值必须为数字值', trigger: 'blur'}
+          ],
+          remark:[{ required: true, message: '请输入原因', trigger: 'blur' }],
+       },
+       expDetailInfo:[]
+		}
+	},
+  computed: {
+     
+    },
+	methods: {
+    expDetail() {
+      this.expDetailInfo = {}
+      this.dialogExpVisible = true
+      this.getExpDetail()
+    },
+    async getExpDetail() {
+      var paramsData = {}
+      paramsData.person_id = this.memberInfo.person.id
+      paramsData.training_class_id = this.memberInfo.training_class_id
+      paramsData.page = this.pageInfoExp.currentPage
+      paramsData.psize = this.pageInfoExp.pageSize
+ 
+      let params = {url: "/manage/training_class_experience/list",data:paramsData}
+      let res  = await this.$store.dispatch("adminHttpGet",params);
+      console.log(res.data.data)
+ 
+      this.expDetailInfo = res.data.data
+      this.pageInfoExp.currentPage = parseInt(res.data.page);
+      this.pageInfoExp.total = res.data.total;
+    },
+    handleSizeExp(val) {
+      this.$set(this.pageInfoExp,'pageSize',val)
+      this.getExpDetail()
+    },
+    handleCurrentExp(val) {
+      this.$set(this.pageInfoExp,'currentPage',val)
+      this.getExpDetail()
+    },
+
+    setRealname(id,index) {
+         this.$set(this.isShowInput,index,true)
+     },
+     async updateRealname(person_id,training_id,training_class_id,realname,index) {
+        let params = {url: "/manage/training_class_member/add",data:{person_id:person_id,training_id:training_id,training_class_id:training_class_id,realname:realname}}
+        let res  = await this.$store.dispatch("adminHttpPost",params);
+          if(res.code==0) {
+            this.$message({message: '修改成功',type: 'success'});
+            this.$set(this.isShowInput,index,false)
+          }
+          else {
+            this.$message.error(res.message)
+          } 
+        
+        
+     },
+     updateExp(person_id,training_class_id,realname) {
+      this.scoreInfo={}
+      this.$set(this.scoreInfo,'person_id',person_id)
+      this.$set(this.scoreInfo,'training_class_id',training_class_id)
+      this.$set(this.scoreInfo,'realname',realname)
+      this.$set(this.scoreInfo,'method',1)
+      this.dialogSorceVisible = true
+
+     },
+     async submitScore() {
+      console.log(this.scoreInfo)
+        this.$refs['scoreInfo'].validate(async (valid) => {
+        if (valid) {
+          let params = {url: "/manage/training_class_experience/add",data:this.scoreInfo}
+          let res  = await this.$store.dispatch("adminHttpPost",params);
+          console.log(res)
+          if(res.code==0) {
+            this.$message({message: '修改成功',type: 'success'});
+            this.dialogSorceVisible = false
+          }
+          else {
+            this.$message.error(res.message)
+          }        
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+       });
+        
+     },
+     handleSizeChange(val) {
+      this.$set(this.classManagerInfo.memberPage,'pageSize',val)
+      this.setData()
+    },
+    handleCurrentChange(val) {
+      this.$set(this.classManagerInfo.memberPage,'currentPage',val)
+      this.setData()
+    },
+    async see(person_id,training_id,training_class_id) {
+       
+      let params = {url: "/manage/training_class_member/info",data:{person_id:person_id,training_id:training_id,training_class_id:training_class_id}}
+      let res  = await this.$store.dispatch("adminHttpGet",params);
+      this.memberInfo = res.data
+      this.setWorkData(person_id,training_class_id)
+      this.dialogMemberVisible = true
+     
+
+    },
+    handleSizeChangeWork(val) {
+      this.pageInfo.pageSize = val;
+      this.setData();
+    },
+    handleCurrentChangeWork(val) {
+      this.pageInfo.currentPage = val;
+      this.setWorkData()
+    },
+ 
+    async setWorkData(person_id,training_class_id){
+      console.log(this.pageInfo.currentPage,this.pageInfo.pageSize)
+      let paramsWork = {url: "/manage/training_class_task/person_list",data:{person_id:person_id,training_class_id:training_class_id,page:this.pageInfo.currentPage,psize:this.pageInfo.pageSize}}
+      let resWork  = await this.$store.dispatch("adminHttpGet",paramsWork);
+      console.log(resWork)
+      this.workInfo = resWork.data.data
+      this.pageInfo.currentPage = parseInt(resWork.data.page);
+      this.pageInfo.total = resWork.data.total;
+    },
+    async setData() {
+
+        this.memberFilter.training_class_id = this.classManagerInfo.id
+        this.memberFilter.page = this.classManagerInfo.memberPage.currentPage
+        this.memberFilter.psize = this.classManagerInfo.memberPage.pageSize
+        console.log(this.memberFilter)
+        let params = {url: "/manage/training_class_member/list",data:this.memberFilter}
+        let res  = await this.$store.dispatch("adminHttpGet",params);
+        console.log(res)
+        if(res.code==0) {
+           this.$set(this.classManagerInfo,'classMember',res.data.data)
+           this.$set(this.classManagerInfo.memberPage,'total',res.data.total)
+           this.$set(this.classManagerInfo.memberPage,'currentPage',parseInt(res.data.page))
+         }
+         else {
+           this.$set(this.classManagerInfo,'classMember',[])
+           this.$set(this.classManagerInfo.memberPage,'total',0)
+           this.$set(this.classManagerInfo.memberPage,'currentPage',2)
+
+         }
+ 
+    }
+     
+  },
+  async mounted () {
+
+        
+  },
+  watch: {
+    classIds: function (val) {
+      this.$set(this.addInfo.stage_content[this.stageIndex],'sections',JSON.parse(JSON.stringify(val)));
+      this.$set(this.addInfo.stage_content[this.stageIndex],'classIds',JSON.parse(JSON.stringify(val)));
+      console.log(val)
+    }
+  }
+   
+}
+</script>
+
+ 

@@ -1,0 +1,421 @@
+<!--
+  author：cys
+-->
+
+<template>
+  <div>
+    <LeftNav :data="lefNav"></LeftNav>
+    <div class="admin-video">
+      <h2 class="title">员工账号</h2>
+      <ul class="video-classify">
+        <li>
+          <span>姓名</span>
+          <input type="text" class="inp" v-model="search_info.name">
+        </li>
+        <li>
+          <span>账号</span>
+          <input type="text" class="inp" v-model="search_info.account">
+        </li>
+        <li style="margin-right: 180px">
+          <span>账号状态</span>
+          <el-select v-model="search_info.account_type" placeholder="请选择">
+            <el-option
+              v-for="(item,index) in search_info.account_type_select"
+              :key="index"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+        </li>
+        <li>
+          <span>创建时间</span>
+          <el-date-picker
+            v-model="search_info.time"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
+        </li>
+        <li class="last-li">
+          <span class="video-up" @click="add_account">创建账号</span>
+          <span class="video-search" @click="_paging">搜索</span>
+        </li>
+      </ul>
+
+      <table class="video-list">
+        <tr>
+          <th>序号</th>
+          <th>姓名</th>
+          <th>账号</th>
+          <th>所属部门</th>
+          <th>创建时间</th>
+          <th>最后登录时间</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+        <tbody>
+        <tr v-for="(item,index) in account_lists" :key="index">
+          <td width="130px">{{index + 1}}</td>
+          <td width="170px">{{item.role_name}}</td>
+          <td width="170px">{{item.username}}</td>
+          <td width="150px">{{item.department === null ? '--' : item.department}}</td>
+          <td width="250px">{{item.created_at}}</td>
+          <td width="250px">{{item.last_login_time}}</td>
+          <td width="150px">
+            <span class="col-sure" v-show="item.status === 1">正常</span>
+            <span class="col-error" v-show="item.status === 0">冻结</span>
+          </td>
+          <td>
+            <span class="to-edit" @click="edit_account(item)">编辑</span>
+            <span class="to-look" @click="see_account(item)">查看</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="paging">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="paging.currentPage"
+          :page-sizes="paging.page_sizes"
+          :page-size="paging.page_size"
+          layout="prev, pager, next, sizes, jumper"
+          :total="paging.total"
+          :pager-count="5"
+          v-loading.fullscreen.lock="fullscreenLoading"
+        >
+        </el-pagination>
+      </div>
+    </div>
+    <div class="account-cover" v-show="cover_show">
+      <div class="account-cover-con">
+        <span class="close" @click="close_cover">
+            <img src="/admin/images/class/close.png" alt="">
+        </span>
+        <h2>{{account_tit}}</h2>
+        <ul class="cover-detail">
+          <li>
+            <span><label>*</label>账号</span>
+            <input type="text" maxlength="15" v-model="account_info.account" :disabled="account_info.account_disable">
+            <label v-show="!account_info.account && account_save_show">必填项不能为空</label>
+          </li>
+          <li>
+            <span><label>*</label>密码</span>
+            <input  :type="account_info.pwd_show_type" v-model="account_info.pwd" :disabled="account_info.pwd_disable">
+            <label v-show="!account_info.pwd && account_save_show">必填项不能为空</label>
+          </li>
+          <li>
+            <span><label>*</label>姓名</span>
+            <input type="text" maxlength="5" v-model="account_info.name" :disabled="account_info.other_disable">
+            <label v-show="!account_info.name && account_save_show">必填项不能为空</label>
+          </li>
+          <li>
+            <span>所属部门</span>
+            <input type="text" maxlength="10" v-model="account_info.department" :disabled="account_info.other_disable">
+          </li>
+          <li>
+            <span><label>*</label>账号状态</span>
+            <el-select v-model=" account_info.type" placeholder="请选择" style="float: left;"
+                       :disabled="account_info.other_disable">
+              <el-option
+                v-for="(item,index) in account_info.type_select"
+                :key="index"
+                :label="item"
+                :value="item"
+              >
+              </el-option>
+            </el-select>
+            <label v-show="!account_info.type && account_save_show">必填项不能为空</label>
+          </li>
+          <li>
+            <span><label>*</label>角色</span>
+            <el-select v-model=" account_info.role" placeholder="请选择" style="float: left;"
+                       :disabled="account_info.other_disable">
+              <el-option
+                v-for="(item,index) in role_select"
+                :key="index"
+                :label="item"
+                :value="item"
+              >
+              </el-option>
+            </el-select>
+            <label v-show="!account_info.role && account_save_show">必填项不能为空</label>
+          </li>
+        </ul>
+        <div class="account-save" v-show="account_save_show" @click="account_save">保 存</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import LeftNav from '~/components/admin/LeftNav';
+  import '~/static/admin/css/account.css'
+  import axios from 'axios'
+
+  export default {
+    layout: 'admin',
+    name: "account",
+    components: {
+      LeftNav
+    },
+    data() {
+      return {
+        lefNav: [
+          {
+            name: '员工账号',
+            link: '/admin/account',
+            active: true
+          }, {
+            name: '角色管理',
+            link: '/admin/role',
+            active: false
+          }, {
+            name: '日志',
+            link: '/admin/log',
+            active: false
+          }
+        ],
+        fullscreenLoading: false,
+        search_info: {
+          name: '',
+          account: '',
+          account_type_select: ['全部', '正常', '冻结'],
+          account_type: '全部',
+          time: []
+        },
+        cover_show: false,
+        account_info: {
+          role_id: '',
+          id: '',
+          account: '',
+          account_disable: false,
+          pwd: '',
+          pwd_show_type: 'txt',    // 密码是明文显示还是密文显示
+          pwd_disable: false,
+          name: '',
+          department: '',
+          type_select: ['正常', '冻结'],
+          type: '',
+          role: '',
+          other_disable: false,
+        },
+        account_save_show: true,
+        //   标题
+        account_tit: '创建账号'
+      }
+    },
+    async asyncData({store}) {
+      let tmp_arr = [];
+      let tmp_arr2 = [];
+      // 获取账户列表
+      let params = {
+        url: "/manage/manage/lists", data: {
+          page: 1,
+          psize: 10,
+          username: '',
+          realname: '',
+          status: '',
+          start_time: '',
+          end_time: '',
+        }
+      };
+      let res = await store.dispatch("adminHttpGet", params);
+      // 获取角色列表
+      let params2 = {
+        url: '/manage/acl/role_list',
+        data: {
+          role_name: '',
+          start_time: '',
+          end_time: '',
+          page: 1,
+          psize: 100000000,
+        }
+      };
+      let role_res = await store.dispatch("adminHttpGet", params2);
+
+      console.log(role_res.data.data);
+
+      role_res.data.data.forEach(function (val, key) {
+        tmp_arr.push(val.role_name);
+        tmp_arr2.push(val.role_id);
+      });
+      return {
+        account_lists: res.data.data,
+        paging: {
+          total: res.data.total,
+          currentPage: 1,  //当前页
+          page_sizes: [10, 20, 50], //每页显示多少条下拉
+          page_size: 10,// 默认显示多少条
+        },
+        // 角色列表
+        role_select: tmp_arr,
+        role_id_lists: tmp_arr2,
+      }
+    },
+    methods: {
+      async _paging() {
+        const that = this;
+        that.fullscreenLoading = true;
+        console.log(that.search_info);
+        let params = {
+          url: "/manage/manage/lists", data: {
+            page: that.paging.currentPage,
+            psize: that.paging.page_size,
+            username: that.search_info.account,
+            realname: that.search_info.name,
+            status: that.search_info.account_type === '全部' ? ' ' : that.search_info.account_type === '正常' ? 1 : 0,
+            start_time: that.search_info.time[0],
+            end_time: that.search_info.time[1],
+          }
+        };
+        let res = await that.$store.dispatch("adminHttpGet", params);
+        if (res.code === 0) {
+          that.fullscreenLoading = false;
+          that.paging.total = res.data.total;
+          that.account_lists = res.data.data;
+        }
+      },
+      //  分页
+      handleSizeChange(val) {
+        this.paging.page_size = val
+        this._paging()
+      },
+      handleCurrentChange(val) {
+        // 当前页
+        this.paging.currentPage = val;
+        this._paging()
+      },
+      //  关闭弹窗
+      close_cover() {
+        this.cover_show = false;
+      },
+      //  创建账户
+      add_account() {
+        this.account_tit = '创建账户';
+        const that = this;
+        // 保存按钮出现
+        this.account_save_show = true;
+        // 遮罩出现
+        this.cover_show = true;
+        // 用户信息
+        this.account_info.account_disable = false;
+        // 默认密码
+        this.account_info.pwd = 'xiangxue123';
+        // 密码是明文显示还是密文显示
+        this.account_info.pwd_show_type = 'txt';
+        // 可选或者不可选
+        this.account_info.pwd_disable = false;
+        this.account_info.other_disable = false;
+        this.account_info.id = '';
+      },
+      //  编辑账户
+      edit_account(data) {
+        this.account_tit = '账户编辑';
+        let len = this.role_id_lists.indexOf(data.role_id);
+        let role = this.role_select[len];
+        // 密码是明文显示还是密文显示
+        this.account_info.pwd_show_type = 'password';
+        this.cover_show = true;
+        this.account_info.id = data.id;
+        this.account_save_show = true;
+        this.account_info.account_disable = true;
+        this.account_info.pwd_disable = false;
+        this.account_info.other_disable = false;
+        this.account_info.account = data.username;
+        this.account_info.pwd = '******';
+        this.account_info.name = data.realname;
+        this.account_info.department = data.department;
+        this.account_info.type = data.status === 1 ? '正常' : '冻结';
+        this.account_info.role = role;
+      },
+      //  查看账户
+      see_account(data) {
+        let len = this.role_id_lists.indexOf(data.role_id);
+        let role = this.role_select[len];
+        // 密码是明文显示还是密文显示
+        this.account_info.pwd_show_type = 'password';
+        this.cover_show = true;
+        this.account_save_show = false;
+        this.account_info.account_disable = true;
+        this.account_info.pwd_disable = true;
+        this.account_info.other_disable = true;
+        this.account_info.account = data.username;
+        this.account_info.pwd = '******';
+        this.account_info.name = data.realname;
+        this.account_info.department = data.department;
+        this.account_info.type = data.status === 1 ? '正常' : '冻结';
+        this.account_info.role = role;
+      },
+      //  账户保存
+      async account_save() {
+        const that = this;
+        // 获取role_id
+        let ind = that.role_select.indexOf(that.account_info.role);
+        if (ind !== -1) {
+          that.account_info.role_id = that.role_id_lists[ind]
+        }
+        if (that.account_info.account !== '' && that.account_info.pwd !== '' && that.account_info.name !== '' && that.account_info.type !== '' && that.account_info.role !== '') {
+          let pwd = that.account_info.pwd === '******' ? '' : that.account_info.pwd;
+          let status = that.account_info.type === '正常' ? 1 : 0;
+          let res = await that.post_axios('/manage/manage/add', {
+            username: that.account_info.account,
+            password: pwd,
+            realname: that.account_info.name,
+            role_id: that.account_info.role_id,
+            status,
+            department: that.account_info.department,
+            id: that.account_info.id
+          });
+          console.log(res);
+          if (res.data.code === 0) {
+            // 初始化
+            that.account_info.account = '';
+            that.account_info.pwd = '';
+            that.account_info.name = '';
+            that.account_info.role_id = '';
+            that.account_info.type = '';
+            that.account_info.department = '';
+            that.account_info.id = '';
+            // 弹窗关闭
+            that.cover_show = false;
+            //   重新获取数据
+            that.paging.currentPage = 1;
+            that.paging.page_size = 10;
+            that._paging();
+          }
+        } else {
+          console.log('参数不全！！！！！')
+        }
+
+
+      },
+      //  请求
+      async post_axios(url, data) {
+        const that = this;
+        return axios({
+          url: that.$store.state.admin.baseUrl + url,
+          method: 'post',
+          headers: {token: that.$store.state.admin.token},
+          data: data
+        }).then((res) => {
+          return res
+        }).catch((error) => {
+          return error
+        })
+      }
+
+    },
+    mounted() {
+      console.log('账户信息',this.account_lists)
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

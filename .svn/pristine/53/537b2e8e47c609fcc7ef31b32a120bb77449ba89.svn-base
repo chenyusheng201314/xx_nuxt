@@ -1,0 +1,275 @@
+<template>
+<div class="base_body">
+     <div class="searchFilter">
+        <el-form :inline="true" :model="searchFilter" class="demo-form-inline">
+          <el-form-item label="课程分类" label-width="80px">
+              <el-select v-model="searchFilter.first_sort_id" clearable placeholder="请选择" @change="setScond">
+                  <el-option
+                    v-for="item in first_sort"
+                    :key="item.id"
+                    :label="item.sort_name"
+                    :value="item.id">
+                  </el-option>
+               </el-select>
+               <el-select v-model="searchFilter.second_sort_id" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in second_sort"
+                    :key="item.id"
+                    :label="item.sort_name"
+                    :value="item.id">
+                  </el-option>
+               </el-select>
+
+          </el-form-item>
+         <el-form-item label="课程名称" label-width="80px">
+            <el-input v-model="searchFilter.course_name" clearable auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="主讲导师" label-width="80px">
+             <el-select v-model="searchFilter.teacher_id" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in tchs"
+                    :key="item.id"
+                    :label="item.realname"
+                    :value="item.id">
+                  </el-option>
+               </el-select>
+          </el-form-item>
+           <el-form-item label="上架状态" label-width="80px">
+              <el-select v-model="searchFilter.status" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in status"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+          <el-form-item label="参与活动" label-width="80px">
+              <el-select v-model="searchFilter.activity_type" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in activity"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+
+
+          <el-form-item label="所属机构" label-width="80px">
+              <el-select v-model="searchFilter.organization_id" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in orgInfo"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+          
+ 
+
+      <el-form-item class="fRight">
+ 
+          <el-button   @click="setData()" class="btn_search">搜索</el-button>
+    
+      </el-form-item>
+
+        </el-form>
+
+       
+     </div>
+    
+     
+     <div class="table-responsive">
+      <el-checkbox-group v-model="classIds">
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="8%"> 序号</th>
+          <th width="8%">课程封面图</th>
+          <th width="15%">视频名称</th>
+          <th width="8%">主讲导师</th>
+          <th width="15%">单价（学币）</th>
+          <th width="8%">参与活动</th>
+          <th width="8%">上架状态</th>
+        </tr>
+      
+        <tr v-for="(vo, index) in classInfo" :key="index">
+          <td><el-checkbox  :label="vo.id">{{index+1}}</el-checkbox></td>
+          <td><div class="head_img"><img :src="vo.cover.value" /></div></td>
+          <td>{{vo.course_name}}</td>
+          <td>{{vo.teacher_id}}</td>
+          <td>{{vo.price}}</td>  
+          <td>{{vo.is_activity}}</td>
+          <td>{{vo.status}}</td>       
+        </tr>
+      
+        
+        </tbody>
+      </table>
+      </el-checkbox-group>
+    </div>
+      
+    <div class="page">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage"
+      :page-sizes="pageInfo.pageSizes"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total">
+    </el-pagination>
+    </div>
+     <div class="clr"></div>
+    <div slot="footer" class="dialog-footer" style="text-align: right">
+      <el-button v-on:click="cancel()">取 消</el-button>
+      <el-button type="primary" v-on:click="submit()">确 定</el-button>
+    </div>
+</div>
+</template>
+ 
+
+<script>
+
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  props: ['classIds','classInfo','classPage'],
+  data () {
+    return {
+      tableHead:[
+         {title:"订单编号",field:"oderId",width:"10%"},
+         {title:"账号",field:"acc",width:"12%"},
+         {title:"企业名称",field:"companyName",width:"12%"},
+         {title:"下单时间",field:"addtime",width:"10%"},
+         {title:"订单金额（元）",field:"price",width:"10%"},
+         {title:"合同金额（元）",field:"cPrice",width:"10%"},
+         {title:"订单状态",field:"status",width:"10%"},
+      ],
+      allChecked:false,
+      sortTableHead:[],
+      addInfo:{},
+ 
+      status:[{id:1,title:"正常"},{id:2,title:"冻结"}],
+      sex:[{id:1,title:"男"},{id:0,title:"女"}],
+      pageInfo:this.classPage,
+      searchFilter:{},    
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+      first_sort:[],
+      second_sort:[],
+      tchs:[],
+      activity:[{id:1,title:'精品课程'},{id:2,title:'最新课程'},{id:3,title:'买一赠一'},{id:4,title:'折扣活动'},{id:5,title:'限时免费'},{id:6,title:'积分购'}],
+      orgInfo:[],
+      resClass:[]
+    }
+  },
+  created(){
+      this.getData()
+  },
+  methods: {
+    async getData(){
+       let paramsOrg = {url: "/manage/organization/list",data:{page:1,psize:10}}
+        let resOrg  = await this.$store.dispatch("adminHttpGet",paramsOrg);
+
+        let paramsFirst = {url: "/manage/manage_course/course_sort_list",data:{}}
+        let resFirst = await this.$store.dispatch("adminHttpGet",paramsFirst);
+
+        let paramsTch = {url: "/manage/organization_teacher/list",data:{}}
+        let resTch = await this.$store.dispatch("adminHttpGet",paramsTch);
+        this.orgInfo = resOrg.data.data
+        this.first_sort = resFirst.data
+        this.tchs = resTch.data.data 
+    },
+    async setScond(){
+      this.$set(this.searchFilter,'second_sort_id', null)
+      if(this.searchFilter.first_sort_id=='') {
+         this.second_sort=[]
+         return false
+      }
+       let obj = {};
+       obj = this.first_sort.find((item)=>{    
+            return item.id === this.searchFilter.first_sort_id;//比如：选项2
+       });
+        this.second_sort=obj.second_sorts
+ 
+    },
+    async setData() {
+      this.searchFilter.page = this.pageInfo.currentPage;
+      this.searchFilter.psize = this.pageInfo.pageSize;
+      let params = {url: "/manage/manage_course/course_list",data:this.searchFilter} 
+      let res  = await this.$store.dispatch("adminHttpGet",params);
+      console.log(res)
+      this.classInfo=res.data.data
+      this.pageInfo={
+            total:res.data.total,
+            pageSizes:[10, 20, 30, 400],
+            pageSize:this.pageInfo.pageSize,
+            currentPage:parseInt(res.data.page),
+      }
+    },
+    see:function(index) {
+        this.choose = index
+        this.saveAction = "edit"
+        this.addInfo = this.classInfo[index];
+        console.log(this.addInfo);
+        this.dialogTableVisible = true;
+     },
+    editPrice:function() {
+
+     },
+    submit(){
+       var backInfo = {}
+       backInfo.visible = false
+       backInfo.classIds = this.classIds
+       backInfo.action = "submit"
+
+       this.$emit('selectSuccess',backInfo)
+     },
+     cancel:function(){
+       var backInfo = {}
+       backInfo.visible = false
+       //backInfo.classIds = []
+       backInfo.action = "cancel"
+       this.$emit('selectSuccess',backInfo) 
+     },
+    formatJson(filterVal, jsonData) {
+          return jsonData.map(v => filterVal.map(j => v[j]))
+    },
+    handleSizeChange(val) {
+      this.$set(this.pageInfo,'pageSize',val);
+      this.setData()
+    },
+    handleCurrentChange(val) {
+      this.$set(this.pageInfo,'currentPage',val);
+      this.setData() 
+    },
+    sortByKey: function(array, key) { //(数组、排序的列)
+      return array.sort(function(a, b) {
+        var x = a[key];
+        var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      })
+    }, 
+ 
+  },
+  computed:{
+    sortUpdateInfo:function(){
+       return this.sortByKey(this.updateInfo,'sort');
+    }
+  },
+  mounted () {
+
+  },
+  watch: {
+ 
+ 
+  
+  },
+ 
+}
+</script>
+
