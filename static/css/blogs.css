@@ -1,0 +1,293 @@
+.m-r-5 {
+  margin-right: 5px;
+}
+
+.m-r-8 {
+  margin-right: 8px;
+}
+
+p {
+  margin: 0;
+}
+
+ul, li, ol {
+  list-style-type: none !important;
+}
+
+.blog-list {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.blog-list-filtrate {
+  width: 1200px;
+  height: auto;
+  border: 1px solid #dcdcdc;
+  border-bottom: none;
+}
+
+.blog-list-filtrate li {
+  border-bottom: 1px solid #dcdcdc;
+  height: 50px;
+  width: 1200px;
+  padding: 0 45px;
+  line-height: 50px;
+}
+
+.blog-list-filtrate li:last-child {
+  padding-left: 200px;
+}
+
+.blog-list-filtrate li:last-child strong, .blog-list-filtrate li:last-child .type-all {
+  display: none;
+}
+
+.blog-list-filtrate li span {
+  display: inline-block;
+  font-size: 15px;
+  color: #666;
+  padding: 5px 8px;
+  line-height: 15px;
+  background: #fff;
+  cursor: pointer;
+  margin-right: 21px;
+}
+
+.blog-list-filtrate li span.type-all {
+  border: 1px solid #ff6900;
+  padding: 3px 5px;
+  color: #ff6900;
+  line-height: 15px;
+  margin-right: 25px;
+  cursor: pointer;
+}
+
+.blog-list-filtrate li span:hover {
+  background: #ff6900;
+  color: #fff;
+}
+
+.blog-list-filtrate li span.choose {
+  background: #ff6900;
+  color: #fff;
+}
+.blog-detail {
+  width: 1200px;
+  margin: 0 auto;
+}
+.blog-detail-article {
+  width: 1200px;
+  height: auto;
+  overflow: hidden;
+  margin-bottom: 60px;
+}
+
+.blog-detail-article .article-left {
+  float: left;
+  border: 1px solid #dcdcdc;
+  padding: 45px;
+  width: 850px;
+  height: auto;
+  overflow: hidden;
+}
+
+.blog-detail-article .article-left h2 {
+  font-size: 20px;
+  color: #333;
+  text-align: center;
+  font-weight: bolder;
+}
+
+.blog-detail-article .article-left .article-info {
+  width: 100%;
+  height: auto;
+  margin-top: 70px;
+}
+
+.blog-detail-article .article-left .article-info .article-info-span {
+  display: inline-block;
+  font-size: 15px;
+  color: #666;
+  margin-right: 45px;
+  position: relative;
+}
+
+.blog-detail-article .article-left .article-info .article-info-share:hover {
+  color: #ff6900;
+  cursor: pointer;
+}
+
+.blog-detail-article .article-left .article-info .article-info-share .article-info-share-con {
+  width: 120px;
+  height: 52px;
+  position: absolute;
+  right: 0;
+  top: -52px;
+}
+
+.share-con-detail {
+  width: 120px;
+  height: 40px;
+  background: #fff;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  line-height: 36px;
+  text-align: center;
+  box-shadow: 0 1px 14px 2px rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 1px 14px 2px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 1px 14px 2px rgba(0, 0, 0, 0.15);
+  -ms-box-shadow: 0 1px 14px 2px rgba(0, 0, 0, 0.15);
+  -o-box-shadow: 0 1px 14px 2px rgba(0, 0, 0, 0.15);
+}
+
+.share-con-detail .xsj {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  font-size: 0; /*是因为, 虽然宽高度为0, 但在IE6下会具有默认的 */
+  line-height: 0; /* 字体大小和行高, 导致盒子呈现被撑开的长矩形 */
+  border-width: 6px;
+  border-style: solid dashed dashed dashed; /*IE6下, 设置余下三条边的border-style为dashed,即可达到透明的效果*/
+  border-color: #fff transparent transparent transparent;
+  position: absolute;
+  top: 40px;
+  left: 57px;
+}
+
+.share-con-detail .share-con-icon {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.article-left .article-sm {
+  width: 100%;
+  height: auto;
+  padding: 45px;
+  background: #f0f0f0;
+  margin-top: 45px;
+  margin-bottom: 45px;
+}
+
+.article-left .article-con {
+  font-size: 15px;
+  color: #666;
+}
+
+.blog-detail-article .article-right {
+  float: right;
+  height: auto;
+  width: 330px;
+  padding: 45px;
+  border: 1px solid #dcdcdc;
+}
+
+.blog-detail-article .article-right h2 {
+  color: #ff6900;
+  font-size: 20px;
+}
+
+.blog-detail-article .article-right .tuijian-list {
+  margin-top: 10px;
+  padding: 0;
+}
+
+.blog-detail-article .article-right .tuijian-list li {
+  margin-top: 20px;
+  font-size: 15px;
+  color: #333;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  list-style-type: decimal;
+  cursor: pointer;
+}
+
+.blog-detail-article .article-right .tuijian-list li:hover {
+  color: #ff6900;
+}
+.blog-article-title{
+  width: 1200px;
+  height: 45px;
+  background: #eee;
+  margin-top: 45px;
+  margin-bottom: 20px;
+  padding: 0 45px;
+}
+.blog-article-title .blog-article-title-con{
+  display: inline-block;
+  background: #fff;
+  height: 50px;
+  border: 1px solid #dcdcdc;
+  border-bottom: 3px solid #ff6900;
+  width: 100px;
+  text-align: center;
+  line-height: 50px;
+  margin-top: -5px;
+  color: #ff6900;
+}
+table.blogs-r{
+  width: 1200px;
+  height: auto;
+  border: 1px solid #dcdcdc;
+  margin-bottom: 30px;
+}
+table.blogs-r tr,table td, table th{
+  border: 1px solid #dcdcdc;
+  cursor: pointer;
+}
+table.blogs-r td, table.blogs-r th{
+  font-size: 15px;
+  color: #666;
+  height: 50px;
+}
+table.blogs-r tr:nth-child(odd){
+  background: #f7f7f7;
+}
+table.blogs-r tr .th1,table.blogs-r tr .td1{
+  width: 600px;
+  padding-left:45px ;
+}
+table.blogs-r tr .th2,table.blogs-r tr .td2{
+  width: 214px;
+}
+table.blogs-r tr .th3,table.blogs-r tr .td3{
+  width: 250px;
+}
+table.blogs-r tr th p,table.blogs-r tr td p{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 50px;
+  line-height: 50px;
+  margin: 0;
+}
+table.blogs-r tr .th2,table.blogs-r tr .th3,table.blogs-r tr .th4,table.blogs-r tr .td2,table.blogs-r tr .td3,table.blogs-r tr .td4{
+  text-align: center;
+}
+
+table.blogs-r tr:hover .td1 p,table.blogs-r tr .td4 p{
+  color: #ff6900;
+}
+.paging {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.paging .el-pagination .el-pager li, .el-pagination button, .el-pagination span:not([class*=suffix]) {
+  min-width: 50px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+}
+
+.el-pagination .el-select .el-input .el-input__inner {
+  height: 40px;
+}
+
+.paging .el-pagination__sizes {
+  margin-left: 20px;
+}

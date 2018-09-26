@@ -1,0 +1,718 @@
+.class-list {
+  width: 1250px;
+  margin: 0 auto;
+}
+
+.class-condition {
+  width: 1200px;
+  height: auto;
+  border: 1px solid #dcdcdc;
+  padding: 0;
+}
+
+.class-condition li {
+  height: 50px;
+  line-height: 50px;
+  border-bottom: 1px solid #dcdcdc;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  padding: 0 45px;
+}
+
+.class-condition li:last-child {
+  border-bottom: none;
+}
+
+.class-condition li .li-tit {
+  font-size: 15px;
+  color: #333;
+  font-weight: bold;
+}
+
+.class-condition li .li-choose-all {
+  display: inline-block;
+  border: 1px solid #ff6900;
+  padding: 3px 5px;
+  font-size: 15px;
+  color: #ff6900;
+  line-height: 15px;
+  margin-right: 25px;
+  cursor: pointer;
+}
+
+.class-condition li .li-choose {
+  display: inline-block;
+  font-size: 15px;
+  color: #666;
+  padding: 5px 8px;
+  line-height: 15px;
+  background: #fff;
+  cursor: pointer;
+  margin-right: 25px;
+}
+
+.class-condition li .li-choose:hover {
+  background: #ff6900;
+  color: #fff;
+}
+
+.class-condition li .active {
+  background: #ff6900;
+  color: #fff;
+}
+
+.details-list {
+  width: 1250px;
+  height: auto;
+  overflow: hidden;
+  padding: 25px;
+  margin-left: -25px;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.detail-class {
+  width: 230px;
+  height: auto;
+  overflow: hidden;
+  border: 1px solid #dcdcdc;
+  float: left;
+  margin-left: 12px;
+  margin-top: 13px;
+  cursor: pointer;
+  transition: all 0.2s linear;
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -ms-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+}
+
+.detail-class:nth-child(5n+1) {
+  margin-left: 0;
+}
+
+.detail-class:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.4);
+}
+
+.detail-class .class-title {
+  width: 230px;
+  height: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  padding: 0 10px;
+  text-align: center;
+  font-size: 15px;
+  color: #333;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.class-teacher {
+  width: 230px;
+  height: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  padding: 0 15px;
+  color: #999;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 3px;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+.class-teacher .class-num {
+  float: left;
+  margin-left: 5px;
+}
+
+.class-teacher .class-time {
+  float: right;
+  margin-right: 5px;
+}
+
+.class-teacher .class-num img, .class-teacher .class-time img {
+  margin-right: 5px;
+}
+
+.class-price {
+  width: 230px;
+  height: auto;
+  overflow: hidden;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  padding: 0 20px;
+}
+
+.class-price .now-price {
+  font-size: 15px;
+  float: left;
+  color: #ff6900;
+  margin-bottom: 0;
+}
+
+.class-price .now-price span {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+.class-price .old-price {
+  font-size: 15px;
+  color: #999;
+  float: right;
+  text-decoration: line-through;
+  margin-bottom: 0;
+}
+
+.paging {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.paging .el-pagination .el-pager li, .el-pagination button, .el-pagination span:not([class*=suffix]) {
+  min-width: 50px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+}
+
+.el-pagination .el-select .el-input .el-input__inner {
+  height: 40px;
+}
+
+.paging .el-pagination__sizes {
+  margin-left: 20px;
+}
+
+.buy-info {
+  width: 1200px;
+  height: 350px;
+  padding: 25px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  background: #333;
+}
+
+.buy-info .buy-left {
+  width: 534px;
+  height: 300px;
+  float: left;
+}
+
+.buy-info .buy-right {
+  float: right;
+  width: 530px;
+  height: 300px;
+}
+
+.buy-info .buy-right .buy-tit {
+  color: #fff;
+  font-size: 25px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-top: 30px;
+}
+
+.buy-info .buy-right .buy-teacher {
+  color: #fff;
+  font-size: 20px;
+
+}
+
+.buy-info .buy-right .buy-class-info {
+  color: #999;
+  font-size: 15px;
+  margin-top: 15px;
+}
+
+.buy-info .buy-right .buy-class-info img {
+  margin-right: 5px;
+}
+
+.buy-info .buy-right .buy-class-info span {
+  margin-right: 30px;
+}
+
+.buy-info .buy-right .buy-price {
+  margin-top: 30px;
+}
+
+.buy-info .buy-right .buy-price .buy-price-now {
+  font-size: 20px;
+  color: #ff6900;
+}
+
+.buy-info .buy-right .buy-price .buy-price-old {
+  font-size: 15px;
+  color: #999;
+  text-decoration: line-through;
+  margin-left: 30px;
+}
+
+.buy-info .buy-right .buy-btn {
+  width: 150px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 18px;
+  color: #fff;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.buy-info .buy-right .now-buy {
+  background: #ff6900;
+}
+
+.buy-info .buy-right .already-buy {
+  background: #50af3e;
+}
+
+.buy-info .buy-right .buy-share {
+  text-align: right;
+  position: relative;
+}
+
+.buy-info .buy-right .buy-share .share-icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background: #fcfcfc;
+  text-align: center;
+  line-height: 26px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.buy-info .buy-right .buy-share .share-detail {
+  width: 120px;
+  height: 52px;
+  position: absolute;
+  right: 0;
+  top: -52px;
+}
+
+.buy-info .buy-right .buy-share .share-detail .share-detail-show {
+  width: 120px;
+  height: 40px;
+  background: #fff;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  line-height: 36px;
+}
+
+.buy-info .buy-right .buy-share .xsj {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  font-size: 0; /*是因为, 虽然宽高度为0, 但在IE6下会具有默认的 */
+  line-height: 0; /* 字体大小和行高, 导致盒子呈现被撑开的长矩形 */
+  border-width: 6px;
+  border-style: solid dashed dashed dashed; /*IE6下, 设置余下三条边的border-style为dashed,即可达到透明的效果*/
+  border-color: #fff transparent transparent transparent;
+  position: absolute;
+  top: 40px;
+  left: 57px;
+}
+
+.buy-info .buy-right .buy-share .share-detail .share-detail-icon {
+  display: inline-block;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.ewm-cover {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.ewm-cover .cover-con {
+  width: 500px;
+  padding: 40px;
+  background: #fff;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  margin: 100px auto;
+  text-align: center;
+  position: relative;
+}
+
+.ewm-cover .cover-con p {
+  margin-top: 20px;
+  margin-bottom: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.ewm-cover .cover-con .close {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.mulu-list {
+  width: 850px;
+  height: auto;
+  overflow: hidden;
+  border: 1px solid #dcdcdc;
+  border-bottom: none;
+}
+
+.mulu-list:first-child {
+  margin-top: 20px;
+}
+
+.mulu-list:last-child {
+  margin-bottom: 50px;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.mulu-list li {
+  width: 850px;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 45px;
+  border-bottom: 1px solid #dcdcdc;
+  background: #fff;
+}
+
+.mulu-list li:last-child {
+  border-bottom: none;
+}
+
+.muli-tit {
+  background: #fafafa !important;
+  font-weight: bold;
+}
+
+.mulu-list li span {
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  font-size: 15px;
+  color: #666;
+}
+
+.mulu-list li .li-span3 {
+  color: #ff6900;
+}
+
+.mulu-list li .li-span1, .mulu-list li .li-span3, .mulu-list li .li-span4 {
+  width: 120px;
+}
+
+.mulu-list li .li-span2 {
+  width: 400px;
+}
+
+.mulu-list li .li-span3 img, .mulu-list li .li-span4 img {
+  margin-right: 5px;
+}
+
+.class-detail {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+ul, li, ol {
+  list-style-type: none;
+}
+
+.introduce {
+  width: 1200px;
+  height: auto;
+  overflow: hidden;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.introduce .introduce-left {
+  float: left;
+  width: 850px;
+  height: auto;
+  overflow: hidden;
+  border: 1px solid #dcdcdc;
+  padding: 0;
+}
+
+.introduce .introduce-left .detail-con {
+  width: 850px;
+  height: auto;
+  padding: 45px;
+  border-bottom: 1px solid #dcdcdc;
+  overflow: hidden;
+}
+
+.introduce .introduce-left .detail-con:last-child {
+  border-bottom: none;
+}
+
+.introduce .introduce-left .detail-con .li-tit {
+  font-size: 20px;
+  color: #ff6900;
+}
+
+.introduce .introduce-left .detail-con .li-con {
+  margin-top: 30px;
+  overflow: hidden;
+}
+
+.introduce .introduce-left .detail-con .li-con .li-detail {
+  width: 100%;
+  font-size: 15px;
+  color: #666;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.introduce .introduce-left .detail-con .li-con .li-detail .p-left {
+  float: left;
+  margin-right: 5px;
+  width: 10px;
+}
+
+.introduce .introduce-left .detail-con .li-con .li-detail .p-right {
+  float: right;
+  width: calc(100% - 15px);
+}
+
+.introduce .introduce-left .detail-con .li-con .pic-sm {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 15px;
+  color: #666;
+  margin-top: 20px;
+}
+
+.introduce .introduce-left .detail-con .li-con .li-con-left {
+  width: 48%;
+  height: auto;
+  float: left;
+}
+
+.introduce .introduce-left .detail-con .li-con .li-con-right {
+  width: 48%;
+  height: auto;
+  float: right;
+}
+
+.introduce .introduce-left .detail-con .li-con .li-con-left .outline-list, .introduce .introduce-left .detail-con .li-con .li-con-right .outline-list {
+  width: 100%;
+  height: auto;
+  padding: 0;
+}
+
+.introduce .introduce-left .detail-con .li-con .li-con-left .outline-list li, .introduce .introduce-left .detail-con .li-con .li-con-right .outline-list li {
+  margin-top: 50px;
+}
+
+.introduce .introduce-left .detail-con .li-con .li-con-left .outline-list li:first-child, .introduce .introduce-left .detail-con .li-con .li-con-right .outline-list li:first-child {
+  margin-top: 0;
+}
+
+.introduce .introduce-left .detail-con .li-con .outline-list li .outline-tit {
+  text-decoration: underline;
+  font-size: 15px;
+  color: #666;
+  font-weight: bold;
+  width: 100%;
+}
+
+.introduce .introduce-left .detail-con .li-con .outline-list li .outline-con {
+  font-size: 15px;
+  color: #666;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.introduce .introduce-right {
+  float: right;
+  width: 330px;
+  height: auto;
+}
+
+.introduce .introduce-right .teacher_introduce {
+  border: 1px solid #dcdcdc;
+  width: 330px;
+  height: auto;
+}
+
+.introduce .introduce-right .teacher_introduce li {
+  padding: 45px 30px;
+  overflow: hidden;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.introduce .introduce-right .teacher_introduce li:last-child {
+  border-bottom: none;
+}
+
+.introduce .introduce-right .li-tit {
+  font-size: 20px;
+  color: #ff6900;
+}
+
+.introduce .introduce-right .teacher_introduce li .teacher_header {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  margin: 30px auto 0;
+  text-align: center;
+}
+
+.introduce .introduce-right .teacher_introduce li .teacher_name {
+  font-size: 15px;
+  color: #333;
+  text-align: center;
+  margin-top: 25px;
+  font-weight: bold;
+}
+
+.introduce .introduce-right .teacher_introduce li .teacher_con {
+  font-size: 15px;
+  color: #666;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.introduce .introduce-right .teacher_introduce li .teacher_tips {
+  width: 120px;
+  height: 30px;
+  float: left;
+  border: 1px solid #ff6900;
+  text-align: center;
+  line-height: 30px;
+  color: #ff6900;
+  margin-top: 15px;
+  margin-right: 14px;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0 5px;
+}
+
+.introduce .introduce-right .about-lesson {
+  margin-top: 25px;
+  cursor: pointer;
+}
+
+.introduce .introduce-right .about-lesson p {
+  margin-bottom: 0;
+}
+
+.introduce .introduce-right .about-tit {
+  margin-top: 15px;
+  font-size: 15px;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.introduce .introduce-right .teacher_project, .introduce .introduce-right .recommend-lesson {
+  width: 330px;
+  border: 1px solid #dcdcdc;
+  margin-top: 20px;
+  padding: 45px 30px;
+  overflow: hidden;
+}
+
+.introduce .introduce-right .teacher_project .project_list {
+  float: left;
+  text-align: center;
+  margin-top: 25px;
+}
+
+.introduce .introduce-right .teacher_project .project_list:nth-child(even) {
+  margin-right: 15px;
+}
+
+.introduce .introduce-right .teacher_project .project_list .pr-name {
+  font-size: 14px;
+  color: #666;
+  margin-top: 15px;
+}
+
+.m-l-45 {
+  margin-left: 45px;
+}
+
+.class-tab {
+  width: 1200px;
+  height: 45px;
+  background: #eee;
+  margin-top: 50px;
+}
+
+.class-tab .tab-con {
+  display: inline-block;
+  height: 45px;
+  font-size: 18px;
+  color: #333;
+  line-height: 45px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.class-tab .tab-con.active {
+  width: 100px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  color: #ff6900;
+  background: #fff;
+  margin-top: -7px;
+  border: 1px solid #dcdcdc;
+  border-bottom: 2px solid #ff6900;
+}

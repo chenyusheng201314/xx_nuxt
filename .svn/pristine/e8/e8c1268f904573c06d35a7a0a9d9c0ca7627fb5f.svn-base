@@ -1,0 +1,63 @@
+<template>
+<div class="admin_body">
+  <LeftNav :data="leftNav"/>
+  <div class="admin_body_right">
+    <nuxt-child/>
+  </div>
+</div>
+</template>
+
+<script>
+import LeftNav from '~/components/admin/LeftNav';
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  data () {
+    return {
+      title: '机构导师',
+      leftNav: [
+        {
+          name: '企业列表',
+          link: '/admin/companyManage',
+          active: true
+        }, {
+          name: '导师列表',
+          link: '/admin/orgAndTch/tch',
+          active: false
+        }, {
+          name: '案例',
+          link: '/admin/orgAndTch/case',
+          active: false
+        }, {
+          name: '导师秀',
+          link: '/admin/orgAndTch/tchShow',
+          active: false
+        } 
+      ]
+    }
+  },
+  components: {
+      LeftNav
+    },
+  methods: {
+ 
+ 
+  },
+  mounted () {
+  
+  },
+  head () {
+    return {
+      title: "机构",
+      meta: [{
+        hid: 'description',
+        name: 'description',
+        content: "123"
+      }],
+ 
+      
+    }
+  }
+}
+</script>
+

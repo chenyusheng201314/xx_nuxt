@@ -1,0 +1,412 @@
+.admin-blogclassify {
+  width: 100%;
+  height: auto;
+  background: #F5F8FA;
+  padding: 40px 70px;
+}
+
+.admin-blogclassify h2 {
+  border-left: 5px solid #2E4769;
+  text-indent: 20px;
+  font-size: 22px;
+}
+
+.admin-blogclassify h2 span {
+  color: #2E4769;
+  font-size: 22px;
+}
+
+.admin-blogclassify h2 .add-first {
+  width: 140px;
+  float: right;
+  height: 40px;
+  line-height: 40px;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  cursor: pointer;
+}
+
+.admin-blogclassify h2 .true {
+  background: #4667B4;
+}
+
+.admin-blogclassify h2 .false {
+  background: #c1bec1;
+}
+
+.admin-blogclassify .lists {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+.admin-blogclassify .lists .lists-tit {
+  width: 100%;
+  height: 80px;
+  padding: 0 35px;
+  padding: 0 35px;
+  line-height: 80px;
+  background: #fff;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  margin-top: 30px;
+  position: relative;
+}
+
+.admin-blogclassify .lists .lists-tit .tit-delete {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 0;
+  top: -10px;
+  cursor: pointer;
+  z-index: 100;
+
+}
+
+.admin-blogclassify .lists .lists-tit .left {
+  width: 50%;
+  float: left;
+}
+
+.admin-blogclassify .lists .lists-tit .right {
+  width: 50%;
+  float: left;
+  text-align: right;
+}
+
+.admin-blogclassify .lists .lists-tit span {
+  font-size: 18px;
+}
+
+.admin-blogclassify .lists .span1 {
+  color: #2E4769;
+  margin-right: 50px;
+}
+
+.admin-blogclassify .lists .span-name {
+  display: inline-block;
+  width: 300px;
+}
+
+.admin-blogclassify .lists .lists-tit .span2 {
+  color: #A6BCD9;
+}
+
+.admin-blogclassify .lists .lists-tit .edit, .admin-blogclassify .lists .lists-tit .save {
+  display: inline-block;
+  width: 70px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  color: #4667B4;
+  font-size: 16px;
+  background: #A6BCD9;
+  margin-right: 35px;
+  cursor: pointer;
+}
+
+.admin-blogclassify .lists .lists-tit .select-down {
+  cursor: pointer;
+  margin-right: 80px;
+  transition: all linear 0.2s;
+  -webkit-transition: all linear 0.2s;
+  -moz-transition: all linear 0.2s;
+  -ms-transition: all linear 0.2s;
+  -o-transition: all linear 0.2s;
+}
+
+.admin-blogclassify .lists .lists-tit .select-down.choose {
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+}
+
+.admin-blogclassify .lists .lists-tit .solt {
+  cursor: pointer;
+}
+
+.admin-blogclassify .lists .inp, .admin-blogclassify .lists .list li .inp {
+  width: 300px;
+  height: 40px;
+  border: 1px solid #E4EBF4;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  margin-right: 35px;
+  color: #4667B4;
+  padding: 0 10px;
+}
+
+.admin-blogclassify .lists .lists-tit .save {
+  color: #fff;
+  background: #71C945;
+}
+
+.admin-blogclassify .add-title {
+  padding: 6px 9px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  color: #fff;
+  font-size: 16px !important;
+  background: #4667B4;
+  margin-right: 25px;
+  cursor: pointer;
+}
+
+.admin-blogclassify .seo-span {
+  margin-right: 25px;
+  cursor: pointer;
+}
+
+.admin-blogclassify .delete {
+  display: inline-block;
+  width: 70px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  background: #FFEEEF;
+  color: #F65B79;
+  cursor: pointer;
+  margin-right: 35px;
+}
+
+.admin-blogclassify .lists .list li .m_r_45 {
+  margin-right: 45px;
+}
+
+.admin-blogclassify .lists .list li .m_r_75 {
+  margin-right: 75px;
+}
+
+.admin-blogclassify .lists .list {
+  width: 100%;
+  height: auto;
+  border: 1px solid #F2F2F4;
+  border-bottom: none;
+  background: #fff;
+}
+
+.admin-blogclassify .lists .list li {
+  border-bottom: 1px solid #F2F2F4;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 35px;
+}
+
+.admin-blogclassify .lists .list li .li-left {
+  float: left;
+  width: 60%;
+}
+
+.admin-blogclassify .lists .list li .li-right {
+  float: right;
+  width: 40%;
+  text-align: right;
+}
+
+.seo-cover {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.seo-con {
+  width: 900px;
+  height: auto;
+  background: #fff;
+  margin: 100px auto;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  padding: 35px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  position: relative;
+}
+.seo-con .cover-close{
+  display: inline-block;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  cursor: pointer;
+}
+.seo-con .con-list {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin-top: 75px;
+}
+
+.seo-con .con-list li {
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.seo-con .con-list li .con-left {
+  float: left;
+  text-align: right;
+  height: 40px;
+  line-height: 40px;
+  width: 30%;
+}
+
+.seo-con .con-list li .con-left span {
+  font-size: 16px;
+  color: #2E4769;
+}
+
+.seo-con .con-list li .con-right {
+  float: right;
+  width: 67%;
+}
+
+.seo-con .con-list li .con-right input, .seo-con .con-list li .con-right textarea {
+  width: 400px;
+  height: 40px;
+  border: 1px solid #E4EBF4;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  padding: 0 10px;
+  font-size: 16px;
+  color: #2E4769;
+}
+
+.seo-con .con-list li .con-right textarea {
+  min-height: 60px;
+  padding: 10px;
+}
+
+.seo-con .seo-save {
+  width: 360px;
+  height: 45px;
+  line-height: 45px;
+  border-radius: 4px;
+  background: #71C945;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  margin: 50px auto;
+  text-align: center;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

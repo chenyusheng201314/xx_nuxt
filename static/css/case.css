@@ -1,0 +1,168 @@
+p {
+  margin: 0;
+}
+
+.case-detail-con {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.case-detail-tit {
+  width: 1200px;
+  height: 45px;
+  background: #eee;
+  padding: 0 45px;
+}
+
+.case-detail-tit .case-tit-con {
+  float: left;
+  padding: 0 10px;
+  height: 45px;
+  line-height: 45px;
+  font-size: 18px;
+  color: #333;
+  margin-right: 55px;
+  text-decoration: none;
+}
+
+.case-detail-tit .case-tit-con:last-child {
+  margin-right: 0;
+}
+
+.case-detail-tit .case-tit-con.active {
+  height: 50px;
+  background: #fff;
+  border: 1px solid #dcdcdc;
+  border-bottom: 2px solid #ff6900;
+  margin-top: -5px;
+  line-height: 50px;
+}
+
+.case-detail-article {
+  padding: 0;
+  border: 1px solid #dcdcdc;
+  border-bottom: none;
+  margin-top: 20px;
+}
+
+.case-detail-article li {
+  padding: 45px;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.case-detail-article li h3 {
+  width: 100%;
+  height: auto;
+  text-align: center;
+  color: #ff6900;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.case-detail-article li .tit-introduce {
+  width: 100%;
+  height: auto;
+  background: #f0f0f0;
+  padding: 30px;
+  font-size: 15px;
+  color: #666;
+  margin-top: 30px;
+}
+
+.case-detail-article li p.name,
+.other-case p.name {
+  font-size: 18px;
+  color: #ff6900;
+  margin-bottom: 30px;
+}
+
+.case-detail-article li p.con {
+  font-size: 15px;
+  color: #666;
+}
+
+.other-case {
+  margin-top: 20px;
+  border: 1px solid #dcdcdc;
+  padding: 45px;
+  margin-bottom: 50px;
+}
+
+.other-case ul {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin-top: 15px;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.other-case ul li {
+  float: left;
+  width: 208px;
+  margin-right: 13px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+.other-case ul li p{
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+.case {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.case-list {
+  width: 1200px;
+  height: auto;
+  padding: 25px 45px 45px;
+  border: 1px solid #dcdcdc;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  margin-bottom: 50px;
+}
+
+.case-list li {
+  margin-top: 45px;
+
+}
+
+.case-list li:first-child {
+  margin-top: 0;
+}
+
+.case-list li h2 {
+  font-size: 20px;
+  color: #ff6900;
+}
+
+.case-list li .img-all {
+  margin-top: 22px;
+  overflow: hidden;
+}
+
+.case-list li .img-all li {
+  float: left;
+  width: 265px;
+  margin-right: 5px;
+  margin-left: 5px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.case-list li .img-all img {
+  width: 265px;
+  height: 150px;
+}
+
+.case-list li .img-all p {
+  margin-top: 15px;
+  margin-bottom: 0;
+  font-size: 16px;
+  text-align: center;
+}

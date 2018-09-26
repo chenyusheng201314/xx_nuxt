@@ -1,0 +1,90 @@
+import Vuex from 'vuex'
+import axios from 'axios'
+
+const state = {
+  isLogin: 0,
+  adminUsername:'',
+  token: '',
+  userInfo: '',
+  baseUrl: 'https://platform.vpx.com.cn/api/v1',
+  fileAddUrl: 'https://platform.vpx.com.cn/api/v1/common/file/add',
+  sex: {1:'男',2:'女'},
+  inp: '',
+  now_nav: '首页',
+
+};
+const mutations = {
+  setCompanyToken(state, res) {
+    state.token = res
+  },
+  serUser(state, user) {
+    state.userInfo = user
+  },
+  setCompanyIsLogin(state, isLogined) {
+    state.isLogin = isLogined
+  },
+  setCompanyUsername(state,username){
+    state.adminUsername = username
+  },
+};
+const actions = {
+  async nuxtServerInit({commit, state}, {req}) {
+ 
+ 
+    // commit('setToken', "16f3198be55034c8fcf321580f3ccdb6");
+    // commit('setIsLogin', 1)
+    if (req.session && req.session.companyToken) {
+      console.log(2);
+      commit('setCompanyToken', req.session.companyToken);
+      commit('setCompanyIsLogin',1)
+      commit('setCompanyUsername',req.session.companyUsername)
+      console.log('abc',state.token)
+
+    }
+    else {
+      console.log(1);
+      commit('setCompanyUsername', '');
+      commit('setCompanyIsLogin', 0,'');
+    }
+   
+  },
+  // 登录
+  async company_login({commit, state}, ht) {
+    let res = await axios.post('/api/company_login', ht);
+    if (res.data.token) {
+      commit('setCompanyToken', res.data.token)
+      commit('setCompanyIsLogin', 1)
+      return 1
+    } else {
+      commit('setCompanyToken', '')
+      commit('setCompanyIsLogin', 0)
+      return 0
+    }
+  },
+  async company_logout({commit, state}) {
+    await axios.post('/api/admin_logout');
+  },
+  async companyHttpGet({commit, state}, params) {
+    const {data} = await axios({
+      method: 'get',
+      url: state.baseUrl + params.url,
+      headers: {'token': state.token},
+      params: params.data
+    });
+    return data;
+  },
+  async companyHttpPost({commit, state}, params) {
+    const {data} = await axios({
+      method: 'post',
+      url: state.baseUrl + params.url,
+      headers: {'token': state.token},
+      data: params.data
+    })
+    return data;
+  },
+
+}
+
+export default {
+  state, mutations, actions
+}
