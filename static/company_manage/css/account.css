@@ -1,0 +1,318 @@
+p, ul {
+  margin-bottom: 0;
+}
+
+.iconfont {
+  font-family: iconfont;
+}
+
+.company-account {
+  width: 100%;
+  min-height: 100%;
+  padding: 35px 60px;
+  overflow: hidden;
+}
+
+.company-account h2 {
+  color: #495C60;
+  font-size: 26px;
+}
+
+.company-account .eng-name {
+  color: #878C90;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.company-account .search-info {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  background: #fff;
+  padding: 5px 35px 25px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+
+.company-account .search-info li {
+  float: left;
+  height: 40px;
+  overflow: hidden;
+  margin-right: 40px;
+  line-height: 40px;
+  margin-top: 20px;
+}
+
+.company-account .search-info li.last {
+  float: right;
+}
+
+.company-account .search-info li .li-span {
+  color: #BCBBC0;
+  font-size: 14px;
+  margin-right: 15px;
+}
+
+.company-account .search-info li input {
+  width: 200px;
+  height: 38px;
+  border: 1px solid #dddddd;
+  padding: 0 10px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  font-size: 14px;
+  color: #495C60
+}
+
+.el-date-editor.el-range-editor.el-input__inner.el-date-editor--daterange {
+  height: 38px;
+  width: 410px;
+}
+
+.el-date-editor.el-range-editor.el-input__inner.el-date-editor--daterange input {
+  border: none;
+  height: 36px;
+
+}
+
+.company-account .search-info li .search-btn {
+  display: inline-block;
+  width: 115px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  background: #FB9500;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.1s linear;
+  -webkit-transition: all 0.1s linear;
+  -moz-transition: all 0.1s linear;
+  -ms-transition: all 0.1s linear;
+  -o-transition: all 0.1s linear;
+}
+
+.company-account .search-info li .search-btn:hover {
+  background: #fba908;
+}
+
+.company-account .search-info li .add-btn {
+  display: inline-block;
+  width: 130px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  border: 1px solid #FB9500;
+  background: #fff;
+  color: #FB9500;
+  cursor: pointer;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  transition: all 0.1s linear;
+  -webkit-transition: all 0.1s linear;
+  -moz-transition: all 0.1s linear;
+  -ms-transition: all 0.1s linear;
+  -o-transition: all 0.1s linear;
+  margin-left: 20px;
+}
+
+.company-account .search-info li .add-btn:hover {
+  background: #fbf4de;
+}
+
+.company-account table {
+  width: 100%;
+  margin-top: 20px;
+  background: #fff;
+}
+
+.company-account table th {
+  background: #FAFBFC;
+}
+
+.company-account table th, .company-account table td {
+  font-size: 14px;
+  color: #797886;
+  text-align: center;
+  height: 45px;
+}
+
+.company-account table td .true {
+  color: #9CD480;
+}
+
+.company-account table td .false {
+  color: #F1686B;
+}
+
+.company-account table td .iconfont {
+  color: #FAC583;
+  font-size: 24px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.company-account table tbody tr:nth-child(even) {
+  background: #FAFBFC;
+}
+
+.paging {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.paging .el-pagination .el-pager li, .el-pagination button, .el-pagination span:not([class*=suffix]) {
+  min-width: 50px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+}
+
+.el-input--mini .el-input__inner {
+  height: 40px;
+  line-height: 40px;
+}
+
+.el-pagination .el-select .el-input {
+  margin-left: 15px;
+}
+
+.el-dialog {
+  border-radius: 4px;
+}
+
+.el-dialog .el-dialog__title {
+  border-left: none !important;
+  padding-left: 0 !important;
+  font-size: 16px;
+  color: #495C60;
+}
+
+.el-dialog__header {
+  border-bottom: 1px solid #dddddd;
+  padding: 20px
+}
+
+.el-dialog__body {
+  padding: 0;
+}
+
+.cover-con {
+  width: 100%;
+  padding: 30px 50px 50px;
+  height: auto;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.cover-con ul {
+  margin-top: -20px;
+}
+
+.cover-con li {
+  margin: 20px auto 0;
+  width: 400px;
+  height: 42px;
+}
+
+.cover-con li .li-name {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  color: #BCBBC0;
+  margin-right: 20px;
+}
+
+.cover-con li .li-name label {
+  color: #F1686B;
+}
+
+.cover-con li input {
+  width: 290px;
+  height: 40px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+.cover-con .add-save {
+  width: 230px;
+  height: 45px;
+  text-align: center;
+  line-height: 45px;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  background: #71C945;
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.1s linear;
+  margin: 30px auto 0;
+  cursor: pointer;
+}
+
+.cover-con .add-save:hover {
+  background: #80c95f;
+}
+
+.cover-con .edit {
+  margin: 30px auto 0;
+  text-align: center;
+}
+
+.cover-con .edit .edit-delete, .cover-con .edit .edit-save {
+  display: inline-block;
+  width: 225px;
+  height: 45px;
+  text-align: center;
+  line-height: 45px;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  font-size: 16px;
+  transition: all 0.1s linear;
+  cursor: pointer;
+}
+
+.cover-con .edit .edit-delete {
+  border: 1px solid #FE475B;
+  color: #FE475B;
+  margin-right: 30px;
+}
+
+.cover-con .edit .edit-save {
+  background: #71C945;
+  color: #fff;
+}
+.cover-con .edit .edit-save:hover{
+  background: #79c967;
+}
+.cover-con .edit .edit-delete:hover{
+  background: #fee7e3;
+}

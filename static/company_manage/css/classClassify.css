@@ -1,0 +1,63 @@
+.paging .el-pagination .el-pager li, .el-pagination button, .el-pagination span:not([class*=suffix]) {
+  min-width: 50px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+}
+
+.el-input--mini .el-input__inner {
+  height: 40px;
+  line-height: 40px;
+}
+
+.el-pagination .el-select .el-input {
+  margin-left: 15px;
+}
+
+.clo-error {
+  color: #F65B79;
+}
+
+.clo-right {
+  color: #2E4769;
+}
+
+p {
+  margin: 0;
+}
+
+.m-r-20 {
+  margin-right: 20px;
+}
+
+.admin-class {
+  width: calc(100% - 250px);
+  height: auto;
+  background: #F5F8FA;
+  margin-left: 250px;
+  padding: 40px 70px;
+}
+
+.admin-class h2.title {
+  border-left: 5px solid #2E4769;
+  text-indent: 20px;
+  color: #2E4769;
+  font-size: 22px;
+}
+.classify{ background: #fff; margin:20px 0; }
+.classify dt { padding: 10px; position: relative; font-weight: normal; color: #2E4769}
+.classify dt .base_btn_add {height: 30px;line-height: 28px;}
+.classify dt .class_del {background: #F65B79; color: #fff; width: 30px; height: 30px; position: absolute;right: -10px; top: -10px; font-size: 28px; line-height: 28px;border-radius: 20px; text-align: center;}
+.classify dd { padding: 10px; border-top:1px solid #F2F2F4 }
+
+.classify .is-disabled {border: none; background: none}
+.classify .is-disabled input.el-input__inner {border: none; background: none;color: #2E4769}
+
+.classify .class_op { display: inline-block; float: right; width: 200px; }
+.classify .class_op span {display: inline-block; margin: 0 10px;}
+.classify .class_op span img {-webkit-transition:all 0.3s linear 0s;-moz-transition:all 0.3s linear 0s;transition:all 0.3s linear 0s;}
+.classify .class_op span .show {transform:rotate(180deg);-ms-transform:rotate(180deg);   /* IE 9 */-moz-transform:rotate(180deg);  /* Firefox */-webkit-transform:rotate(180deg); /* Safari 和 Chrome */-o-transform:rotate(180deg);}
+.classify .class_op span .hide {transform:rotate(0deg);-ms-transform:rotate(0deg);   /* IE 9 */-moz-transform:rotate(0deg);  /* Firefox */-webkit-transform:rotate(0deg); /* Safari 和 Chrome */-o-transform:rotate(0deg);}
+
+
+.classify .el-input { width: 200px; }

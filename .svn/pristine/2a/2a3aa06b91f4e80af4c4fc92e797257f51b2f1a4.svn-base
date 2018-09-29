@@ -1,0 +1,11 @@
+p, ul {
+  margin-bottom: 0;
+}
+
+.iconfont {
+  font-family: iconfont;
+}
+
+.company-role {
+  width: 100%;
+}

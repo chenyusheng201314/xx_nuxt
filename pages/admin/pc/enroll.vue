@@ -1,0 +1,411 @@
+<template>
+<div class="app_update">
+   <div class="app_update_setting">
+     <div class="app_update_title">
+       <div class="title">
+          报名信息
+       </div>
+     
+     </div>
+     <div class="searchFilter">
+        <el-form :inline="true" :model="searchFilter" class="demo-form-inline">
+          <el-form-item label="课程名称" label-width="80px">
+            <el-input v-model="searchFilter.sign_title" auto-complete="off" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="报名日期" label-width="80px" clearable>
+            <el-date-picker
+      v-model="searchFilter.start_time"
+      value-format="yyyy-MM-dd 00:00:00"
+      type="date"
+      placeholder="选择日期">
+          </el-date-picker> -
+          <el-date-picker
+      v-model="searchFilter.end_time"
+      value-format="yyyy-MM-dd 23:59:59"
+      type="date"
+      placeholder="选择日期">
+          </el-date-picker>
+          </el-form-item>
+ 
+          <el-form-item label="客户姓名" label-width="80px">
+            <el-input v-model="searchFilter.customer_name" auto-complete="off" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="联系方式" label-width="80px">
+            <el-input v-model="searchFilter.mobile" auto-complete="off" clearable></el-input>
+          </el-form-item>
+
+
+      <el-form-item class="fRight">
+  
+          <el-button   @click="setData(1)" class="btn_search">搜索</el-button>
+      </el-form-item>
+
+        </el-form>
+
+       
+     </div>
+     <div class="table-responsive">
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="8%">序号</th>
+          <th width="10%">课程名称</th>
+          <th width="8%">报名日期</th>
+          <th width="8%">客户姓名</th>
+          <th width="6%">联系方式</th>
+          <th width="6%">所在公司</th>
+        </tr>
+        <tr v-for="(vo, index) in updateInfo" :key="index">
+          <td>{{index+1}}</td>
+          <td>{{vo.sign_title}}</td>
+          <td>{{vo.created_at}}</td>
+          <td>{{vo.customer_name}}</td>
+          <td>{{vo.mobile}}</td>
+          <td>{{vo.company}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="page">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage"
+      :page-sizes="pageInfo.pageSizes"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total">
+    </el-pagination>
+    </div>
+   </div>
+
+
+<el-dialog :title="(saveAction=='edit'?'编辑':'创建')+'资讯'" :visible.sync="dialogFormVisible">
+ 
+  <el-form :model="addInfo" :rules="rules" ref="addInfo">
+ 
+ 
+     <el-form-item label="资讯标题" :label-width="formLabelWidth" prop="news_title">
+        <el-input  v-model="addInfo.news_title" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="资讯摘要" :label-width="formLabelWidth" prop="news_description">
+        <el-input type="textarea" :autosize="{ minRows: 2}" v-model="addInfo.news_description" auto-complete="off"></el-input>
+      </el-form-item>
+
+      <el-form-item label="资讯图片" :label-width="formLabelWidth" prop="news_pic">
+         <div v-on:click="cut_pic('news_pic',400,300)" >
+              <img v-if="addInfo.news_pic.value" :src="addInfo.news_pic.value" class="avatar" style="width:200px;height:150px;">
+              <div class="cut_pic_add" v-else><i>+</i></div>
+         </div>
+      </el-form-item>
+      <el-form-item label="来源" :label-width="formLabelWidth" prop="news_source">
+        <el-input v-model="addInfo.news_source" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="责任编辑" :label-width="formLabelWidth" prop="news_editor">
+        <el-input v-model="addInfo.news_editor" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="SEO关键词" :label-width="formLabelWidth" prop="keywords">
+        <el-input v-model="addInfo.keywords" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="资讯内容" :label-width="formLabelWidth" prop="news_content">
+        <quill-editor 
+          v-model="addInfo.news_content" 
+          ref="myQuillEditor" 
+          @blur="onEditorBlur($event)" 
+          @focus="onEditorFocus($event)"
+          @change="onEditorChange($event)"   >
+        </quill-editor>
+
+      </el-form-item>
+   
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="cancel()">取 消</el-button>
+    <el-button type="primary" @click="submitForm('addInfo')">确 定</el-button>
+  </div>
+</el-dialog>
+
+<el-dialog title="图片裁剪" :visible.sync="dialogCropperVisible" append-to-body width="80%">
+   <cropper 
+     :cutPicInfo = "cutPicInfo"
+     v-on:cutPicSuccess="cutPicSuccess"/>
+</el-dialog>
+
+<el-dialog title="查看企业" :visible.sync="dialogTableVisible">
+
+  <el-form :model="addInfo">
+ 
+ 
+     <el-form-item label="资讯标题" :label-width="formLabelWidth" >
+     {{addInfo.news_title}}
+      </el-form-item>
+      <el-form-item label="资讯摘要" :label-width="formLabelWidth" >
+ 
+        {{addInfo.news_description}}
+      </el-form-item>
+
+      <el-form-item label="资讯图片" :label-width="formLabelWidth" >
+ 
+           <img v-if="addInfo.news_pic.value" :src="addInfo.news_pic.value" class="avatar" style="width:200px;height:150px;">
+ 
+      </el-form-item>
+      <el-form-item label="来源" :label-width="formLabelWidth" >
+        {{addInfo.news_source}}
+      </el-form-item>
+      <el-form-item label="责任编辑" :label-width="formLabelWidth" >
+        {{addInfo.news_editor}}
+      </el-form-item>
+      <el-form-item label="SEO关键词" :label-width="formLabelWidth" p>
+ 
+        {{addInfo.keywords}}
+      </el-form-item>
+      <el-form-item label="资讯内容" :label-width="formLabelWidth" >
+        <div v-html="addInfo.news_content "></div>
+         
+      </el-form-item>
+   
+  </el-form>
+</el-dialog>
+
+
+ 
+ 
+
+
+
+</div>
+</template>
+
+<script>
+import cropper from '~/components/admin/cropper';
+ 
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  components: {
+      cropper
+  },
+  data () {
+    return {
+      isRresetPW:false,
+ 
+      addInfo:{news_pic:{}},
+ 
+      status:[{id:1,title:"正常"},{id:0,title:"冻结"}],
+      searchFilter:{},    
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      formLabelWidth: '200px',
+      saveAction:"",
+      choose:null,
+      rules:{
+        news_title: [{ required: true, message: '必填', trigger: 'blur' }],
+        news_pic: [{ required: true, message: '必填', trigger: 'blur' }],
+        news_source: [{ required: true, message: '必填', trigger: 'blur' }],
+        news_editor: [{ required: true, message: ' 必填', trigger: 'blur' }],
+        keywords: [{ required: true, message: '必填', trigger: 'blur' }],
+        news_content: [{ required: true, message: '必填', trigger: 'blur' }],
+        news_description: [{ required: true, message: '必填', trigger: 'blur' }],
+      },     
+      cutPicDic:"",
+      cutPicInfo:{},
+      dialogCropperVisible: false,
+      dialogClassVisible: false,
+      dialogtrainingVisible: false,
+      dialogPersonVisible: false,
+    }
+  },
+  async asyncData({store}){
+      let params = {url: "/manage/sign_up_msg/msg_list",data:{page:1,psize:10}}
+      let res  = await store.dispatch("adminHttpGet",params);
+ 
+      return {
+        updateInfo: res.data.data,
+        pageInfo:{
+          total:res.data.total,
+          pageSizes:[10, 20, 30, 400],
+          pageSize:10,
+          currentPage:parseInt(res.data.page),
+        },
+      }
+  },
+
+  
+
+  methods: {
+    cut_pic(cutPicDic,picWidth,picHeight) {
+        this.$set(this.cutPicInfo,"aspectRatio",picWidth/picHeight)
+        this.$set(this.cutPicInfo,"cutPicDic",cutPicDic)
+        this.$set(this.cutPicInfo,"curPic",this.addInfo[cutPicDic].value)
+        this.dialogCropperVisible = true
+    },
+    async cutPicSuccess(res) {
+      this.dialogCropperVisible = res.visible
+      let params = {url: "/common/file/add",data:{file_base64:res.data}}
+      let rest  = await this.$store.dispatch("adminHttpPost",params);
+      if(rest.code==4002) {
+        this.$set(this.addInfo[this.cutPicInfo.cutPicDic],"value",rest.data.file_url)
+        this.$set(this.addInfo[this.cutPicInfo.cutPicDic],"name",rest.data.filename)
+        //this.$message({message: '图片上传成功',type: 'success'});
+      }
+      else {
+        this.$message.error('图片上传失败');
+      }
+    },
+    see:async function(id) {
+ 
+        this.saveAction = "edit"
+        let params = {url: "/manage/news/news_info",data:{id:id}}
+        let res  = await this.$store.dispatch("adminHttpGet",params);
+        this.addInfo = res.data;
+ 
+ 
+        this.dialogTableVisible = true;
+ 
+     },
+    add:function(){
+        
+        this.isRresetPW = true
+        this.addInfo = {news_pic:{}}
+        this.saveAction = "add"
+
+        this.dialogFormVisible = true;
+
+
+        
+     },
+    async del(id) {
+
+        this.$confirm('删除后将无法恢复，确定删除此文章？', '重要操作确认', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          let params = {url: "/manage/news/news_del",data:{id:id}}
+          let res  = await this.$store.dispatch("adminHttpPost",params);
+          if(res.code==0) {
+            this.$message({message: '删除成功',type: 'success'});
+            this.setData();
+          }
+          else {
+            this.$message.error("删除失败")
+          }
+
+        }).catch(() => {
+                    
+        });
+        
+
+     },
+     cancel() {
+        this.dialogFormVisible = false
+        this.$refs["addInfo"].resetFields();
+     },
+     edit:async function(id) {
+        this.saveAction = "edit"
+        let params = {url: "/manage/news/news_info",data:{id:id}}
+        let res  = await this.$store.dispatch("adminHttpGet",params);
+        this.addInfo = res.data;
+        this.dialogFormVisible = true;
+        this.$refs["addInfo"].resetFields();
+     },
+     onEditorBlur() { //失去焦点事件
+    },
+    onEditorFocus() { //获得焦点事件
+    },
+    async onEditorChange() { //内容改变事件
+      var imgReg = /<img.*?(?:>|\/>)/gi;
+      var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+      var arr = this.addInfo.news_content.match(imgReg);
+      arr = arr==null?[]:arr  
+      for (var i = 0; i < arr.length; i++) {
+       var src = arr[i].match(srcReg);
+       //获取图片地址
+       if(src[1]){
+        if(src[1].indexOf('data:image')>-1) {
+          let params = {url: "/common/file/add",data:{file_base64:src[1]}}
+          let res  = await this.$store.dispatch("adminHttpPost",params);
+          this.addInfo.news_content = this.addInfo.news_content.replace(src[1], res.data.file_url);
+        }
+       }
+      }
+    },
+     submitForm(formName) {
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.update();
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+        
+     },
+ 
+     async update() {
+        var submitInfo = JSON.parse(JSON.stringify(this.addInfo))
+        this.$set(submitInfo,'news_pic',submitInfo.news_pic.name)
+        let params = {url: "/manage/news/news_add",data:submitInfo}
+        let res  = await this.$store.dispatch("adminHttpPost",params);
+
+        if(res.code==0) {
+          this.$message({message: '更新成功',type: 'success'});
+          this.setData();
+          this.dialogFormVisible = false
+        }
+        else {
+          this.$message.error("更新失败")
+        }   
+     },
+     handleSizeChange(val) {
+      this.pageInfo.pageSize = val;
+      this.currentPage = 1;
+      this.setData();
+    },
+    handleCurrentChange(val) {
+      this.pageInfo.currentPage=val
+      this.setData();
+    },
+
+    async setData(val=0) {
+      this.searchFilter.page = val==0?this.pageInfo.currentPage:val;
+      this.searchFilter.psize = this.pageInfo.pageSize;
+      let params = {url: "/manage/sign_up_msg/msg_list",data:this.searchFilter}
+      let res  = await this.$store.dispatch("adminHttpGet",params);
+      this.pageInfo.currentPage = parseInt(res.data.page);
+      this.pageInfo.total = res.data.total;
+      this.updateInfo = res.data.data
+    },
+ 
+
+ 
+  },
+  computed:{
+ 
+  },
+  mounted () {
+ 
+  },
+  head () {
+    return {
+      title: "资讯",
+      meta: [{
+        hid: 'description',
+        name: 'description',
+        content: "123"
+      }],
+      link: [
+          {
+            href: '/admin/css/cropper.min.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+        ],
+        script: [
+          {src: '/admin/js/cropper.min.js'},
+        ]
+    }
+  }
+}
+</script>
+
