@@ -1,0 +1,30 @@
+<template>
+  <div class="mine-public">
+    <div class="d-inline-block menu">
+      <ul>
+        <!--<li @click="item=1"><nuxt-link :class="{'item-active':item === 1}" to="/mine/mine/mine04points/get"><div class="point"></div>积分获得</nuxt-link></li>-->
+        <li @click="item=2"><nuxt-link :class="{'item-active':item === 2}" to="/mine/mine/mine04points/detail"><div class="point"></div>积分明细</nuxt-link></li>
+        <li @click="item=3"><nuxt-link :class="{'item-active':item === 3}" to="/mine/mine/mine04points/rules"><div class="point"></div>积分规则</nuxt-link></li>
+        <li @click="item=4"><nuxt-link :class="{'item-active':item === 4}" to="/mine/mine/mine04points/buy"><div class="point"></div>积分购</nuxt-link></li>
+      </ul>
+    </div>
+    <div class="d-inline-block content">
+      <!--<transition name="router-fade" mode="out-in">-->
+        <keep-alive>
+          <nuxt-child :user="user"></nuxt-child>
+        </keep-alive>
+      <!--</transition>-->
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  name: 'mine04points',
+  data () {
+    return {
+      item: 2
+    }
+  },
+  props:['user'],
+}
+</script>

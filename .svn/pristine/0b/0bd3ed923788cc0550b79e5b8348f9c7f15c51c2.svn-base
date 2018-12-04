@@ -1,0 +1,76 @@
+<template>
+  <div class="news container">
+    <topBg src="/images/static/column06news.jpg"></topBg>
+    <route :route="route_data"></route>
+    <div class="border" v-for="(item, index) in news.data" :key="index">
+        <div class="position-relative d-inline-block box-cover">
+          <nuxt-link class="color" :to="'/news/'+item.id">
+          <img class="position-absolute news-cover" :src="item.news_pic" alt="">
+          </nuxt-link>
+        </div>
+        <div class="d-inline-block con">
+          <nuxt-link class="color" :to="'/news/'+item.id">
+          <div class="text-overflow-one title">{{item.news_title}}</div>
+          <div class="text-overflow-two content">{{item.news_description}}</div>
+          <div class="time">{{item.created_at}}</div>
+          <div class="read">
+            阅读全文
+            <div class="d-inline-block triangle">▼</div>
+          </div>
+          </nuxt-link>
+        </div>
+    </div>
+    <paging :page_total="news.page_total" url="/news/news?p=" :current="p"></paging>
+  </div>
+</template>
+
+<script>
+import paging from '@/components/aPaging'
+import topBg from '@/components/topBg'
+import route from '@/components/localRoute'
+export default {
+  name: 'news',
+  head () {
+    return {
+      link: [
+        {
+          href: '/css/news.css',
+          type:'text/css',
+          rel: 'stylesheet',
+        }
+      ]
+    }
+  },
+  data () {
+    return {
+      route_data: [{name: '享学科技网', path: '/'}, {name: '行业资讯', path: ''}],
+      // 加载动画
+      fullscreenLoading: false,
+    }
+  },
+  async asyncData({store,query}) {
+    let p = query.p?Number(query.p):1
+    // 行业资讯
+    let news = await store.dispatch('httpGet', {
+      url: '/home/news/news_list',
+      data: {
+        page: p,
+        psize: 10,
+      }
+    })
+    console.log('资讯',news.data)
+    return {
+      news: news.data,
+      p,
+    }
+  },
+  components: {paging,topBg, route},
+  methods: {
+
+  },
+  mounted () {
+    // console.log('总条数',this.news.total)
+
+  }
+}
+</script>

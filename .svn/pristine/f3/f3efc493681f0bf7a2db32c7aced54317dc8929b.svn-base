@@ -1,0 +1,19 @@
+<template>
+  <div class="download-app">
+    <div class="rows">
+      <div class="position-relative">
+        <img src="images/download/01.jpg" alt="">
+        <img class="position-absolute down-code" src="images/download/downCode.png" alt="">
+      </div>
+
+      <img src="images/download/02.jpg" alt="">
+    </div>
+
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "index"
+  }
+</script>

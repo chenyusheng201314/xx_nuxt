@@ -1,0 +1,879 @@
+.home-index .swiper-container-banner {
+  /*width: 100%;*/
+  height: 600px;
+  text-align: center;
+  
+  margin-left: -15px!important;
+  margin-right: -15px!important;
+}
+.home-index .swiper-slide-banner {
+  display: flex;
+  flex-direction: column;
+  /*justify-content: center;*/
+  align-items: center;
+}
+.home-index .swiper-img-banner-bg {
+  width: 100%;
+  height: 100%;
+  background: no-repeat center;
+  background-size: cover;
+}
+.home-index .swiper-img-banner {
+  /*width: 100%;*/
+  height: 100%;
+  vertical-align: middle;
+}
+
+.home-index .container {
+  padding: 0;
+}
+
+/*banner的悬浮导航*/
+.home-index .home-ul {
+  color: #fff;
+  font-size: 18px;
+  width: 300px;
+  height: 600px;
+  list-style: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: rgba(0,0,0,.6);
+  padding-left: 48px;
+  margin: 0;
+  top: 0;
+  padding-top: 16px;
+  /*padding-bottom: 70px;*/
+  z-index: 11;
+  /*opacity: 0.5;*/
+}
+.home-index .home-li {
+  width: 100%;
+  height: 62px;
+  line-height: 62px;
+}
+.home-index .home-li::before {
+  content: '·';
+  font-size: 40px;
+  margin-right: 10px;
+  vertical-align: top;
+}
+.home-index .home-li a {
+  color: #fff;
+}
+.home-index .home-li a:visited {
+  color: #fff;
+}
+/*5个优惠*/
+.home-index .container-active5 {
+  height: 212px;
+  margin-bottom: 70px;
+  
+  /*border-bottom: 1px solid #d1d1d1;*/
+}
+.home-index .active5 {
+  width: 100%;
+  height: 245px;
+  position: absolute;
+  top: -70px;
+  background-color: #fff;
+  border-radius: 10px;
+  display: flex;
+  box-shadow: 0 10px 20px #eee;
+  z-index: 12;
+}
+.home-index .active5-li {
+  box-sizing: border-box;
+  flex: 1;
+}
+.home-index .active5-img {
+  box-sizing: content-box;
+  /*width: 68px;*/
+  height: 56px;
+  padding-top: 26px;
+}
+.home-index .active5-img.img-small {
+  padding-top: 34px;
+  height: 48px;
+}
+.home-index .active5-img.img-small-active {
+  padding-top: 30px;
+}
+.home-index .active5-img-up {
+  transition: transform 1ms;
+  transform: translateY(-30px);
+}
+.home-index .active5-img-hover {
+  background-color: #fff;
+  padding: 24px 0 0;
+  width: 106px;
+  height: 106px;
+  margin: 0 auto;
+  border-radius: 50%;
+  box-shadow: 0 0 8px 4px rgba(0,0,0,.2);
+  transition: transform 300ms;
+  transform: translateY(-30px);
+}
+
+
+.home-index .active5-img-box {
+  padding-top: 30px;
+}
+
+.home-index .active5-text {
+  font-size: 22px;
+  color: #666;
+  
+  margin-bottom: 44px;
+}
+.home-index .active5-text-only {
+  margin-top: -8px;
+  margin-bottom: 0;
+}
+.home-index .active5-line {
+  width: 60px;
+  height: 2px;
+  border-bottom: 2px solid #ff6900;
+  margin: 20px auto 20px;
+}
+.home-index .fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.home-index .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.home-index .active5-view {
+  width: 122px;
+  height: 39px;
+  font-size: 20px;
+  line-height: 39px;
+  border-radius: 20px;
+  color: #fff;
+  background-color: #ff6900;
+  margin: 18px auto 30px;
+}
+/*精品课程*/
+.home-index section {
+  min-width: 1200px;
+  margin-bottom: 70px;
+}
+.home-index .title {
+  font-size: 30px;
+  color: #333;
+  width: 100%;
+  border-bottom: 1px solid #d1d1d1;
+  /*padding-bottom: 23px;*/
+  margin-bottom: 18px;
+}
+.home-index .title-text {
+  color: #333;
+  width: 140px;
+  border-bottom: 2px solid #ff6900;
+  padding-bottom: 23px;
+  margin: 0 auto -1px;
+}
+.home-index .courses-stitle-text {
+  color: #333;
+}
+.home-index .sub-title {
+  font-size: 15px;
+  color: #888;
+  margin-bottom: 20px;
+}
+.sub-title-blog {
+  padding-left: 52px;
+}
+.home-index .all {
+  text-align: right;
+  font-size: 18px;
+  color: #999;
+  margin-bottom: 20px;
+}
+.home-index .lesson-main {
+  display: inline-block;
+  width: 340px;
+  height: 598px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #999;
+}
+.home-index .lesson-main-cover {
+  width: 100%;
+  height: 100%;
+}
+.home-index .lessons {
+  display: inline-block;
+  vertical-align: top;
+  width: 70%;
+  margin-left: 13px;
+}
+.home-index .lesson {
+  width: 260px;
+  float: left;
+  /*overflow: hidden;*/
+  margin: 0 10px;
+}
+
+.home-index .lesson-bottom-top {
+  margin-top: 20px;
+}
+/*.lesson-border-right {*/
+/*border-right: 1px solid #ddd;*/
+/*padding-left: 10px;*/
+/*padding-right: 10px;*/
+/*}*/
+/*.lesson-border-bottom {*/
+/*border-bottom: 1px solid #ddd;*/
+/*padding-top: 16px;*/
+/*padding-bottom: 16px;*/
+/*}*/
+.home-index .line-right {
+  width: 1px;
+  height: 294px;
+  background-color: #ddd;
+  right: -10px;
+  top: 0;
+}
+.home-index .line-bottom {
+  width: 280px;
+  height: 1px;
+  background-color: #ddd;
+  bottom: -10px;
+  left: 0;
+}
+.home-index .line-right-top {
+  top: -10px;
+}
+.home-index .line-bottom-left {
+  left: -10px;
+}
+.home-index .lesson-cover {
+  width: 260px;
+  height: 160px;
+  border-radius: 8px;
+}
+
+.home-index .lesson-con {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 14px 16px 1px;
+}
+.home-index .lesson-title {
+  font-size: 18px;
+  color: #333;
+}
+.home-index .lesson-job {
+  margin-left: 6px;
+  padding-left: 6px;
+  border-left: 1px solid #999;
+}
+.home-index .lesson-teacher,
+.home-index .lesson-num,
+.home-index .lesson-price {
+  font-size: 15px;
+  color: #999;
+  margin-top: 4px;
+}
+.home-index .lesson-icon {
+  /*vertical-align: top;*/
+  margin-right: 4px;
+}
+.home-index .lesson-num >span {
+  margin-right: 8px;
+}
+.home-index .price-now {
+  font-size: 18px;
+  color: #ff6900;
+}
+.home-index .lesson:hover .lesson-cover,
+.home-index .lesson:hover .lesson-title,
+.home-index .lesson:hover .lesson-teacher,
+.home-index .lesson:hover .lesson-job,
+.home-index .lesson:hover .lesson-num,
+.home-index .lesson:hover .lesson-price {
+  transition: all 300ms;
+  transform: translateY(-20px);
+}
+/*金牌导师*/
+.home-index .teacher-main {
+  width: 435px;
+  height: 580px;
+  display: inline-block;
+  border: 2px solid #fff;
+  /*border-width: 2px;*/
+  /*border-style: solid;*/
+  /*border-color: #ff6900;*/
+  overflow: hidden;
+  margin-bottom: 70px;
+}
+.home-index .teacher-main:hover,
+.home-index .teacher:hover{
+  border: 2px solid #ff6900;
+}
+.home-index .teacher-main-cover {
+  width: 100%;
+  height: 100%;
+  background: no-repeat center top;
+  background-size: cover;
+}
+.home-index .teacher-main-hover{
+  width: 100%;
+  height: 108px;
+  color: #fff;
+  background-color: rgba(255,105,0,.5);
+  padding: 24px 24px 0;
+  bottom: 0;
+}
+.home-index .teacher-main-hover:hover{
+  height: 220px;
+  transition: height 300ms;
+}
+.home-index .teacher-main-name {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.home-index .teacher-main-line {
+  width: 104px;
+  height: 1px;
+  border-bottom: 2px dashed #fff;
+  margin: 0 auto 10px;
+}
+.home-index .teacher-main-company {
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+.home-index .teacher-main-special {
+  max-width: 100%;
+  height: 30px;
+  font-size: 15px;
+  line-height: 30px;
+  border: 1px solid #fff;
+  display: inline-block;
+  padding: 0 4px;
+  margin: 0 24px 20px;
+}
+.home-index .swiper-teachers {
+  width: 60%;
+  height: 650px;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 45px;
+  font-size: 0;
+}
+.home-index .swiper-container-teacher {
+  width: 100%;
+  height: 100%;
+}
+.home-index .swiper-wrapper-teacher {
+  overflow: hidden;
+}
+
+.home-index .teacher {
+  width: 213px;
+  height: 285px;
+  vertical-align: top;
+  display: inline-block;
+  border: 2px solid #fff;
+  margin-right: 40px;
+  /*overflow: hidden;*/
+}
+.home-index .teacher-margin-bottom {
+  margin-bottom: 10px;
+}
+.home-index .teacher-margin-right {
+  margin-right: 0;
+}
+.home-index .teacher-hover{
+  width: 100%;
+  height: 86px;
+  color: #fff;
+  /*background-color: #ff6900;*/
+  background: rgba(255,105,0,.5);
+  /*opacity: 0.5;*/
+  padding: 10px 10px 0;
+  bottom: 0;
+}
+.home-index .teacher-hover:hover{
+  height: 220px;
+  overflow: hidden;
+  transition: height 500ms;
+}
+.home-index .teacher-hover-active {
+  height: 220px;
+  transition: height 500ms;
+}
+.home-index .teacher-special-box {
+  text-align: center;
+  /*display: flex;*/
+  /*justify-content: space-around;*/
+  /*align-items: center;*/
+}
+.home-index .teacher-special {
+  max-width: 100%;
+  /*height: 30px;*/
+  font-size: 12px;
+  line-height: 28px;
+  border: 1px solid #fff;
+  display: inline-block;
+  padding: 0 4px;
+  /*margin-bottom:20px;*/
+  margin: 0 5px 10px;
+  /*margin-left: 10px;*/
+  /*margin-right: 10px;*/
+}
+.home-index .teacher-special-margin {
+  /*margin-right: 0;*/
+}
+.home-index .teacher-pagination {
+  position: absolute;
+  text-align: center;
+  -webkit-transition: .3s opacity;
+  -o-transition: .3s opacity;
+  transition: .3s opacity;
+  -webkit-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+  z-index: 10;
+}
+.home-index .swiper-container-horizontal>.teacher-pagination-bullets,
+.home-index .teacher-pagination-custom,
+.home-index .teacher-pagination-fraction {
+  bottom: -100px;
+  left: -430px;
+  height: 100px;
+  width: 1100px;
+  background: #fff;
+}
+/*公开课和资讯*/
+.home-index .courses {
+  width: 65%;
+  display: inline-block;
+}
+.home-index .courses-title {
+  font-size: 30px;
+  color: #333;
+}
+.home-index .title-border-left{
+  padding-left: 20px;
+  border-left: 2px solid #ff5900;
+  margin-bottom: 30px;
+}
+.home-index .courses-sub-title{
+  font-size: 15px;
+  color: #888;
+}
+.home-index .courses-all{
+  font-size: 18px;
+  color: #999;
+  float: right;
+  margin-top: -10px;
+}
+.home-index .course {
+  width: 49%;
+  height: 276px;
+  display: inline-block;
+  border-bottom: 2px solid #ff6900;
+  cursor: pointer;
+}
+.home-index .course-margin {
+  margin: 0 10px 10px 0;
+}
+.home-index .course-cover {
+  width: 100%;
+  height: 200px;
+}
+.home-index .course-con {
+  padding: 10px 20px 10px 14px;
+  background-color: #f3f3f3;
+  /*color: #333;*/
+}
+.home-index .triangle {
+  width: 20px;
+  height: 20px;
+  background-color: #f3f3f3;
+  left: 30px;
+  top: -10px;
+  transform: rotate(45deg);
+}
+.home-index .course-teacher,
+.home-index .course-title {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 6px;
+}
+.home-index .course-teacher {
+  float: right;
+}
+.home-index .course-date {
+  color: #999;
+  font-size: 15px;
+  line-height: 16px;
+  padding-left: 22px;
+  background: url("/images/home/address0.png") no-repeat center left;
+  background-size: contain;
+  margin: 4px 0;
+}
+.home-index .course:hover .course-date{
+  background-image: url("/images/home/address1.png");
+}
+.home-index .course:hover .course-teacher,
+.home-index .course:hover .course-title,
+.home-index .course:hover .course-date {
+  color: #fff;
+}
+.home-index .course:hover .course-con,
+.home-index .course:hover .triangle {
+  background-color: #ff6900;
+}
+.home-index .news {
+  width: 32%;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 30px;
+}
+.home-index .new {
+  margin-bottom: 14px;
+}
+.home-index .new-cover {
+  width: 148px;
+  height: 82px;
+  vertical-align: top;
+  background: no-repeat center;
+  background-size: cover;
+  margin-right: 16px;
+}
+.home-index .new-con {
+  display: inline-block;
+}
+.home-index .new-title {
+  width: 220px;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 6px;
+}
+.home-index .new:hover .new-title {
+  color: #ff6900;
+}
+.home-index .new-date {
+  font-size: 15px;
+  color: #999;
+}
+/*训练营和学院反馈*/
+.home-index .trains {
+  width: 68%;
+}
+.home-index .train{
+  width: 100%;
+  display: inline-block;
+  vertical-align: top;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  border-right: 1px solid #ddd;
+}
+.home-index .train-cover{
+  width: 450px;
+  height: 260px;
+  vertical-align: top;
+}
+.home-index .train-con{
+  width: 294px;
+  display: inline-block;
+  margin-left: 20px;
+}
+.home-index .train-title{
+  width: 100%;
+  font-size: 18px;
+  color: #333;
+  margin-top: 14px;
+  margin-bottom: 10px;
+}
+.home-index .train-pass{
+  font-size: 15px;
+  color: #999;
+  margin-bottom: 26px;
+}
+.home-index .icon-num {
+  margin-right: 6px;
+}
+.home-index .train-price{
+  font-size: 15px;
+  color: #999;
+  margin-bottom: 26px;
+}
+.home-index .train-price-now{
+  display: inline-block;
+  color: #ff6900;
+  margin-right: 20px;
+}
+.home-index .train-price-old{
+  display: inline-block;
+}
+.home-index .train-price-now-number{
+  font-size: 18px;
+}
+.home-index .train-price-old-number{
+  text-decoration: line-through;
+}
+.home-index .train-dec{
+  font-size: 15px;
+  line-height: 26px;
+  color: #999;
+}
+.home-index .icon-change {
+  transition: transform 500ms;
+  margin-bottom: 2px;
+}
+.home-index .backs {
+  width: 30%;
+  margin-left: 18px;
+}
+.home-index .back {
+  /*min-height: 177px;*/
+  padding-bottom: 14px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 14px;
+}
+.home-index .back:last-of-type {
+  border-bottom: 0 none;
+  margin-bottom: 0;
+}
+.home-index .back-cover {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  vertical-align: top;
+  margin-bottom: 6px;
+}
+.home-index .back-con {
+  width: 79%;
+  display: inline-block;
+  margin-left: 20px;
+  /*margin-bottom: 16px;*/
+}
+.home-index .back-title {
+  font-size: 18px;
+  color: #333;
+}
+.home-index .back-job {
+  font-size: 15px;
+  color: #999;
+}
+.home-index .back-belong {
+  font-size: 15px;
+  color: #999;
+  float: right;
+  margin-top: 10px;
+}
+.home-index .back-dec {
+  width: 100%;
+  font-size: 15px;
+  color: #333;
+  line-height: 26px;
+}
+/*导师博客*/
+.home-index .blog {
+  width: 50%;
+  display: inline-block;
+  border-right: 1px solid #d1d1d1;
+}
+.home-index .blog-border {
+  border-right: 0 none;
+  padding-left: 80px;
+}
+.home-index .blog-cover {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  vertical-align: top;
+  margin-right: 12px;
+}
+.home-index .blog-con{
+  width: 84%;
+  display: inline-block;
+  padding-bottom: 27px;
+}
+.home-index .blog-title:hover {
+  color: #ff6900;
+}
+.home-index .blog-title {
+  font-size: 18px;
+  color: #333;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.home-index .blog-teacher {
+  font-size: 15px;
+  color: #999;
+}
+
+.home-index .gg-bottom {
+  width: 100%;
+  height: 120px;
+  background: url("/images/home/ad.jpg") no-repeat center;
+  background-size: contain;
+  margin-bottom: 100px;
+}
+/*.企业案例轮播*/
+.home-index .business{
+  min-height: 300px;
+  border: 1px solid #fff;
+}
+.home-index .swiper-container-business {
+  height: 350px;
+}
+.home-index .business-cover {
+  width: 225px;
+  height: 120px;
+  margin: 10px 18px 10px 0;
+}
+.home-index .business-cover-right{
+  margin-right: 0;
+}
+
+/*.swiper-container-horizontal>.business-pagination-bullets, .business-pagination-custom, .business-pagination-fraction {*/
+/*bottom: 0px;*/
+/*height: 40px;*/
+/*width: 100%;*/
+/*background: #fff;*/
+/*}*/
+.home-index .business-pagination-bullet {
+  display: inline-block;
+  border-radius: 100%;
+  width: 10px;
+  height: 10px;
+  vertical-align: middle;
+  margin: 10px 10px 0;
+  
+  background: #000;
+  opacity: .2;
+}
+
+
+.home-index .cases-prev{
+  top: 38%;
+  /*left: -30px;*/
+}
+.home-index .cases-next{
+  /*right: -30px;*/
+  top: 38%;
+}
+
+
+
+/*.swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {*/
+/*bottom: 110px;*/
+/*}*/
+.home-index .swiper-pagination.swiper-pagination-banner{
+  width: 100%;
+  bottom: 110px;
+}
+.home-index .swiper-pagination.swiper-pagination-teacher{
+  width: 100%;
+  height: 120px;
+  bottom: -30px;
+  right: 240px;
+  margin-left: 0px;
+}
+.home-index .swiper-pagination.swiper-pagination-business{
+  bottom: 0;
+  height: 40px;
+  width: 100%;
+  background: #fff;
+}
+.home-index .swiper-container-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet {
+  margin: 0 10px;
+}
+
+.home-index .swiper-pagination-bullet {
+  width: 7px;
+  height: 7px;
+  vertical-align: middle;
+  background: #999;
+  opacity: 1;
+  margin: 50px 10px 0;
+}
+.home-index .swiper-pagination-banner>.swiper-pagination-bullet {
+  width: 7px;
+  height: 7px;
+  vertical-align: middle;
+  background: #fff;
+  opacity: 1;
+  margin: 50px 10px 0;
+}
+
+.home-index .business-pagination-bullet {
+  display: inline-block;
+  border-radius: 100%;
+  width: 7px;
+  height: 7px;
+  vertical-align: middle;
+  margin: 10px 12px 0;
+  
+  background: #999;
+  opacity: 1;
+}
+
+.home-index .swiper-pagination-bullet-active,
+.home-index .swiper-pagination-banner>.swiper-pagination-bullet-active {
+  width: 12px;
+  height: 12px;
+  opacity: 1;
+  background: #ff6900;
+  margin: 50px 10px 0;
+}
+.home-index .swiper-pagination-business >.swiper-pagination-bullet-active {
+  margin: 10px 10px 0;
+}
+.home-index .banner-prev {
+  background-image: none;
+  font-size: 44px;
+  line-height: 44px;
+  font-weight: 800;
+  opacity: 0.5;
+  color: #999;
+  /*opacity: 0.5;*/
+}
+.home-index .banner-next {
+  background-image: none;
+  font-size: 44px;
+  opacity: 0.5;
+  line-height: 44px;
+  font-weight: 800;
+  color: #999;
+}
+
+.home-index .cases-prev {
+  background-image: none;
+  background-color: #333;
+  font-size: 44px;
+  width: 70px;
+  height: 260px;
+  line-height: 260px;
+  font-weight: 800;
+  color: #fff;
+  top: 32px;
+  left: 0;
+  opacity: 0;
+  outline: 0 none;
+  text-align: right;
+  padding-right: 28px;
+}
+
+.home-index .cases-next {
+  background-image: none;
+  background-color: #333;
+  font-size: 44px;
+  width: 70px;
+  height: 260px;
+  line-height: 260px;
+  font-weight: 800;
+  color: #fff;
+  top: 32px;
+  right: 0;
+  opacity: 0;
+  outline: 0 none;
+  padding-left: 28px;
+}
+
+.home-index .cases-prev:hover,
+.home-index .cases-next:hover {
+  opacity: .6;
+}

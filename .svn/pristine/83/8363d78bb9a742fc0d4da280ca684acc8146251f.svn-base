@@ -1,0 +1,575 @@
+<!--
+    author : cys
+-->
+<template>
+  <div>
+    <LeftNav :data="leftNav"></LeftNav>
+    <div class="classification" v-loading="loading">
+      <h2>
+        <span>课程分类管理</span>
+        <div class="add-first" :class="{true: add_type,false:!add_type}" @click="add_first">+ 添加一级分类</div>
+      </h2>
+      <div class="lists">
+        <div v-for="(item,index) in show_lists" :key="index + 'div'"
+             v-dragging="{item: item, list: show_lists,group:'item'}" @mousedown="mousedown(item.id)"
+             @mouseup="mouseup">
+          <!--未编辑状态-->
+          <div class="lists-tit" v-show="!item.isEdit">
+            <div class="left">
+              <span class="span1">{{item.sort_name}}</span>
+              <span class="span2">上架课程总数 / 总课程数 ： {{item.sj_course }} / {{item.all_course}}</span>
+            </div>
+            <div class="right">
+              <span class="edit" @click="list_edit(index)">编辑</span>
+              <img src="/admin/images/class/down.png" alt="" class="select-down" :class="{choose: item.child_show}"
+                   @click="select_down(index)">
+              <img src="/admin/images/class/solt.png" alt="" class="solt">
+            </div>
+          </div>
+          <!--编辑状态-->
+          <div class="lists-tit" v-show="item.isEdit">
+            <img @click="delete_first(item)" class="tit-delete" src="/admin/images/class/delete.png" alt="">
+            <div class="left">
+              <span class="span1">第{{index + 1}}章</span>
+              <input type="text" class="inp" v-model="item.sort_name" @focus="remove_tit(index)">
+              <span class="span2">上架课程总数 / 总课程数 ： {{item.sj_course }} / {{item.all_course}}</span>
+            </div>
+            <div class="right">
+              <span class="add-title" @click="cover_change(true,index)">SEO管理</span>
+              <span class="add-title" @click="add_second(index)">+ 添加二级分类</span>
+              <span class="save" @click="list_save(index,item)">保存</span>
+              <img src="/admin/images/class/solt.png" alt="" class="solt" style="margin-right: 2%">
+            </div>
+          </div>
+          <!--未编辑状态-->
+          <ul class="list" v-show="item.child_show && !item.isEdit">
+            <li v-for="(it,ind) in item.second_sorts" :key="ind + 'li'">
+              <span class="span1">{{ind + 1}}</span>
+              <span class="span1 span-name">{{it.sort_name}}</span>
+              <span class="span1">上架课程总数 / 总课程数 ：{{it.sj_course }} / {{it.all_course}}</span>
+            </li>
+          </ul>
+          <!--编辑状态-->
+          <ul class="list" v-show="item.isEdit">
+            <li v-for="(it,ind) in item.second_sorts" :key="ind + 'li'">
+              <div class="li-left">
+                <span class="span1">{{ind + 1}}</span>
+                <input type="text" class="inp" v-model="it.sort_name">
+                <span class="span1">上架课程总数 / 总课程数 ：{{it.sj_course }} / {{it.all_course}}</span>
+              </div>
+              <div class="li-right">
+                <span class="delete" @click="delete_one(index,ind,it)">删除</span>
+                <img src="/admin/images/class/to-up.png" alt="" @click="to_up(index,ind)"
+                     :class="{m_r_75: ind === (item.second_sorts.length - 1), m_r_45 : ind !== 0}"
+                     v-show="ind !== 0">
+                <img src="/admin/images/class/to-down.png" @click="to_down(index,ind)" alt=""
+                     :class="{m_r_75 : ind === 0}"
+                     v-show="ind !== (item.second_sorts.length - 1)">
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!--sec弹窗-->
+    <div class="seo-cover" v-show="cover_show">
+      <div class="seo-con">
+        <span class="cover-close" @click="cover_change(false)"><img src="/admin/images/blog/close.png" alt=""></span>
+        <h2><span>SEO管理</span></h2>
+        <ul class="con-list">
+          <li>
+            <div class="con-left"><span>SEO页面标题</span></div>
+            <div class="con-right">
+              <input type="text" v-model="seo_list.tit">
+            </div>
+          </li>
+          <li>
+            <div class="con-left"><span>SEO关键词</span></div>
+            <div class="con-right">
+              <input type="text" v-model="seo_list.keywords">
+            </div>
+          </li>
+          <li>
+            <div class="con-left"><span>SEO页面描述</span></div>
+            <div class="con-right">
+              <textarea v-model="seo_list.introduce"></textarea>
+            </div>
+          </li>
+        </ul>
+        <div class="seo-save" @click="seo_save">保存</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import LeftNav from '~/components/admin/LeftNav'
+  import VueDND from 'awe-dnd'
+  import Vue from 'vue'
+  import axios from 'axios'
+
+  Vue.use(VueDND);
+
+  export default {
+    layout: 'admin',
+    name: "classification",
+    components: {
+      LeftNav
+    },
+    data() {
+      return {
+        leftNav: [],
+        add_type: true,
+        loading: false,
+        this_id: '',
+        //seo 弹窗
+        cover_show: false,
+        //当前添加seo的对象
+        now_seo: '',
+        // seo数据
+        seo_list: {
+          tit: '',
+          keywords: '',
+          introduce: '',
+        },
+      }
+    },
+    async asyncData({store}) {
+      let params = {
+        url: '/manage/manage_course/course_sort_list'
+      };
+      let res = await store.dispatch('adminHttpGet', params);
+      console.log('11111', res);
+      if (res.data) {
+        res.data.forEach(function (val, key) {
+          val.isEdit = false;
+          val.child_show = false;
+        });
+      } else {
+        res.data = [];
+      }
+
+      return {
+        show_lists: res.data
+      }
+    },
+    methods: {
+      // 获取列表信息
+      async get_list_info() {
+        const that = this;
+        that.loading = true;
+        let params = {
+          url: '/manage/manage_course/course_sort_list'
+        };
+        let res = await that.$store.dispatch('adminHttpGet', params);
+        console.log(res);
+        res.data.forEach(function (val, key) {
+          val.isEdit = false;
+          val.child_show = false;
+        });
+        if (res) {
+          that.loading = false;
+        }
+        that.show_lists = res.data;
+      },
+
+      //   增加一级标题
+      add_first() {
+        const that = this;
+        //权限
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data, 'manage_course', 'course_first_sort_add');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        }
+
+
+        if (that.add_type) {
+          axios({
+            method: 'post',
+            url: '/manage/manage_course/course_first_sort_add',
+            baseURL: that.$store.state.admin.baseUrl,
+            headers: {
+              token: that.$store.state.admin.token,
+            },
+            data: {
+              sort_name: '默认名称'
+            }
+          }).then((res) => {
+            if (res.data.code === 0) {
+              this.$message({
+                type: 'success',
+                message: '增加成功!'
+              });
+              that.get_list_info();
+
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
+        }
+
+      },
+      // 删除一级标题
+      delete_first(item) {
+        const that = this;
+        //权限
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data, 'manage_course', 'course_first_sort_del');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        }
+
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if (item.all_course !== 0) {
+            this.$message({
+              type: 'error',
+              message: '无法删除有课程的分类!'
+            });
+          } else {
+            axios({
+              method: 'post',
+              url: '/manage/manage_course/course_first_sort_del',
+              baseURL: that.$store.state.admin.baseUrl,
+              headers: {
+                token: that.$store.state.admin.token,
+              },
+              data: {
+                id: item.id
+              }
+            }).then((res) => {
+              if (res.data.code === 0) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                });
+                that.get_list_info()
+              }
+            }).catch((err) => {
+              console.log(err);
+            })
+          }
+        }).catch(() => {
+        })
+
+
+      },
+      // 编辑
+      list_edit(ind) {
+        //权限
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data, 'manage_course', 'course_sort_save');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        }
+
+        this.show_lists[ind].isEdit = true
+      },
+      // 保存
+      list_save(ind, item) {
+        const that = this;
+        let tmp = [], json = {}, num = 0;
+        console.log(item);
+        // 排序
+        item.second_sorts.forEach(function (val, key) {
+          if (val.sort_name !== '') {
+            num += 0
+          } else {
+            num++
+          }
+          json = {
+            sort: key,
+            second_id: val.id,
+            sort_name: val.sort_name
+          };
+          tmp.push(json);
+        });
+
+        if (num !== 0) {
+          that.$message.error('请将信息填写完整!')
+        } else {
+          axios({
+            method: 'post',
+            url: '/manage/manage_course/course_sort_save',
+            baseURL: that.$store.state.admin.baseUrl,
+            headers: {
+              token: that.$store.state.admin.token,
+            },
+            data: {
+              first_sort_id: item.id,
+              first_sort_title: item.sort_name,
+              seo_title: item.seo_title === null ? '' : item.seo_title,
+              seo_keywords: item.seo_keywords  === null ? '' : item.seo_keywords,
+              seo_description: item.seo_description === null ? '' : item.seo_description,
+              second_sort_content: JSON.stringify(tmp)
+            }
+          }).then((res) => {
+            console.log(res);
+            that.show_lists[ind].isEdit = false;
+            if (res.data.code === 0) {
+              that.$message({
+                type: 'success',
+                message: '保存成功'
+              });
+              that.get_list_info();
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
+        }
+
+      },
+      //  下拉
+      select_down(index) {
+        this.show_lists[index].child_show = !this.show_lists[index].child_show
+      },
+      //删除二级标题
+      delete_one(index, ind, it) {
+        const that = this;
+        console.log('二级分类', it);
+        //权限
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data, 'manage_course', 'course_second_sort_del');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        }
+
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if (it.all_course === 0) {
+            if (it.id !== -1) {
+              axios({
+                method: 'post',
+                url: '/manage/manage_course/course_second_sort_del',
+                baseURL: that.$store.state.admin.baseUrl,
+                headers: {
+                  token: that.$store.state.admin.token
+                },
+                data: {
+                  id: it.id
+                }
+              }).catch((err) => {
+                console.log(err);
+
+              }).then((res) => {
+                if (res.data.code === 0) {
+                  that.$message({
+                    type: 'success',
+                    message: '删除成功!'
+                  })
+                } else {
+                  that.$message.error(res.data.message);
+                }
+              })
+            } else {
+              that.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+            }
+            //  页面上做删除
+            that.show_lists[index].second_sorts.splice(ind, 1);
+          } else {
+            this.$message({
+              type: 'error',
+              message: '无法删除有课程的分类!'
+            });
+          }
+        }).catch(() => {
+
+        });
+      },
+
+      // 增加二级标题
+      add_second(index) {
+        let json = {
+          sort_name: '',
+          all_course: 0,
+          id: -1,
+          sort: 0,
+        };
+        this.show_lists[index].second_sorts.unshift(json)
+      },
+
+      //  二级标题的排序
+      // 向上
+      to_up(index, ind) {
+        const that = this;
+        // 交换顺序
+        that.show_lists[index].second_sorts.splice(ind - 1, 1, ...that.show_lists[index].second_sorts.splice(ind, 1, that.show_lists[index].second_sorts[ind - 1]));
+
+      },
+      //  向下
+      to_down(index, ind) {
+        const that = this;
+        // 交换顺序
+        that.show_lists[index].second_sorts.splice(ind, 1, ...that.show_lists[index].second_sorts.splice(ind + 1, 1, that.show_lists[index].second_sorts[ind]));
+      },
+      mousedown(id) {
+        console.log(id);
+        this.this_id = id;
+      },
+      mouseup() {
+        this.this_id = '';
+      },
+      remove_tit(index) {
+        const that = this;
+        if (that.show_lists[index].sort_name === '默认名称') {
+          that.show_lists[index].sort_name = ''
+        }
+      },
+      setMeau() {
+        let leftNav = []
+        let roles = this.$store.state.admin.adminRole.data
+        //更新管理
+        let manage_course = this.comsys.adminGetMeau(roles, "manage_course")
+        let manage_video = this.comsys.adminGetMeau(roles, "manage_video")
+        let video_list = [] //视频列表
+        let course_list = [] //课程列表
+        let course_sort_list = []  //课程分类
+        if (manage_video.length > 0) {
+          video_list = this.comsys.adminGetMeau(manage_video[0].son, "video_list")
+        }
+        if (manage_course.length > 0) {
+          course_list = this.comsys.adminGetMeau(manage_course[0].son, "course_list")
+          course_sort_list = this.comsys.adminGetMeau(manage_course[0].son, "course_sort_list")
+        }
+        if (video_list.length > 0) {
+          leftNav.push({name: '视频库', link: '/admin/video', active: false})
+        }
+        if (course_list.length > 0) {
+          leftNav.push({name: '课程管理', link: '/admin/class', active: false})
+        }
+        if (course_sort_list.length > 0) {
+          leftNav.push({name: '课程分类管理', link: '/admin/classification', active: true})
+        }
+        this.leftNav = leftNav
+      },
+      //seo弹窗
+      cover_change(bool, index) {
+        const that = this;
+        this.cover_show = bool;
+        if (bool) {
+          that.now_seo = index;
+        }
+      },
+      // seo
+      seo_save() {
+        const that = this;
+        let ind = that.now_seo;
+        that.show_lists[ind].seo_title = that.seo_list.tit;
+        that.show_lists[ind].seo_keywords = that.seo_list.keywords;
+        that.show_lists[ind].seo_description = that.seo_list.introduce;
+        that.cover_show = false;
+        that.$message({
+          type: 'success',
+          message: '保存成功!'
+        });
+      },
+    },
+    watch: {
+      show_lists: function () {
+        const that = this;
+        let len = that.show_lists.length;
+        if (len > 30) {
+          that.add_type = false
+        } else {
+          that.add_type = true
+        }
+      },
+      //把seo赋值给数组你点击的那个
+      now_seo: function () {
+        const that = this;
+        let ind = that.now_seo;
+        that.seo_list.tit = that.show_lists[ind].seo_title;
+        that.seo_list.keywords = that.show_lists[ind].seo_keywords;
+        that.seo_list.introduce = that.show_lists[ind].seo_description;
+      }
+    },
+    mounted() {
+      this.setMeau();
+
+      console.log('token', this.$store.state.admin.token);
+
+      //权限
+      let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data, 'manage_course', 'course_first_sort_change');
+      if (checkInfo) {
+        // 拖拽排序
+        const that = this;
+        let this_id, top_id, down_id, len;
+        this.$dragging.$on('dragged', ({value}) => {
+          this_id = this.this_id;
+        });
+        this.$dragging.$on('dragend', () => {
+          that.show_lists.forEach(function (val, key) {
+            if (val.id === this_id) {
+              len = key
+            }
+          });
+          // 获取ID
+          if (len === 0) {
+            top_id = 0;
+            down_id = that.show_lists[len + 1].id
+          } else if (len > 0 && len < that.show_lists.length - 1) {
+            top_id = that.show_lists[len - 1].id;
+            down_id = that.show_lists[len + 1].id
+          } else if (len === that.show_lists.length - 1) {
+            top_id = that.show_lists[len - 1].id;
+            down_id = 0
+          }
+
+          axios({
+            method: 'post',
+            url: '/manage/manage_course/course_first_sort_change',
+            baseURL: that.$store.state.admin.baseUrl,
+            headers: {
+              token: that.$store.state.admin.token,
+            },
+            data: {
+              this_id: this_id,
+              top_id: top_id,
+              down_id: down_id,
+            }
+          }).then((res) => {
+            console.log(res);
+            if (res.data.code === 0) {
+              that.$message({
+                type: 'success',
+                message: '排序成功!',
+              });
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
+        })
+      }
+
+    },
+    head() {
+      return {
+        title: '课程管理',
+        link: [
+          {
+            href: '/admin/css/classification.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+        ],
+      }
+    },
+  }
+</script>
+
+<style scoped>
+  body, * {
+    font-size: 15px;
+  }
+</style>

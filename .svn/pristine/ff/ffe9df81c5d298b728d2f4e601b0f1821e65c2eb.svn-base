@@ -1,0 +1,9 @@
+export default {
+  posts: '',
+  user: "abc",
+  userInfo: null,
+  isLogin: 0,
+  baseURL: '1',
+  mineURL: 'https://platform.vpx.com.cn/api/v1',
+  mineBaseURL: 'https://platform.vpx.com.cn',
+}

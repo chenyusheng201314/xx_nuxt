@@ -1,0 +1,389 @@
+<!--
+    author : cys
+-->
+<template>
+  <div>
+    <LeftNav :data="leftNav"></LeftNav>
+    <div class="admin-video">
+      <h2 class="title">视频库</h2>
+      <ul class="video-classify">
+        <li>
+          <span>视频名称</span>
+          <input type="text" class="inp" v-model="search_info.name">
+        </li>
+        <li style="margin-right: 100px">
+          <span>上传时间</span>
+
+          <el-date-picker
+            v-model="search_info.time[0]"
+            type="date"
+            value-format="yyyy-MM-dd 00:00:00"
+            placeholder="选择日期">
+          </el-date-picker>
+          -
+          <el-date-picker
+            v-model="search_info.time[1]"
+            type="date"
+            value-format="yyyy-MM-dd 23:59:59"
+            placeholder="选择日期">
+          </el-date-picker>
+        </li>
+        <li>
+          <span>是否被使用</span>
+          <el-select v-model="search_info.isUse" placeholder="请选择">
+            <el-option
+              v-for="(item,index) in search_info.isUse_select"
+              :key="index"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+        </li>
+        <li class="last-li">
+          <span class="show-list" @click="show_up_list" v-show="btn_show">视频传输列表</span>
+          <span class="video-up" :class="{disable_up:!up_type}">
+            {{up_type? '上传': '上传中...'}}
+            <UpLoading
+              m_style="opacity: 0;position: absolute;top: -2px;left:3px;width: 110px;height: 40px;" mime=""
+              @close_cover="close_cover"
+              @get_list_again="get_list_again"
+              :cover_show="cover_show"
+              @video_list_type_change="video_list_type_change"
+              @upload_type_change="upload_type_change"
+            ></UpLoading>
+          </span>
+          <span class="video-search" @click="video_search">搜索</span>
+        </li>
+      </ul>
+      <table class="video-list">
+        <tr>
+          <th>序号</th>
+          <th>视频名称</th>
+          <th>时长</th>
+          <th>类型</th>
+          <th>上传时间</th>
+          <th>是否被使用</th>
+          <th>操作</th>
+        </tr>
+        <tbody>
+        <tr v-for="(item,index) in video_lists" :key="index">
+          <td width="80px">{{index + 1}}</td>
+          <td width="500px">
+            <el-tooltip class="item" effect="dark" :content="item.show_name" placement="top">
+              <el-button>{{item.show_name}}</el-button>
+            </el-tooltip>
+          </td>
+          <td width="150px">{{item.duration === '' ? '--' : (item.duration/60).toFixed(1)}}分钟</td>
+          <td width="150px">{{item.video_type}}</td>
+          <td width="250px">{{item.updated_at}}</td>
+          <td width="150px">
+            <span class="col-sure" v-show="parseInt(item.is_used) > 0">是</span>
+            <span class="col-error" v-show="parseInt(item.is_used) <= 0">否</span>
+          </td>
+          <td width="250px">
+            <span class="delete-one" @click="delete_one(item.id,item)">删除</span>
+            <span class="updata" @click="updata_time(item,index)">更新时长</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <!--分页-->
+      <div class="paging">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="paging.currentPage"
+          :page-sizes="paging.page_sizes"
+          :page-size="paging.page_size"
+          layout="prev, pager, next, sizes, jumper"
+          :total="paging.total"
+          v-loading.fullscreen.lock="fullscreenLoading"
+          :pager-count="5">
+        </el-pagination>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import LeftNav from '~/components/admin/LeftNav';
+  import UpLoading from './u_video'
+  import axios from 'axios'
+  import Vue from 'vue'
+
+  Vue.filter('b_to_mb', function (m) {
+    var mb = m / 1024 / 1024;
+    return mb.toFixed(2);
+  });
+
+
+  export default {
+    layout: 'admin',
+    name: "admin-video",
+    components: {
+      LeftNav,
+      UpLoading
+    },
+    data() {
+      return {
+        leftNav: [],
+        fullscreenLoading: false,
+        search_info: {
+          id: '',
+          name: '',
+          time: [],
+          isUse_select: ['全部', '是', '否'],
+          isUse: '全部',
+        },
+        //  弹窗显示
+        cover_show: false,
+        //  上传状态
+        up_type: true,
+        btn_show: false,
+      }
+    },
+    async asyncData({store}) {
+      let params = {
+        url: '/manage/manage_video/video_list',
+        data: {
+          page: 1,
+          psize: 20,
+          role: 1,
+          is_used: '',
+          video_id: '',
+          show_name: '',
+          create_start_time: '',
+          create_end_time: ''
+        }
+      };
+      let res = await store.dispatch("adminHttpGet", params);
+      return {
+        // 分页
+        paging: {
+          currentPage: 1,  //当前页
+          page_sizes: [10, 20, 30], //每页显示多少条下拉
+          page_size: 20,// 默认显示多少条
+          total: res.data.total
+        },
+        video_lists: res.data.data.data,
+        headers: {
+          token: store.state.admin.token
+        },
+      }
+
+    },
+    methods: {
+      //分页
+      async video_paging() {
+        const that = this;
+        that.fullscreenLoading = true;
+        let params = {
+          url: '/manage/manage_video/video_list',
+          data: {
+            page: that.paging.currentPage,
+            psize: that.paging.page_size,
+            is_used: that.search_info.isUse === '全部' ? '' : that.search_info.isUse === '是' ? 1 : 0,
+            video_id: that.search_info.id,
+            show_name: that.search_info.name,
+            create_start_time: that.search_info.time ? that.search_info.time[0] : '',
+            create_end_time: that.search_info.time ? that.search_info.time[1] : '',
+          }
+        };
+        let res = await this.$store.dispatch("adminHttpGet", params);
+        if (res.code === 0) {
+          that.fullscreenLoading = false;
+        }
+        that.paging.total = res.data.data.total;
+        that.video_lists = res.data.data.data;
+      },
+      // 每页多少条
+      handleSizeChange(val) {
+        this.paging.page_size = val;
+        this.paging.currentPage = 1;
+        this.video_paging();
+      },
+      handleCurrentChange(val) {
+        // 当前页
+        this.paging.currentPage = val;
+        this.video_paging();
+      },
+      //  删除视频
+      delete_one(video_id, item) {
+        const that = this;
+        //权限
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data, 'manage_video', 'video_del');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        }
+
+
+        // 删除提示框
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(() => {
+          if (item.is_used !== 0) {
+            that.$message.error('被使用的视频无法删除!')
+          } else {
+            // 确定之后执行删除
+            axios({
+              url: '/manage/manage_video/video_del',
+              baseURL: that.$store.state.admin.baseUrl,
+              method: 'post',
+              headers: {
+                token: that.$store.state.admin.token
+              },
+              data: {
+                id: video_id
+              }
+            }).then((res) => {
+              if (res.data.code === 0) {
+                that.video_paging();
+                that.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+              }
+            }).catch((error) => {
+              console.log(error)
+            });
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        })
+      },
+
+      //  搜索
+      video_search() {
+        this.video_paging();
+      },
+      // 弹窗列表
+      show_up_list() {
+        this.cover_show = true
+      },
+      // 关闭列表
+      close_cover(val) {
+        this.cover_show = val
+      },
+      // 上传结束
+      get_list_again(val) {
+        const that = this;
+        that.cover_show = false;
+        if (val) {
+          that.video_paging();
+        }
+      },
+      // 上传状态
+      upload_type_change(val) {
+        this.up_type = val
+      },
+      setMeau() {
+        let leftNav = []
+        let roles = this.$store.state.admin.adminRole.data
+        //更新管理
+        let manage_course = this.comsys.adminGetMeau(roles, "manage_course")
+        let manage_video = this.comsys.adminGetMeau(roles, "manage_video")
+        let video_list = [] //视频列表
+        let course_list = [] //课程列表
+        let course_sort_list = []  //课程分类
+        if (manage_video.length > 0) {
+          video_list = this.comsys.adminGetMeau(manage_video[0].son, "video_list")
+        }
+        if (manage_course.length > 0) {
+          course_list = this.comsys.adminGetMeau(manage_course[0].son, "course_list")
+          course_sort_list = this.comsys.adminGetMeau(manage_course[0].son, "course_sort_list")
+        }
+        if (video_list.length > 0) {
+          leftNav.push({name: '视频库', link: '/admin/video', active: true})
+        }
+        if (course_list.length > 0) {
+          leftNav.push({name: '课程管理', link: '/admin/class', active: false})
+        }
+        if (course_sort_list.length > 0) {
+          leftNav.push({name: '课程分类管理', link: '/admin/classification', active: false})
+        }
+        this.leftNav = leftNav
+      },
+      // 更新视频时长
+      updata_time(item, index) {
+        const that = this;
+        console.log('sdad', parseInt(item.duration));
+        if (parseInt(item.duration) === 0) {
+          axios({
+            url: '/common/video/video_duration_save',
+            method: 'post',
+            baseURL: that.$store.state.admin.baseUrl,
+            headers: {
+              token: that.$store.state.admin.token
+            },
+            data: {
+              videoid: item.video_id
+            }
+          }).then((res) => {
+            console.log(res);
+            if (res.data.code === 0) {
+              that.video_lists[index].duration = res.data.data.toFixed(2);
+              that.$message({
+                type: 'success',
+                message: '更新成功!'
+              })
+            } else {
+              that.$message.error('更新失败！')
+            }
+
+          }).catch((err) => {
+            console.log(err);
+          })
+        } else {
+          that.$message({message: '已是最新数据，无需更新!', type: 'warning'});
+        }
+      },
+      // 列表按钮显示
+      video_list_type_change(bool) {
+        this.btn_show = bool;
+      },
+
+    },
+    mounted: function () {
+      this.setMeau();
+    },
+    head() {
+      return {
+        title: '课程管理',
+        link: [
+          {
+            href: '/admin/css/up_video.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+          {
+            href: '/admin/css/video.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+        ],
+        script: [
+          {src: '/admin/js/es6-promise.min.js'},
+          {src: '/admin/js/aliyun-oss-sdk4.13.2.min.js'},
+          {src: '/admin/js/aliyun-upload-sdk1.3.1.min.js'},
+          {src: '/admin/js/bootstrap.min.js'},
+        ]
+      }
+    },
+  }
+</script>
+
+<style scoped>
+  .el-button {
+    border: none;
+    background: none;
+    max-width: 450px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>

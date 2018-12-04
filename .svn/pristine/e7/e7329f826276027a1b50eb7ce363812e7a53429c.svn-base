@@ -1,0 +1,78 @@
+<template>
+  <div class="mine-company-members">
+    <div class="company-box">
+      <img class="company-cover" src="/images/test.png" alt="封面">
+      <div class="d-inline-block companey-con">
+        <div class="company-name">{{name}}</div>
+        <div class="company-members-num">{{members_num}}</div>
+      </div>
+    </div>
+    <ul class="clearfix text-center company-members">
+      <li class="li" v-for="(item, index) in members" :key="index" :class="{'margin-right-no':(index+1)%6===0}">
+        <img :src="item.avatar" alt="头像">
+        <div class="text-overflow-one result-name">{{item.name}}</div>
+      </li>
+    </ul>
+
+  </div>
+</template>
+
+<script>
+
+export default {
+  name: 'members',
+  data () {
+    return {
+      name: '公司名字',
+      members_num: '23',
+      members: [
+        {
+          id: 0,
+          avatar: '/images/test.png',
+          name: '张三11'
+        }, {
+          id: 1,
+          avatar: '/images/test.png',
+          name: '张三1'
+        }, {
+          id: 11,
+          avatar: '/images/test.png',
+          name: '张三33'
+        }, {
+          id: 21,
+          avatar: '/images/test.png',
+          name: '张三2'
+        }, {
+          id: 12,
+          avatar: '/images/test.png',
+          name: '张三221'
+        }, {
+          id: 121,
+          avatar: '/images/test.png',
+          name: '张三123'
+        }, {
+          id: 1211,
+          avatar: '/images/test.png',
+          name: '张三12333'
+        }, {
+          id: 121123,
+          avatar: '/images/test.png',
+          name: '张三12333'
+        }
+      ],
+      pageData: {
+        total: 10,
+        current: 1,
+        visible: 8
+      }
+    }
+  },
+  components: {},
+  methods: {
+    // 切换分页
+    paging (num) {
+      console.log(num)
+    }
+  }
+}
+</script>

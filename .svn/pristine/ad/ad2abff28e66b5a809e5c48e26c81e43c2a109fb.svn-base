@@ -1,0 +1,727 @@
+<template>
+  <div id="home" class="home-index">
+    <!--banner轮播-->
+    <div class="position-relative">
+      <div class="swiper-container swiper-container-banner row">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide swiper-slide-banner" v-for="(item,index) in banners" :key="index">
+            <a target="_blank" style="display: block;width: 100%;height: 100%;" :href="item.url">
+              <!--<img class="swiper-img-banner" :src="item" alt="没有？" />-->
+              <div class="swiper-img-banner-bg" :style="'background-image: url('+ item.src +')'"></div>
+            </a>
+          </div>
+        </div>
+        <!-- 如果需要分页器 -->
+        <div class="swiper-pagination swiper-pagination-banner"></div>
+        <div class="swiper-button-prev banner-prev">⟨</div><!--左箭头-->
+        <div class="swiper-button-next banner-next">⟩</div><!--右箭头-->
+      </div>
+      <!--轮播悬浮导航-->
+      <div class="container">
+        <ul class="position-absolute  home-ul">
+          <li class="cursor-pointer home-li"><a target="_blank" href="/class/list?f=&fi=0">全部</a></li>
+          <li class="cursor-pointer home-li" v-for="(item,index) in class_list" :key="index">
+            <a target="_blank" :href="'/class/list?f='+item.id+'&fi='+(index+1)+'&p=1'">{{item.sort_name}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--内容区域-->
+    <div class="container position-relative">
+      <!--5个活动优惠-->
+      <div class="container-active5">
+        <div class="active5">
+          <div class="text-center active5-li">
+            <!--<div class="active5-img-box" :class="{'active5-img-hover': 1}">-->
+            <div class="active5-img-box" :class="{'active5-img-hover': active5Index === 0}">
+              <img class="active5-img" :class="{'active5-img-up': active5Index === 0}" :src="active5Index === 0?'/images/home/1s.png':'/images/home/1.png'" alt="">
+              <!--<img class="active5-img" :class="{'active5-img-up': 1}" :src="1?'/images/home/1s.png':'/images/home/1.png'" alt="">-->
+            </div>
+            <!--<div class="active5-line" v-show="0"></div>-->
+            <div class="active5-line" v-show="active5Index !== 0"></div>
+            <!--<div class="active5-text" :class="{'active5-text-only': 1}">限时免费</div>-->
+            <div class="active5-text" :class="{'active5-text-only': active5Index === 0}">限时免费</div>
+            <nuxt-link target="_blank" to="/class/list?a=5&ai=5&p=1">
+              <!--<div class="cursor-pointer active5-view" v-show="1">点击查看</div>-->
+              <div class="cursor-pointer active5-view" v-show="active5Index === 0">点击查看</div>
+            </nuxt-link>
+            <!--<transition name="fade">-->
+
+            <!--</transition>-->
+          </div>
+          <div class="text-center active5-li">
+            <div class="active5-img-box" :class="{'active5-img-hover': active5Index === 1}">
+              <img class="active5-img" :class="{'active5-img-up': active5Index === 1}" :src="active5Index === 1?'/images/home/2s.png':'/images/home/2.png'" alt="">
+            </div>
+            <div class="active5-line" v-show="active5Index !== 1"></div>
+            <div class="active5-text" :class="{'active5-text-only': active5Index === 1}">买一赠一</div>
+            <!--<transition name="fade">-->
+            <nuxt-link target="_blank" to="/class/list?a=3&ai=3&p=1">
+              <div class="cursor-pointer active5-view" v-show="active5Index === 1">点击查看</div>
+            </nuxt-link>
+            <!--</transition>-->
+          </div>
+          <div class="text-center active5-li">
+            <div class="active5-img-box" :class="{'active5-img-hover': active5Index === 2}">
+              <!--<div :class="{'active5-img-hover': 2}">-->
+              <img class="active5-img img-small" :class="{'active5-img-up img-small-active': active5Index === 2}" :src="active5Index === 2?'/images/home/3s.png':'/images/home/3.png'" alt="">
+            </div>
+            <div class="active5-line" v-show="active5Index !== 2"></div>
+            <div class="active5-text" :class="{'active5-text-only': active5Index === 2}">积分购</div>
+            <!--<transition name="fade">-->
+            <nuxt-link target="_blank" to="/class/list?a=6&ai=6&p=1">
+              <div class="cursor-pointer active5-view" v-show="active5Index === 2">点击查看</div>
+            </nuxt-link>
+            <!--</transition>-->
+          </div>
+          <div class="text-center active5-li">
+            <div class="active5-img-box" :class="{'active5-img-hover': active5Index === 3}">
+              <img class="active5-img img-small" :class="{'active5-img-up img-small-active': active5Index === 3}" :src="active5Index === 3?'/images/home/4s.png':'/images/home/4.png'" alt="">
+            </div>
+            <div class="active5-line" v-show="active5Index !== 3"></div>
+            <div class="active5-text" :class="{'active5-text-only': active5Index === 3}">最新课程</div>
+            <!--<transition name="fade">-->
+            <nuxt-link target="_blank" to="/class/list?a=2&ai=2&p=1">
+              <div class="cursor-pointer active5-view" v-show="active5Index === 3">点击查看</div>
+            </nuxt-link>
+            <!--</transition>-->
+          </div>
+          <div class="text-center active5-li">
+            <div class="active5-img-box" :class="{'active5-img-hover': active5Index === 4}">
+              <img class="active5-img" :class="{'active5-img-up': active5Index === 4}" :src="active5Index === 4?'/images/home/5s.png':'/images/home/5.png'" alt="">
+            </div>
+            <div class="active5-line" v-show="active5Index !== 4"></div>
+            <div class="active5-text" :class="{'active5-text-only': active5Index === 4}">特价课程</div>
+            <!--<transition name="fade">-->
+            <nuxt-link target="_blank" to="/class/list?a=4&ai=4&p=1">
+              <div class="cursor-pointer active5-view" v-show="active5Index === 4">点击查看</div>
+            </nuxt-link>
+            <!--</transition>-->
+          </div>
+        </div>
+      </div>
+      <!--/*精品课程*/-->
+      <section class="text-center">
+        <h4 class="position-relative title"><div class="title-text">精品课程</div></h4>
+        <div class="sub-title">EXCELLENT COURSE</div>
+        <div class="all">
+          <nuxt-link target="_blank" class="all" to="/class/list?a=1&ai=1&p=1"> 全部 > </nuxt-link>
+        </div>
+        <div class="lesson-main">
+          <a target="_blank" href="/openStatic/9">
+            <img class="lesson-main-cover" src="/images/home/good_lesson01.jpg" alt="">
+          </a>
+        </div>
+        <div class="text-left lessons">
+          <ul style="width: 100%;">
+            <li class="position-relative lesson" v-for="(item, index) in lessons" :key="index" :class="{'lesson-bottom-top': index> 2}" >
+              <nuxt-link target="_blank" :to="'/class/'+item.id">
+                <img class="lesson-cover" :src="item.cover" alt="">
+                <div class="lesson-con">
+                  <div class="text-overflow-one lesson-title">{{item.course_name}}</div>
+                  <div class="text-overflow-one lesson-teacher">
+                    <span class="">{{item.organization_teacher.realname}}</span>
+                    <span class="lesson-job">{{item.organization_teacher.title}}</span>
+                  </div>
+                  <div class="text-overflow-one lesson-num">
+                    <img class="lesson-icon" src="/images/home/num.png" alt="">
+                    <span class="">{{item.section_num}} 课时</span>
+                    <img class="lesson-icon" src="/images/home/time.png" alt="">
+                    <span class="lesson-time">{{item.media_time|s-h|fixed1}} 小时</span>
+                  </div>
+                  <div class="text-overflow-one lesson-price">
+                    <span class="price-now">{{item.price}} 学币</span>
+                    <!--<span class="price-old">{{item.price_old}} 学币</span>-->
+                  </div>
+                </div>
+                <div class="position-absolute line-right" :class="{'line-right-top': index>2}" v-show="(index+1)%3!==0 && index !== lessons.length-1"></div>
+                <div class="position-absolute line-bottom" :class="{'line-bottom-left': index>0}" v-show="index< 3"></div>
+              </nuxt-link>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <!--/*金牌导师*/-->
+      <section class="text-center">
+        <h4 class="position-relative title"><div class="title-text">金牌导师</div></h4>
+        <div class="sub-title">GOLD MEDALS TUTORS</div>
+        <div class="all">
+          <nuxt-link target="_blank" class="all" to="/teacher"> 全部 > </nuxt-link>
+        </div>
+        <div class="position-relative cursor-pointer teacher-main">
+          <nuxt-link target="_blank" :to="'/teacher/' + teacher_main.id">
+            <!--<img class="teacher-main-cover" :src="teacher_main.photo_big" alt="">-->
+            <div class="teacher-main-cover"  :style="'background-image: url('+ teacher_main.photo_big +')'"></div>
+            <div class="position-absolute teacher-main-hover">
+              <div class="text-overflow-one teacher-main-name">{{teacher_main.realname}} | {{teacher_main.title}}</div>
+              <div class="teacher-main-line"></div>
+              <div class="teacher-main-company">{{teacher_main.organization.title}}</div>
+              <div class="text-overflow-one teacher-main-special" v-for="(item, index) in teacher_main.organization_teacher_tags" :key="index">{{item.name}}</div>
+            </div>
+          </nuxt-link>
+        </div>
+        <div class="text-left swiper-teachers">
+          <!--导师轮播-->
+          <div class="swiper-container swiper-container-teacher">
+
+              <div class="swiper-wrapper">
+                <div class="swiper-slide" v-for="(item,index) in teachers" :key="index">
+                  <div class="position-relative text-center teacher" v-for="(it, ind) in item"
+                       :key="ind" :class="{'teacher-margin-right': (ind+1)%3===0, 'teacher-margin-bottom':ind === 0}">
+                    <a target="_blank" style="display: block;width: 100%;height: 100%;" :href="'/teacher/' + it.id">
+                      <!--<img class="teacher-main-cover" :src="it.photo_big" alt="">-->
+                      <div class="teacher-main-cover"  :style="'background-image: url('+ it.photo_big +')'"></div>
+                      <div class="position-absolute teacher-hover">
+                        <div class="text-overflow-one teacher-main-name">{{it.realname}} | {{it.title}}</div>
+                        <div class="teacher-main-line"></div>
+                        <div class="teacher-main-company">{{it.organization.title}}</div>
+                        <div class="teacher-special-box">
+                          <div class="text-overflow-one teacher-special" v-for="(v, i) in it.organization_teacher_tags" :key="i"
+                               :class="{'teacher-special-margin': i===it.organization_teacher_tags.length-1}">{{v.name}}</div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+
+            <!-- 如果需要分页器 -->
+            <div class="swiper-pagination swiper-pagination-teacher"></div>
+            <!--<div class="swiper-button-prev teacher-prev">⟨</div>&lt;!&ndash;左箭头&ndash;&gt;-->
+            <!--<div class="swiper-button-next teacher-next">⟩</div>&lt;!&ndash;右箭头&ndash;&gt;-->
+          </div>
+        </div>
+      </section>
+      <!--公开课和资讯-->
+      <section class="text-left">
+        <div class="courses">
+          <div class="title-border-left">
+            <h4 class="courses-title"><div class="courses-stitle-text">公开课</div></h4>
+            <div class="courses-all">
+              <!--<nuxt-link target="_blank" class="all" to="/"> 全部 > </nuxt-link>-->
+            </div>
+            <div class="courses-sub-title">OPEN CLASS</div>
+          </div>
+          <div class="course" v-for="(item, index) in courses" :key="index"  :data-index="index"
+               :class="{'course-margin': index%2===0}">
+            <a target="_blank" :href="item.url">
+              <img class="course-cover" :src="item.cover" alt="">
+              <div class="position-relative course-con">
+                <div class="position-absolute triangle"></div>
+                <div class="course-teacher">{{item.teacher}}</div>
+                <div class="course-title">{{item.title}}</div>
+                <div class="course-date">{{item.date}} {{item.position}}</div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="news">
+          <div class="title-border-left">
+            <h4 class="courses-title"><div class="courses-stitle-text">行业资讯</div></h4>
+            <div class="courses-all">
+              <nuxt-link target="_blank" class="all" to="/news/news">更多 > </nuxt-link>
+            </div>
+            <div class="courses-sub-title">INDUSTRY INFORMATION</div>
+          </div>
+          <div class="new" v-for="(item, index) in news" :key="index">
+            <a target="_blank" :href="'/news/'+item.id">
+              <!--<img class="new-cover" :src="item.news_pic" alt="">-->
+              <div class="d-inline-block new-cover" :style="'background-image: url('+item.news_pic+')'"></div>
+
+              <div class="new-con">
+                <div class="text-overflow-two new-title">{{item.news_title}}</div>
+                <div class="new-date">{{item.created_at|y-m-d}}</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+      <!--训练营和学院反馈-->
+      <section class="text-left">
+        <div class="courses">
+          <div class="title-border-left">
+            <h4 class="courses-title"><div class="courses-stitle-text">训练营</div></h4>
+            <div class="courses-all">
+              <!--<nuxt-link target="_blank" class="all" to="/"> 全部 > </nuxt-link>-->
+            </div>
+            <div class="courses-sub-title">TRAINING CAMP</div>
+          </div>
+          <div class="train" v-for="(item, index) in trains" :key="index">
+            <nuxt-link target="_blank" :to="item.url">
+              <img class="train-cover" :src="item.cover" alt="">
+              <div class="position-relative train-con">
+                <div class="text-overflow-one train-title">{{item.title}}</div>
+                <!--<div class="train-pass"><img class="icon-num" src="/images/home/num.png" alt="">共 {{item.pass}} 关</div>-->
+                <div class="train-price">
+                  <div class="train-price-now"><span class="train-price-now-number">{{item.price}}</span>学币</div>
+                  <div class="train-price-old" v-if="item.price_old"><span class="train-price-old-number">{{item.price_old}}</span>学币</div>
+                </div>
+                <div class="text-overflow-five train-dec">{{item.dec}}</div>
+              </div>
+            </nuxt-link>
+          </div>
+        </div>
+        <div class="news">
+          <div class="title-border-left">
+            <h4 class="text-overflow-one courses-title"><div class="courses-stitle-text">学员反馈</div></h4>
+            <div class="courses-all cursor-pointer" @click="change_back"><img ref="backChange" class="icon-change" src="/images/home/change.png" alt=""> 换一批</div>
+            <div class="courses-sub-title">FEEDBACK FROM STUDENTS</div>
+          </div>
+          <div class="back" v-for="(item, index) in backs" :key="index">
+            <img class="back-cover" :src="item.cover" alt="">
+            <div class="back-con">
+              <div class="back-belong">{{item.belong}}</div>
+              <div class="back-title">{{item.name}}</div>
+              <div class="back-job">{{item.job}}</div>
+            </div>
+            <div class="text-overflow-three back-dec">{{item.dec}}</div>
+          </div>
+        </div>
+      </section>
+      <!--/*导师博客*/-->
+      <section class="text-center">
+        <h4 class="position-relative title"><div class="title-text">导师博客</div></h4>
+        <div class="sub-title">TUTOR'S BLOG</div>
+        <div class="all">
+          <nuxt-link target="_blank" class="all" to="/blogs/list"> 全部 > </nuxt-link>
+        </div>
+        <ul class="text-left blogs">
+          <li class="cursor-pointer blog" v-for="(item, index) in blogs" :key="index" :class="{'blog-border': index%2===1}">
+              <!--<img class="blog-cover" :src="item.cover" alt="">-->
+            <nuxt-link target="_blank" :to="'/blogs/'+item.id">
+              <div class="blog-con">
+                <div class="text-overflow-one blog-title">{{item.blog_title}}</div>
+                <div class="text-overflow-one blog-teacher">{{item.blog_teacher}}</div>
+              </div>
+            </nuxt-link>
+          </li>
+        </ul>
+      </section>
+      <!--/*广告*/-->
+      <nuxt-link to="/openStatic/15" target="_blank">
+      <div class="text-center gg-bottom" >
+
+      </div>
+      </nuxt-link>
+      <!--/*企业案例*/-->
+      <section class="text-center">
+        <h4 class="position-relative title"><div class="title-text">企业案例</div></h4>
+        <div class="sub-title">ENTERPRISE CASE</div>
+        <!--<div class="all">全部 > </div>-->
+        <div class="text-left business">
+          <!--企业案例轮播-->
+          <div class="swiper-container swiper-container-business">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide" v-for="(item, index) in case_list" :key="index">
+                <a target="_blank" v-for="(it, ind) in item" :key="ind" :href="'/case/'+it.id">
+                <!--<a target="_blank" v-for="(it, ind) in item" :key="ind">-->
+                <img class="business-cover" :src="it.organization_big_logo"
+                      :class="{'business-cover-right': (ind+1)%5 === 0}">
+                </a>
+              </div>
+            </div>
+            <!-- 如果需要分页器 -->
+            <div class="swiper-pagination swiper-pagination-business"></div>
+            <div class="swiper-button-prev cases-prev">⟨</div><!--左箭头-->
+            <div class="swiper-button-next cases-next">⟩</div><!--右箭头-->
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</template>
+
+<script>
+  import Swiper from 'swiper'
+  export default {
+    // layout: 'index',
+    head () {
+      return {
+        link: [
+          {
+            href: '/css/home.css',
+            type:'text/css',
+            rel: 'stylesheet',
+          }
+        ]
+      }
+    },
+    name: 'home',
+    data () {
+      return {
+        topGg: false,
+        gg: '广告',
+        banners: [{
+          src:'/images/banner/banner01.jpg',
+          url:'/openStatic/11'
+        }, {
+          src:'/images/banner/banner02.jpg',
+          url:'/openStatic/12'
+        }, {
+          src:'/images/banner/banner03.jpg',
+          url:'/openStatic/10'
+        },{
+          src:'/images/banner/bannerTDF.jpg',
+          url:'/openStatic/13'
+        }],
+
+        active5Index: -1,
+        courses: [
+          {
+            id: 0,
+            cover: '/images/static/lesson1.jpg',
+            title: '绩效改进-从培训经理到绩效顾问',
+            teacher: '崔连斌',
+            position: '广州',
+            url:'/openStatic/2',
+            date: '10.26-10.27'
+          }, {
+            id: 3,
+            cover: '/images/static/lesson2.jpg',
+            title: '柯氏四级培训效果评估认证',
+            teacher: '崔连斌',
+            position: '上海',
+            url:'/openStatic/4',
+            date: '8.10-8.11'
+          }, {
+            id: 5,
+            cover: '/images/static/lesson3.jpg',
+            title: '完美授课技巧',
+            teacher: '曹笑朵',
+            position: '上海',
+            url:'/openStatic/5',
+            date: '8.15-8.16'
+          }, {
+            id: 12,
+            cover: '/images/static/lesson4.jpg',
+            title: '完美咨询技巧',
+            teacher: '崔连斌',
+            position: '北京',
+            url:'/openStatic/6',
+            date: '7.19-7.20'
+          }
+        ],
+        trains: [
+          {
+            id: 0,
+            url:'/openStatic/13',
+            cover: '/images/static/train1.jpg',
+            title: 'TDF人才发展特战队训练营',
+            pass: '5',
+            price: '12800',
+            price_old: '',
+            dec: '安迪曼为每期入学的每一位学员提供270天的孵化加速服务。心怀“推动组织人才发展”的新锐人才发展者们，通过高强度的“721魔鬼训练”，在专业度、对接战略与业务能力、领导力实现指数级成长，成为组织人才开发的缔造者！'
+          }, {
+            id: 2,
+            url:'/openStatic/10',
+            cover: '/images/static/train2.jpg',
+            title: '内训师队伍打造训练营',
+            pass: '5',
+            price: '12800',
+            price_old: '',
+            dec: '该项目源自安迪曼咨询和《培训》杂志联合发布的《2015-2016中国培训行业调研报告》，是通过300多份有效调研问卷、5年行业数据、访谈70多家知名企业大学校，极具中国特色实践的内训师队伍打造项目。'
+          }
+        ],
+        backs:[],
+        // 学员反馈
+        backs_data: [
+          {
+            id: 1,
+            cover: '/images/avatars/1.jpg',
+            name: '银丰 吴佳',
+            job: 'TDF黄埔4期山东班',
+            belong: '',
+            dec: '听完培训班两天的课程，最大的感触大概是，这个班咋不再一点开呢。。。'
+          }, {
+            id: 2,
+            cover: '/images/avatars/2.jpg',
+            name: '宁德核电 刘永江',
+            job: 'TDF黄埔4期山东班',
+            belong: '',
+            dec: '绩效改进技术不仅从科学理论上了解了背后的机理，更收获了很多可落地化的技术模板。'
+          }, {
+            id: 3,
+            cover: '/images/avatars/3.jpg',
+            name: '博厚医疗 于苗',
+            job: 'TDF黄埔4期山东班',
+            belong: '',
+            dec: '本次课程收获最大的是对工作思路的理顺，而且十分切合实际工作，可以直接运用到工作当中。'
+          }, {
+            id: 4,
+            cover: '/images/avatars/4.jpg',
+            name: '东阿阿胶   关通',
+            job: 'TDF黄埔4期山东班',
+            belong: '',
+            dec: '感谢崔博士的精彩授课和安迪曼各位老师的精心筹备，让我们获得丰富的精神食粮。'
+          }, {
+            id: 5,
+            cover: '/images/avatars/5.jpg',
+            name: '小米  张小天',
+            job: 'TDF黄埔2期华南班',
+            belong: '',
+            dec: '感谢安迪曼！认真细致帮我们对工作进行有效的梳理，这种方法在日常工作中可以借鉴，提升工作效率。'
+          }, {
+            id: 6,
+            cover: '/images/avatars/6.jpg',
+            name: '济南大学   王晓华',
+            job: 'TDF黄埔2期华南班',
+            belong: '',
+            dec: '安迪曼给出的绩效改进方法论，可以最大程度忽略个体的差异性，有一定人资基础的人都可以通过学习掌握它。。'
+          }, {
+            id: 7,
+            cover: '/images/avatars/7.jpg',
+            name: '顺丰 李刚',
+            job: 'TDF黄浦3期华东班',
+            belong: '',
+            dec: '该项目的实施过程以及产出成果都得到企业领导的肯定，并产出有实际价值的成果。'
+          }, {
+            id: 8,
+            cover: '/images/avatars/8.jpg',
+            name: '华为   肖生',
+            job: 'TDF黄埔2期华南班',
+            belong: '',
+            dec: '两天的课程干货满满，我的体会挂一漏万，望同学们扶正！'
+          }, {
+            id: 9,
+            cover: '/images/avatars/9.jpg',
+            name: '中信银行  王志华',
+            job: 'TDF黄埔2期华南班',
+            belong: '',
+            dec: '非常感谢安迪曼老师们的用心的教导，在我存疑的时候细心的解答，让我更好的理解学习到了新的应用方法。'
+          }, {
+            id: 10,
+            cover: '/images/avatars/10.jpg',
+            name: '金麒麟   种珊珊',
+            job: 'TDF黄埔1期山东班',
+            belong: '',
+            dec: '通过两天的学习，获得了很多实用的知识，再次感谢崔博士无私的传道受业解惑和各位伙伴们的陪什。'
+          }, {
+            id: 11,
+            cover: '/images/avatars/11.jpg',
+            name: '蓝贝思特   梁艳',
+            job: 'TDF黄埔1期山东班',
+            belong: '',
+            dec: '通过这次培训，学习到了很多知识点，并且认识到很多从事培训工作的同学前辈，相互交流学习，很有价值。'
+          }, {
+            id: 12,
+            cover: '/images/avatars/12.jpg',
+            name: '罗氏制药   杨利强',
+            job: 'TDF黄埔1期山东班',
+            belong: '',
+            dec: '本次学习的是方法论而不是单一的模型，虽然不能马上运用起来，却可以培养宏观思维，以及跨部门协作能力。'
+          }
+        ],
+        back_page:1,
+      }
+    },
+    async asyncData({store}) {
+      // 获取课程分类
+      let nav_res = await store.dispatch('httpGet', {
+        url: '/home/course/course_sort_list'
+      });
+      // console.log('获取课程分类',nav_res)
+      // 精品课程
+      let lesson = await store.dispatch('httpGet', {
+        url: '/home/course/course_list',
+        data: {
+          page: 1,
+          psize: 6,
+          first_sort_id: '',
+          activity_type: 1,
+          price_min: '',
+          price_max: '',
+        }
+      })
+
+      // console.log('lesson',lesson.data.data)
+      // 金牌导师
+      let req = {
+        url: '/home/teacher/list',
+        data: {
+          page: 1,
+          psize: 100
+        }
+      };
+      let res = await store.dispatch('httpGet', req);
+      //console.log('导师表', res.data.data);
+
+      let teachers = JSON.parse(JSON.stringify(res.data.data)).splice(1)
+      let len = teachers.length
+      let l = Math.ceil(teachers.length/6)
+
+      let slider = []
+      for (let j=0;j<l;j++) {
+        slider.push(JSON.parse(JSON.stringify(teachers)).splice(j*6,6))
+      }
+      // 行业资讯
+      let news = await store.dispatch('httpGet', {
+        url: '/home/news/news_list',
+        data: {
+          page: 1,
+          psize: 6,
+        }
+      })
+      // console.log('资讯',news)
+      // 导师博客
+      let blogs = await store.dispatch('httpGet', {
+        url: '/home/blog/blog_list',
+        data: {
+          page: 1,
+          psize: 6,
+          first_sort_id: '',
+          activity_type: '',
+          blog_teacher: '',
+        }
+      })
+      // console.log('博客',blogs.data.data)
+      // 底部企业案例
+      let cases = await store.dispatch('httpGet', {
+        url: '/home/organization_cases/list',
+        data: {
+          teacher_id: '',
+          psize: 1000,
+          page: 1,
+        }
+      })
+      // cases.data.data
+      // console.log('案例', cases);
+      let c = []
+      let d = cases.data.data
+      if (cases.code===0) {
+        let len = Math.ceil(d.length/10)
+        // console.log('len', len);
+        for (let i=0;i<len;i++) {
+          c.push(JSON.parse(JSON.stringify(d)).splice(i*10,10))
+        }
+      }
+      // console.log('格式化案例', c);
+      return {
+        class_list: nav_res.data.length ? nav_res.data.splice(0,7) : '',
+        lessons: lesson.code===0?lesson.data.data:[],
+        teacher_main: res.data.data[0],
+        teachers: slider,
+        blogs: blogs.code===0?blogs.data.data:[],
+        news: news.code===0?news.data.data:[],
+        case_list: c,
+      }
+    },
+    methods: {
+      init () {
+        let that = this
+        // banner轮播
+        /* eslint-disable no-new */
+        new Swiper('.swiper-container-banner', {
+          autoplay: false,
+          delay: 3000,
+          loop: true,
+          speed: 500,
+          grabCursor: false,
+          // 如果需要分页器
+          pagination: {
+            el: '.swiper-pagination-banner',
+            clickable: true
+          },
+          navigation: {
+            nextEl: '.banner-next',
+            prevEl: '.banner-prev'
+          },
+          // on: {
+          //   click (event) {
+          //     console.log('1', event)
+          //   }
+          // }
+        })
+        // 优惠hover
+        let li = document.getElementsByClassName('active5-li')
+        let len = li.length
+        for (let i = 0; i < len; i++) {
+          li[i].addEventListener('mouseenter', () => {
+            // console.log(i)
+            that.$data.active5Index = i
+          }, false)
+          li[i].addEventListener('mouseleave', () => {
+            // console.log('out', i)
+            that.$data.active5Index = -1
+          }, false)
+        }
+
+        // 老师轮播
+        /* eslint-disable no-new */
+        new Swiper('.swiper-container-teacher', {
+          autoplay: false,
+          loop: true,
+          speed: 500,
+          grabCursor: false,
+          // 如果需要分页器
+          pagination: {
+            el: '.swiper-pagination-teacher',
+            clickable: true,
+            modifierClass: 'teacher-pagination-'
+          },
+          navigation: {
+            nextEl: '.teacher-next',
+            prevEl: '.teacher-prev'
+          },
+        })
+        // 学员反馈
+        this.backs = JSON.parse(JSON.stringify(this.backs_data)).splice(0,4)
+        // 企业案例轮播
+        /* eslint-disable no-new */
+        new Swiper('.swiper-container-business', {
+          autoplay: false,
+          delay: 2000,
+          loop: true,
+          speed: 500,
+          grabCursor: false,
+          // 如果需要分页器
+          pagination: {
+            el: '.swiper-pagination-business',
+            clickable: true,
+            modifierClass: 'business-pagination-',
+            bulletClass: 'business-pagination-bullet'
+          },
+          navigation: {
+            nextEl: '.cases-next',
+            prevEl: '.cases-prev'
+          },
+        })
+      },
+
+      // 跳转到行业资讯 详情
+      // async to_new(id){
+      //   // 增加点击量
+      //   // 行业资讯
+      //   let res = await this.$store.dispatch('httpPost', {
+      //     url: '/home/news/news_click',
+      //     data: {
+      //       id
+      //     }
+      //   })
+      //   console.log('点击资讯',res)
+      //
+      //   this.$router.push('/news/'+id)
+      // },
+
+      // 学员反馈 换一批
+      change_back() {
+        // console.log('换',this.$refs.backChange)
+
+        /*console.log(Math.floor((Math.random()*this.backs_data.length)))*/
+        let p = JSON.parse(JSON.stringify(this.back_page))
+        this.$refs.backChange.style.transform = "rotate("+ 180*p + "deg)"
+        if (p<3) {
+          this.backs = JSON.parse(JSON.stringify(this.backs_data)).splice(p*4,4)
+          this.back_page ++
+        }else {
+          this.backs = JSON.parse(JSON.stringify(this.backs_data)).splice(0,4)
+          this.back_page=1
+        }
+      }
+    },
+    mounted () {
+      this.init()
+    }
+  }
+</script>
+

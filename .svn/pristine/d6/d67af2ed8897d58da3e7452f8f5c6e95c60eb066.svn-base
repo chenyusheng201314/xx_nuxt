@@ -1,0 +1,129 @@
+<template>
+  <div class="mine-follow">
+    <ul class="clearfix text-center company-members" v-loading="loading">
+      <li class="position-relative li" v-for="(item, index) in teachers.data" :key="index" :class="{'margin-right-no':(index+1)%6===0}">
+        <nuxt-link :to="'/teacher/'+item.organization_teacher_id">
+          <!--<img :src="item.organizationTeacher.photo_small" alt="头像">-->
+          <div class="teacher-cover" :style="'background-image: url('+item.organizationTeacher.photo_small+')'"></div>
+          <div class="d-inline-block text-overflow-one result-name">{{item.organizationTeacher.realname}}</div>
+        </nuxt-link>
+
+        <el-tooltip class="item" effect="dark" content="取消关注" placement="right-end">
+          <div class="position-absolute follow follow-teacher" @click.stop="not_follow(item.organization_teacher_id)"></div>
+        </el-tooltip>
+      </li>
+    </ul>
+    <paging v-if="teachers.total" :page_total="teachers.page_total"  @pageChange="pageChange" :current="p"></paging>
+  </div>
+</template>
+
+<script>
+  import paging from '@/components/dataPaging'
+export default {
+  name: 'teacher',
+  data () {
+    return {
+      name: '公司名字',
+      members_num: '23',
+      members: [
+        {
+          id: 0,
+          avatar: '/images/test.png',
+          name: '张三11'
+        }, {
+          id: 1,
+          avatar: '/images/test.png',
+          name: '张三1'
+        }, {
+          id: 11,
+          avatar: '/images/test.png',
+          name: '张三33'
+        }, {
+          id: 21,
+          avatar: '/images/test.png',
+          name: '张三2'
+        }, {
+          id: 12,
+          avatar: '/images/test.png',
+          name: '张三221'
+        }, {
+          id: 121,
+          avatar: '/images/test.png',
+          name: '张三123'
+        }, {
+          id: 1211,
+          avatar: '/images/test.png',
+          name: '张三12333'
+        }, {
+          id: 121123,
+          avatar: '/images/test.png',
+          name: '张三12333'
+        }
+      ],
+
+
+      p:1,
+      loading:false,
+      loading_data:false, //取消关注后刷新
+    }
+  },
+  components: {paging},
+  async asyncData({store}) {
+    let myDate = new Date();
+    let time = myDate.getFullYear()+"年 "+myDate.getMonth()+"月 "+myDate.getDate()+"日 "
+    // follow_type: 1,课程  2导师 3训练营
+    let res = await store.dispatch('mineGet', {
+      url: '/app/personal/follow_list',
+      data: {
+        follow_type: 2,
+        page:1,
+        psize: 2,
+        date_time: time
+      }
+    })
+    console.log('2导师v ',res)
+    return {
+      teachers:res.data
+    }
+  },
+  methods: {
+    // 取消关注
+    async not_follow (id) {
+      this.loading_data = true
+      let res = await this.$store.dispatch('minePost', {
+        url: '/app/teacher/unfollow',
+        data: {
+          teacher_id: id+''
+        }
+      })
+      console.log('取消关注',res)
+      if(res.code===0) {
+        this.loading_data = false
+        this.pageChange(1)
+      }
+    },
+    // 切换分页
+    async pageChange (num) {
+      // console.log(num)
+      this.loading = true
+      this.p = num
+      let myDate = new Date();
+      let time = myDate.getFullYear()+"年 "+myDate.getMonth()+"月 "+myDate.getDate()+"日 "
+      let res = await this.$store.dispatch('mineGet', {
+        url: '/app/personal/follow_list',
+        data: {
+          follow_type: 2,
+          page:num,
+          psize: 2,
+          date_time: time
+        }
+      })
+
+      if (res.code === 0) {
+        this.teachers = res.data
+        this.loading = false
+      }
+    },
+  }
+}
+</script>

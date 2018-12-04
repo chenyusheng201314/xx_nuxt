@@ -1,0 +1,179 @@
+<template>
+  <div class="blog-list">
+    <topBg src="/images/static/column04blog.jpg"></topBg>
+    <localRoute :route="route_data"></localRoute>
+    <!--筛选条件-->
+    <ul class="blog-list-filtrate">
+      <li class="second-list">
+        <strong>文章分类：</strong>
+        <span class="d-inline-block li-choose-one" :class="{choose: fi === -1}">
+          <a href="/blogs/list?f=&fi=-1&s=&si=0&p=1">全部</a>
+        </span>
+        <span class="d-inline-block li-choose-one"
+              v-for="(item,index) in fir_choose" :class="{choose: fi === index}" :key="index">
+          <a :href="'/blogs/list?f='+item.id+'&fi='+index+'&s='+'&si='+'&p='+1">{{item.sort_name}}</a>
+        </span>
+      </li>
+      <!--<li class="second-list">-->
+        <!--<strong>二级分类：</strong>-->
+        <!--<span class="li-choose-one"-->
+          <!--v-for="(it,ind) in sec_choose" :class="{choose:sIndex === ind}"  :key="ind">-->
+          <!--<a v-if="ind===0" :href="'/blogs/list?f='+f+'&s=&p='+1">{{it.sort_name}}</a>-->
+          <!--<a v-else :href="'/blogs/list?f='+f+'&s='+it.id+'&p='+1">{{it.sort_name}}</a>-->
+        <!--</span>-->
+      <!--</li>-->
+    </ul>
+    <!--文章列表的标题-->
+    <div class="blog-article-title">
+      <span class="blog-article-title-con">{{fi===-1?'全部':fir_choose[fi].sort_name}}</span>
+    </div>
+    <!--文章-->
+    <table class="blogs-r">
+      <thead>
+        <tr>
+          <th class="th1">文章标题</th>
+          <th class="th2">培训讲师</th>
+          <th class="th3">发布时间</th>
+          <th class="th4">人气</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item,index) in list.data" :key="index">
+          <td class="td1">
+            <a :href="'/blogs/'+item.id">{{item.blog_title}}</a>
+          </td>
+          <td class="td2"><p>{{item.blog_teacher}}</p></td>
+          <td class="td3"><p>{{item.created_at|y-m-d}}</p></td>
+          <td class="td4"><p>{{item.pv}}</p></td>
+        </tr>
+      </tbody>
+
+      <!--<tr v-if="list.data.length===0">-->
+        <!--<td class="td1">-->
+            <!--<p>——</p>-->
+        <!--</td>-->
+        <!--<td class="td2"><p>——</p></td>-->
+        <!--<td class="td3"><p>——</p></td>-->
+        <!--<td class="td4"><p>——</p></td>-->
+      <!--</tr>-->
+    </table>
+    <!--分页-->
+    <paging :page_total="list.page_total" :url="'/blogs/list?f='+f+'&fi='+fi+'&s='+'&si='+'&p='" :current="currentPage"></paging>
+
+  </div>
+</template>
+
+<script>
+  import paging from '@/components/aPaging'
+  import topBg from '@/components/topBg'
+  import localRoute from '@/components/localRoute'
+  export default {
+    name: 'list',
+    head () {
+      return {
+        link: [
+          {
+            href: '/css/blogs.css',
+            type:'text/css',
+            rel: 'stylesheet',
+          }
+        ]
+      }
+    },
+    components: {
+      paging,
+      topBg,
+      localRoute
+    },
+    filters: {
+      'y-m-d': function (t) {
+        return t.substr(0,10)
+      }
+    },
+    data() {
+      return {
+        route_data: [{name: '享学科技网', path: '/'}, {name: '名师博客', path: ''}],
+      }
+    },
+    async asyncData({store,query}) {
+      // 一级标题分类
+      // console.log(query)
+      let p = query.p? Number(query.p):1 //1级查询id
+      let f = query.f? Number(query.f):'' //1级查询id
+      let s = query.s? Number(query.s):'' //二级查询id
+      let fi = query.fi? Number(query.fi):-1 //一级索引
+      // let si = query.si? Number(query.si):-1 //二级索引
+      // 一级分类
+      let fir_choose = await store.dispatch('httpGet', {
+        url: '/home/blog/blog_sort_list',
+        data: {
+          father_id: 0
+        }
+      });
+      // console.log('一级分类',fir_choose)
+      // 二级分类
+      // let sec_choose={data:[]}
+      // if (f){
+      //   sec_choose = await store.dispatch('httpGet', {
+      //     url: '/home/blog/blog_sort_list',
+      //     data: {
+      //       father_id: f
+      //     },
+      //   });
+      //   console.log('二级分类',sec_choose)
+      // }
+      // if (sec_choose.data) {
+      //   sec_choose.data.unshift({id: '', sort_name: '全部'})
+      // }
+
+
+      // //一级查询index
+      // if (f) {
+      //   fir_choose.data.forEach((item,index)=>{
+      //     if(item.id==f) {
+      //       fIndex = index
+      //     }
+      //   })
+      // }
+      // //二级查询index
+      // if (f) {
+      //   sec_choose.data.forEach((item,index)=>{
+      //     if(item.id==s) {
+      //       sIndex = index
+      //     }
+      //   })
+      // }
+      // 博客列表
+      let list = await store.dispatch('httpGet', {
+        url: '/home/blog/blog_list',
+        data: {
+
+          page: p,
+          psize: 10,
+          first_sort_id: f,
+          second_sort_id: s,
+          blog_teacher: '',
+        }
+      })
+      console.log('列表',list)
+
+
+      // 获取博客内容
+      return {
+        // 一级条件
+        fir_choose: fir_choose.data,
+        f,
+        fi,
+        // si,
+        // 二级条件
+        // sec_choose: sec_choose.data,
+        // s,
+        // 数据
+        list: list.data,
+        currentPage: p
+      }
+    },
+    mounted() {
+    }
+  }
+</script>

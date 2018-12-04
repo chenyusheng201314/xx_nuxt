@@ -1,0 +1,400 @@
+<!--
+author:cys
+-->
+
+<template>
+  <div class="company-account">
+    <h2>员工账号</h2>
+    <p class="eng-name">Employee account number</p>
+    <!-- 搜索-->
+    <ul class="search-info">
+      <li>
+        <span class="li-span">姓名</span>
+        <input type="text" v-model="search_info.name">
+      </li>
+      <li>
+        <span class="li-span">账号</span>
+        <input type="text " v-model="search_info.accound">
+      </li>
+      <li>
+        <span class="li-span">创建时间</span>
+        <el-date-picker
+          v-model="search_info.time"
+          type="datetimerange"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          format="yyyy-MM-dd HH:mm:ss"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          :default-time="['00:00:00','23:59:59']">
+        </el-date-picker>
+      </li>
+      <li class="last">
+        <span class="search-btn" @click="get_list">搜索</span>
+        <span class="add-btn" @click="change_type(1)">+ 创建账号</span>
+      </li>
+    </ul>
+    <!-- 列表-->
+    <table>
+      <tr>
+        <th>序号</th>
+        <th>姓名</th>
+        <th>账号</th>
+        <th>角色</th>
+        <th>创建时间</th>
+        <th>最后登录时间</th>
+        <th>操作</th>
+      </tr>
+      <tbody>
+      <tr v-for="(item,index) in show_lists" :key="index">
+        <td width="120">{{index + 1}}</td>
+        <td width="200">{{item.realname}}</td>
+        <td width="230">{{item.mobile}}</td>
+        <td width="170">{{item.company_user_acl_role? item.company_user_acl_role.role_name : '--'}}</td>
+        <td width="250">{{item.created_at === null || item.created_at=== '' ? '--' : item.created_at}}</td>
+        <td width="250">{{item.last_login_time === null ? '--' : item.last_login_time}}</td>
+        <td>
+          <span class="iconfont" @click="change_type(3,item)">&#xe610;</span>
+          <span class="iconfont" @click="change_type(2,item)" v-show="item.is_admin === 0">&#xe678;</span>
+          <span class="iconfont" @click="delete_one(item)" v-show="item.is_admin === 0">&#xe62f;</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <!-- 分页-->
+    <div class="paging">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="paging.currentPage"
+        :page-sizes="paging.page_sizes"
+        :page-size="paging.page_size"
+        layout="prev, pager, next, sizes, jumper"
+        :total="paging.total"
+        :pager-count="5"
+        v-loading.fullscreen.lock="fullscreenLoading"
+      >
+      </el-pagination>
+    </div>
+    <!--弹窗-->
+    <el-dialog
+      :title="cover_type === 1? '创建账号' : cover_type === 2 ? '编辑账号' : '查看'"
+      :visible.sync="cover_show"
+      :close-on-click-modal="false"
+      width="40%">
+      <div class="cover-con">
+        <ul>
+          <li>
+            <span class="li-name"><label>*</label>账号</span>
+            <input type="text" :disabled="cover_type === 3" v-model="account_info.account" maxlength="11"
+                   placeholder="请输入11位手机号">
+          </li>
+          <li>
+            <span class="li-name"><label>*</label>密码</span>
+            <input type="text" :disabled="cover_type === 3" v-model="account_info.pwd" maxlength="16">
+          </li>
+          <li>
+            <span class="li-name"><label>*</label>姓名</span>
+            <input type="text" :disabled="cover_type === 3" v-model="account_info.name" maxlength="5">
+          </li>
+          <li>
+            <span class="li-name"><label>*</label>账号状态</span>
+            <el-select v-model="account_info.status" placeholder="请选择" :disabled="cover_type === 3">
+              <el-option
+                v-for="(item,index) in account_info.status_select"
+                :key="index"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </li>
+          <li>
+            <span class="li-name"><label>*</label>角色</span>
+            <el-select v-model="account_info.role" placeholder="请选择" :disabled="cover_type === 3">
+              <el-option
+                v-for="(item,index) in account_info.role_select"
+                :key="index"
+                :label="item.role_name"
+                :value="item.role_id">
+              </el-option>
+            </el-select>
+          </li>
+        </ul>
+        <div class="add-save" v-show="cover_type === 1" @click="add_save">保存</div>
+        <div class="edit" v-show="cover_type === 2">
+          <!--<span class="edit-delete" @click="delete_one(0)">删除账号</span>-->
+          <span class="edit-save" @click="add_save">保存</span>
+        </div>
+      </div>
+    </el-dialog>
+
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "account",
+    layout: 'companyManage',
+    data() {
+      return {
+        // 搜索信息
+        search_info: {
+          name: '',
+          accound: '',
+          time: [],
+        },
+
+        // 加载动画
+        fullscreenLoading: false,
+        // 弹窗标题
+        cover_type: 1, // 1表示创建账号  2表示编辑账号  3表示查看
+        // 弹窗显示
+        cover_show: false,
+        // 当前账户
+        now_account_id: '',
+      }
+    },
+    async asyncData({store}) {
+      // 员工账户
+      let acc_req = {
+        url: '/company/company_user/list',
+        data: {
+          page: 1,
+          psize: 20,
+          realname: '',
+          mobile: '',
+          start_time: '',
+          end_time: '',
+        }
+      };
+      let acc_res = await store.dispatch('companyHttpGet', acc_req);
+      // console.log('员工账户', acc_res.data);
+      // 角色列表
+      let role_req = {
+        url: '/company/acl/role_list',
+        data: {
+          role_name: '',
+          start_time: '',
+          end_time: '',
+          page: 1,
+          psize: 999999,
+          role: 1,
+        }
+      };
+      let role_res = await store.dispatch('companyHttpGet', role_req);
+      return {
+        // 用户列表
+        show_lists: acc_res.data.data,
+        // 分页
+        paging: {
+          total: acc_res.data.total,
+          currentPage: 1,  //当前页
+          page_sizes: [10, 20, 30], //每页显示多少条下拉
+          page_size: 20,// 默认显示多少条
+        },
+
+        //  添加/编辑信息
+        account_info: {
+          account: '',
+          id: '',
+          pwd: '',
+          name: '',
+          role_select: role_res.data.data,
+          role: '',
+          status_select: [
+            {id: 1, name: '正常'},
+            {id: 0, name: '冻结'},
+          ],
+          status: 1,
+        },
+      }
+    },
+    methods: {
+      // 获取列表信息
+      async get_list() {
+        const that = this;
+        that.fullscreenLoading = true;
+        // 员工账户
+        let acc_req = {
+          url: '/company/company_user/list',
+          data: {
+            page: that.paging.currentPage,
+            psize: that.paging.page_size,
+            realname: that.search_info.name,
+            mobile: that.search_info.accound,
+            start_time: that.search_info.time ? that.search_info.time[0] : '',
+            end_time: that.search_info.time ? that.search_info.time[1] : '',
+          }
+        };
+        let acc_res = await that.$store.dispatch('companyHttpGet', acc_req);
+        if (acc_res) {
+          that.fullscreenLoading = false
+        }
+        that.show_lists = acc_res.data.data;
+      },
+
+      //分页每页显示数量
+      handleSizeChange(val) {
+        this.paging.page_size = val;
+        this.get_list();
+      },
+      //分页当前页
+      handleCurrentChange(val) {
+        this.paging.currentPage = val;
+        this.get_list();
+      },
+
+      //弹窗显示并且赋值状态
+      change_type(num, item) {
+        const that = this;
+
+        if (num === 1) {
+          //权限
+          let checkInfo = that.comsys.adminCheckRole(that.$store.state.company.companyRole.data, 'company_user', 'add');
+          if (!checkInfo) {
+            this.$message({message: '警告，您无此权限', type: 'warning'});
+            return false
+          }
+
+          that.cover_show = true;
+          that.cover_type = parseInt(num);
+          // 创建时初始化
+          that.account_info.account = '';
+          that.account_info.pwd = '';
+          that.account_info.name = '';
+          that.account_info.role = '';
+        } else if (num === 2) {
+
+          //权限
+          let checkInfo = that.comsys.adminCheckRole(that.$store.state.company.companyRole.data, 'company_user', 'add');
+          if (!checkInfo) {
+            this.$message({message: '警告，您无此权限', type: 'warning'});
+            return false
+          }
+          // 编辑
+          that.cover_show = true;
+          that.cover_type = parseInt(num);
+          that.now_account_id = item.id;
+          // 初始化
+          that.account_info.id = item.id;
+          that.account_info.account = item.mobile;
+          that.account_info.name = item.realname;
+          that.account_info.status = item.status;
+          that.account_info.role = item.company_user_acl_role ? item.company_user_acl_role.role_id : '';
+          that.account_info.pwd = '******';
+
+        } else if (num === 3) {
+          // 查看
+          that.cover_show = true;
+          that.cover_type = parseInt(num);
+          // 初始化
+          that.account_info.id = item.company_id;
+          that.account_info.account = item.mobile;
+          that.account_info.name = item.realname;
+          that.account_info.status = item.status;
+          that.account_info.role = item.company_user_acl_role ? item.company_user_acl_role.role_id : '';
+          that.account_info.pwd = '******';
+        }
+      },
+      //删除一个
+      delete_one(num) {
+        const that = this;
+        console.log(num);
+        let checkInfo = that.comsys.adminCheckRole(that.$store.state.company.companyRole.data, 'company_user', 'del');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        }
+
+        that.$confirm('此操作将永久删除该账户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          let req = {
+            url: '/company/company_user/del',
+            data: {
+              id: num.id
+            }
+          };
+          let res = await that.$store.dispatch('companyHttpPost', req);
+          console.log(res);
+          if (res.code === 0) {
+            that.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            that.cover_show = false;
+            that.get_list();
+          }
+        }).catch(() => {
+          that.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+
+      },
+      // 新增保存
+      async add_save() {
+        const that = this;
+        let zz = /^[0-9]*$/;
+        if (that.account_info.account && that.account_info.pwd && that.account_info.name && that.account_info.role) {
+          if (!zz.test(that.account_info.account)) {
+            that.$message.error('请输入正确的账户格式!');
+          } else if (that.account_info.pwd.length < 6) {
+            that.$message.error('密码不得少于六位数!');
+          } else {
+            let req = {
+              url: '/company/company_user/add',
+              data: {
+                id: that.account_info.id,
+                mobile: that.account_info.account,
+                password: that.account_info.pwd === '******' ? '' : that.account_info.pwd,
+                realname: that.account_info.name,
+                status: that.account_info.status,
+                role_id: that.account_info.role,
+              }
+            };
+            let res = await that.$store.dispatch('companyHttpPost', req);
+            console.log(res);
+            if (res.code === 0) {
+              that.$message({
+                type: 'success',
+                message: '保存成功!'
+              });
+              that.cover_show = false;
+              that.get_list();
+            } else {
+              that.$message.error(res.message);
+            }
+          }
+        } else {
+          that.$message.error('信息请填写完整!')
+        }
+      }
+    },
+    mounted() {
+      console.log('token', this.$store.state.company.token);
+      console.log('ss', this.show_lists);
+    },
+
+    head() {
+      return {
+        title: '员工账户',
+        link: [{
+          href: '/company_manage/css/iconfont.css',
+          type: 'text/css',
+          rel: 'stylesheet',
+        }, {
+          href: '/company_manage/css/account.css',
+          type: 'text/css',
+          rel: 'stylesheet',
+        }],
+      }
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>

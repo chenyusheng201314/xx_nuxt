@@ -1,0 +1,388 @@
+p, ul {
+  margin-bottom: 0;
+}
+
+.iconfont {
+  font-family: iconfont;
+}
+
+.company-role {
+  width: 100%;
+  min-height: 100%;
+  padding: 35px 60px;
+  overflow: hidden;
+}
+
+.company-role h2 {
+  color: #495C60;
+  font-size: 26px;
+}
+
+.company-role .eng-name {
+  color: #878C90;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.company-role .search-info {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  background: #fff;
+  padding: 5px 35px 25px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+
+.company-role .search-info li {
+  float: left;
+  height: 42px;
+  overflow: hidden;
+  margin-right: 40px;
+  line-height: 40px;
+  margin-top: 20px;
+}
+
+.company-role .search-info li.last {
+  float: right;
+}
+
+.company-role .search-info li .li-span {
+  color: #BCBBC0;
+  font-size: 14px;
+  margin-right: 15px;
+}
+
+.company-role .search-info li input {
+  width: 200px;
+  height: 38px;
+  border: 1px solid #dddddd;
+  padding: 0 10px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  font-size: 14px;
+  color: #495C60
+}
+.company-role .search-info li  .el-range-input{
+  border: none;
+}
+
+.el-date-editor.el-range-editor.el-input__inner.el-date-editor--daterange {
+  height: 38px;
+  width: 410px;
+}
+
+.el-date-editor.el-range-editor.el-input__inner.el-date-editor--daterange input {
+  border: none;
+  height: 36px;
+
+}
+.company-role .search-info li .search-btn {
+  display: inline-block;
+  width: 115px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  background: #FB9500;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.1s linear;
+  -webkit-transition: all 0.1s linear;
+  -moz-transition: all 0.1s linear;
+  -ms-transition: all 0.1s linear;
+  -o-transition: all 0.1s linear;
+}
+
+.company-role .search-info li .search-btn:hover {
+  background: #fba908;
+}
+
+.company-role .search-info li .add-btn {
+  display: inline-block;
+  width: 130px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  border: 1px solid #FB9500;
+  background: #fff;
+  color: #FB9500;
+  cursor: pointer;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  transition: all 0.1s linear;
+  -webkit-transition: all 0.1s linear;
+  -moz-transition: all 0.1s linear;
+  -ms-transition: all 0.1s linear;
+  -o-transition: all 0.1s linear;
+  margin-left: 20px;
+}
+
+.company-role .search-info li .add-btn:hover {
+  background: #fbf4de;
+}
+
+.company-role table {
+  width: 100%;
+  margin-top: 20px;
+  background: #fff;
+}
+
+.company-role table th {
+  background: #FAFBFC;
+}
+
+.company-role table th, .company-role table td {
+  font-size: 14px;
+  color: #797886;
+  text-align: center;
+  height: 45px;
+}
+
+.company-role table td .true {
+  color: #9CD480;
+}
+
+.company-role table td .false {
+  color: #F1686B;
+}
+
+.company-role table td .iconfont {
+  color: #FAC583;
+  font-size: 24px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.company-role table td span{
+  margin-right: 10px;
+}
+.company-role table tbody tr:nth-child(even) {
+  background: #FAFBFC;
+}
+
+.paging {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.paging .el-pagination .el-pager li, .el-pagination button, .el-pagination span:not([class*=suffix]) {
+  min-width: 50px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+}
+
+.el-input--mini .el-input__inner {
+  height: 40px;
+  line-height: 40px;
+}
+
+.el-pagination .el-select .el-input {
+  margin-left: 15px;
+}
+
+.el-dialog {
+  border-radius: 4px;
+}
+
+.el-dialog .el-dialog__title {
+  border-left: none !important;
+  padding-left: 0 !important;
+  font-size: 16px;
+  color: #495C60;
+}
+
+.el-dialog__header {
+  border-bottom: 1px solid #dddddd;
+  padding: 20px
+}
+
+.el-dialog__body {
+  padding: 0;
+}
+
+.cover-con {
+  width: 100%;
+  padding: 30px 50px 50px;
+  height: auto;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.cover-con ul {
+  margin-top: -20px;
+  overflow: hidden;
+}
+
+.cover-con li {
+  margin: 20px auto 0;
+  width: 400px;
+  height: auto;
+  overflow: hidden;
+}
+
+.cover-con li .li-name {
+  float: left;
+  width: 80px;
+  text-align: right;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  color: #BCBBC0;
+  margin-right: 20px;
+}
+
+.cover-con li .li-name label {
+  color: #F1686B;
+}
+
+.cover-con li input {
+  float: left;
+  width: 290px;
+  height: 40px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+.cover-con .add-save {
+  width: 230px;
+  height: 45px;
+  text-align: center;
+  line-height: 45px;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  background: #71C945;
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.1s linear;
+  margin: 30px auto 0;
+  cursor: pointer;
+}
+
+.cover-con .add-save:hover {
+  background: #80c95f;
+}
+.cover-con li .jurisdiction{
+  width: 290px;
+  height: 400px;
+  overflow-y: scroll;
+  background: #F5F8FA;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+}
+.cover-con li  .jurisdiction-all{
+  position: relative;
+  overflow: hidden;
+  padding: 0 25px 10px;
+}
+
+.cover-con li .jurisdiction .jurisdiction-all .jurisdiction-cover{
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.1);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1001;
+}
+.cover-con li .jurisdiction .jurisdiction-all .p .iconfont{
+  color: #FB9500;
+  font-size: 22px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.cover-con li .jurisdiction .jurisdiction-all .p .iconfont.choose{
+
+}
+.cover-con li  .jurisdiction .p{
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin-top: 5px;
+}
+.cover-con li .jurisdiction .p .span{
+  color: #2E4769;
+  font-size: 14px;
+}
+.cover-con li .jurisdiction .p1{
+  margin-top: 20px;
+}
+.cover-con li .jurisdiction .p2{
+  text-indent: 20px;
+}
+.cover-con li .jurisdiction .p3{
+  text-indent: 40px;
+}
+.cover-con li .jurisdiction .p4{
+  text-indent: 60px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,79 @@
+.admin-about {
+  min-width: 1200px;
+  overflow-x: auto;
+  height: auto;
+  background: #F5F8FA;
+  padding: 40px 16px;
+}
+
+.admin-about h2 {
+  border-left: 5px solid #2E4769;
+  text-indent: 20px;
+  color: #2E4769;
+  font-size: 22px;
+}
+
+.admin-about .about-title {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  background: #fff;
+  padding: 30px 20px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  margin-top: 20px;
+}
+
+.admin-about .about-title span {
+  font-size: 14px;
+  color: #2E4769;
+  display: inline-block;
+  line-height: 40px;
+  margin-right: 15px;
+}
+
+.admin-about .about-title input {
+  width: 80%;
+  height: 40px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  padding: 0 10px;
+  outline: none;
+}
+
+.admin-about .about-title textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 10px;
+  border: 1px solid #dcdfe6;
+  outline: none;
+  resize: vertical;
+}
+.admin-about .about-title .about-save{
+  width: 120px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  background: #71C945;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  cursor: pointer;
+  margin: 20px auto;
+}

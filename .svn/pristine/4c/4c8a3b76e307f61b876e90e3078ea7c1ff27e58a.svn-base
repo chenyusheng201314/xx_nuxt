@@ -1,0 +1,23 @@
+<template>
+  <div></div>
+</template>
+
+<script>
+export default {
+  name: 'mine05medal',
+  async asyncData({store}) {
+    let res = await store.dispatch('mineGet', {
+      url: '/medal',
+      data: {}
+    })
+    console.log('勋章',res)
+    return {
+      medals:res.data
+    }
+  },
+}
+</script>
+
+<style scoped>
+
+</style>

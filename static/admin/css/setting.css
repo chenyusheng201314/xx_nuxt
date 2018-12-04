@@ -1,0 +1,193 @@
+.m-t-20 {
+  margin-top: 20px;
+}
+
+.m_r_60 {
+  margin-right: 60px !important;
+}
+
+.admin-setting {
+  min-width: 1200px;
+  overflow-x: auto;
+  height: auto;
+  background: #F5F8FA;
+  padding: 40px 16px;
+}
+
+.admin-setting h2 {
+  border-left: 5px solid #2E4769;
+  text-indent: 20px;
+  color: #2E4769;
+  font-size: 22px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.admin-setting .setting-con {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  padding: 15px 20px;
+  background: #fff;
+  margin-top: 30px;
+}
+
+.admin-setting .setting-con .con-tit {
+  width: 100%;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+.admin-setting h2 .bannner-btn {
+  float: right;
+  margin-right: 15px;
+  width: 120px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  text-indent: 0;
+}
+
+.admin-setting h2 .banner_add {
+  background: #4667B4;
+}
+
+.admin-setting h2 .no_add {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.admin-setting h2 .banner-save {
+  background: #71C945;
+}
+
+.admin-setting .con-con {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin-top: 20px;
+  position: relative;
+  background: #fff;
+  padding: 20px;
+}
+
+.admin-setting .con-con .con-con-l {
+  float: left;
+  overflow: hidden;
+  width: 350px;
+  height: auto;
+}
+
+.avatar-uploader .el-upload--text {
+  border: none !important;
+  width: 350px !important;
+  height: auto !important;
+}
+
+.admin-setting .con-con .con-con-l .img1 {
+  max-width: 300px !important;
+  width: 300px !important;
+  height: 60px !important;
+}
+
+.admin-setting .con-con .con-con-l .img2 {
+  max-width: 300px !important;
+  width: 300px !important;
+  height: 100px !important;
+}
+
+.admin-setting .con-con .con-con-l .img3 {
+  max-width: 300px !important;
+  width: 200px !important;
+  height: 350px !important;
+}
+.admin-setting .con-con .con-con-l .img4 {
+  max-width: 300px !important;
+  width: 300px !important;
+  height: 80px !important;
+}
+
+.admin-setting .con-con .con-con-l .con-sm {
+  width: 350px;
+  font-size: 12px;
+  color: #929DAB;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.admin-setting .con-con .con-con-r {
+  float: left;
+  height: auto;
+  overflow: hidden;
+  width: calc(100% - 350px);
+}
+
+.admin-setting .con-con .con-con-r .img-r {
+  float: right;
+  height: auto;
+  overflow: hidden;
+}
+
+.admin-setting .con-con .con-con-r .img-r .detele {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 100;
+}
+
+.admin-setting .con-con .con-con-r .img-r img {
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.admin-setting .con-con .con-con-r .con-list {
+  height: auto;
+  overflow: hidden;
+  width: 500px;
+}
+
+.admin-setting .con-con .con-con-r .con-list span {
+  font-size: 14px;
+  color: #2E4769;
+}
+
+.admin-setting .con-con .con-con-r .con-list input {
+  width: 400px;
+  height: 40px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  outline: none;
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+.admin-setting .setting-con .setting-save {
+  float: right;
+  margin-right: 100px;
+  background: #71C945;
+  width: 120px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  margin-top: -90px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+}

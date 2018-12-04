@@ -1,0 +1,58 @@
+<template>
+  <div class="text-center mine-message-detail">
+    <div class="message-detail-title">{{news.title}}</div>
+    <div class="ql-editor message-detail-content " v-html="news.content"></div>
+    <div class="d-flex" style="justify-content: center;">
+      <div class="back-list" @click="$router.back()"> &lt;&lt;返回消息列表 </div>
+      <div v-if="news.type===3" class="news-join" :class="{'news-join-gray':news.is_join===1}"
+           @click="news_join(news.is_join)">{{news.is_join===0?'加入':'已加入'}}</div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "message_id",
+    async asyncData({store,params}) {
+      let res = await store.dispatch('mineGet', {
+        url: '/app/personal/message_info',
+        data: {
+          id: params.id
+        }
+      })
+      console.log('消息详情',res)
+      return {
+        news:res.data,
+        id:params.id
+      }
+    },
+    methods:{
+      async news_join(t) {
+        if (t) {
+          this.$message({
+            message:'已经加入过了~',
+            type: 'warning'
+          })
+        }else {
+          let join = await store.dispatch('minePost', {
+            url: '/app/personal/message_button',
+            data: {
+              id: this.id
+            }
+          })
+          console.log('join',join)
+          if (join.code===0) {
+            this.news.is_join = 1
+          }else {
+            this.$message.error(join.message)
+          }
+        }
+
+      }
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>

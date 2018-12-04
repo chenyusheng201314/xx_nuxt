@@ -1,0 +1,245 @@
+
+.classify {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10000;
+}
+
+.classify-con {
+  width: 440px;
+  height: auto;
+  padding: 40px 30px;
+  background: #fff;
+  margin: 150px auto;
+  position: relative;
+}
+
+.classify-close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.classify-con .classify-tit {
+  width: 100%;
+  height: 35px;
+  line-height: 35px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.classify-con .classify-tit h4 {
+  width: 200px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  font-size: 20px;
+  color: #ff6900;
+  border-bottom: 3px solid #ff6900;
+  margin: 0 auto;
+}
+
+.classify-con .classify-type {
+  width: 100%;
+  height: 100px;
+  border: 1px solid #e0e0e0;
+  margin-top: 35px;
+  border-radius: 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  -ms-border-radius: 16px;
+  -o-border-radius: 16px;
+  line-height: 100px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.classify-con .classify-type img {
+  vertical-align: text-bottom;
+  margin-right: 10px;
+}
+
+.classify-con .classify-type span {
+  font-size: 20px;
+  color: #666;
+}
+
+.classify-con .classify-type:hover {
+  background: #ff6900;
+}
+
+.classify-con .classify-type:hover span {
+  color: #fff;
+}
+
+.classify-con .classify-type.active {
+  background: #ff6900;
+}
+
+.classify-con .classify-type.active span {
+  color: #fff;
+}
+
+
+
+
+.company_login .f12 {
+  font-size: 12px;
+}
+
+.company_login .color-999 {
+  color: #999;
+}
+
+.company_login {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  overflow-y: auto;
+  width: 100%;
+  z-index: 1001;
+}
+
+.company_login ._login {
+  width: 420px;
+  height: auto;
+  margin: 50px auto;
+  padding: 30px;
+  background: #fff;
+  position: relative;
+}
+
+.company_login ._login .login_close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.company_login .login-tit {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+.company_login .login-tit-left {
+  width: 50%;
+  float: left;
+  text-align: center;
+  font-size: 20px;
+  color: #333;
+  height: 35px;
+  line-height: 35px;
+  border-bottom: 2px solid #dcdcdc;
+  cursor: pointer;
+}
+
+.company_login .login-tit-left.active {
+  color: #ff6900;
+  border-bottom: 3px solid #ff6900;
+}
+
+.company_login .login-tit-left img {
+  vertical-align: text-top;
+}
+
+.company_login .login-error {
+  width: 100%;
+  height: auto;
+  color: #ff5758;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 15px;
+}
+
+.company_login .login-btn {
+  width: 360px;
+  height: 50px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  background: #ff6900;
+  text-align: center;
+  line-height: 50px;
+  color: #fff;
+  font-size: 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.company_login .login-type {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.company_login .login-type .login-type-left {
+  float: left;
+}
+
+.company_login .login-type .login-type-left .box {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #ccc;
+  float: left;
+  cursor: pointer;
+  text-align: center;
+  line-height: 9px;
+  margin-top: 3px;
+}
+
+.company_login .login-type .login-type-left .f12.color-999 {
+  margin-left: 5px;
+}
+
+.login-type .login-type-left .forget-pwd {
+  cursor: pointer;
+}
+
+.company_login .login-type .login-type-right {
+  float: right;
+}
+
+.company_login .login-type .login-type-right .go-zhuce {
+  font-size: 12px;
+  color: #ff6900;
+  cursor: pointer;
+}
+
+.company_login .other-login {
+  padding: 0;
+  margin-top: 20px;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+.company_login .other-login li {
+  float: left;
+  margin-right: 30px;
+  
+}
+
+.company_login .other-login li p {
+  font-size: 15px;
+  color: #999;
+  text-align: center;
+  margin-top: 7px;
+  margin-bottom: 0;
+}
+
+.company_login .other-login li img {
+  cursor: pointer;
+}

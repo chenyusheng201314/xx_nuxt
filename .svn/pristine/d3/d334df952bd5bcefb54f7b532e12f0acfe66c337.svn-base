@@ -1,0 +1,61 @@
+<template>
+  <div class="mine-points-detail mine-box">
+    <div class="mine-con">
+      <div class="mine-title">
+        <h4 class="h-title">积分明细</h4>
+      </div>
+      <ul class="records">
+        <li v-for="item in records" :key="item.id">
+          <div class="record-num">{{item.money}} 积分</div>
+          <div class="d-inline-block record-time">{{item.time}}</div>
+          <div class="d-inline-block text-overflow-one record-con">{{item.con}}</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'detail',
+  data () {
+    return {
+      records: [
+        {
+          id: 1,
+          time: '2018-09-09',
+          con: '购买课程《中国培训行业分析》',
+          money: '-299'
+        }, {
+          id: 14,
+          time: '2018-09-09',
+          con: '购买课程《中国培训行业分析》',
+          money: '-299'
+        }, {
+          id: 11,
+          time: '2018-09-09',
+          con: '购买课程《中国培训行业分析》',
+          money: '-299'
+        }, {
+          id: 12,
+          time: '2018-09-09',
+          con: '购买课程《中国培训行业分析》',
+          money: '-299'
+        }
+      ],
+      pageData: {
+        total: 10,
+        current: 1,
+        visible: 8
+      }
+    }
+  },
+  components: {},
+  methods: {
+    // 切换分页
+    paging (num) {
+      console.log(num)
+    }
+  }
+}
+</script>

@@ -1,0 +1,121 @@
+<template>
+  <div class="container teahcer-container" :class="{'modal-open':lists.length}">
+    <topBg src="/images/static/column01show.jpg"></topBg>
+    <localRoute :route="route_data"></localRoute>
+    <!--导师秀-->
+    <div class="border-bottom" :class="{'border-bottom-none':index===teacher_show.data.length-1}" v-for="(item, index) in teacher_show.data" :key="index">
+      <div class="d-inline-block text-center show-left">
+        <nuxt-link :to="'/teacher/'+item.teacher.id">
+          <div class="show-teacher-cover" :style="'background-image: url('+item.teacher.photo_small+')'"></div>
+          <div class="text-overflow-one show-name">{{item.teacher.realname}} | {{item.teacher.title}}</div>
+          <div class="show-company">{{item.organization.title}}</div>
+        </nuxt-link>
+      </div>
+      <div class="d-inline-block show-con">
+
+        <!--<div class="show-title">接口无标题</div>-->
+        <!--<div class="show-join">-->
+        <!--<div class="d-inline-block text-overflow-one show-join-company">参训企业：{{item.address}}</div>-->
+        <!--<div class="d-inline-block text-overflow-one show-join-id">参训对象：{{item.address}}</div>-->
+        <!--</div>-->
+        <div class="show-dec">{{item.content}}</div>
+        <div class="">
+          <!--<img class="show-covers" v-for="(it, ind) in item.images" :key="ind" :src="it" alt="">-->
+          <div class="d-inline-block cursor-pointer show-covers" :class="{'show-covers-right':(ind+1)%5===0}" v-for="(it, ind) in item.images" :key="ind"
+          :style="'background-image: url('+it+')'" @click="preview(index,ind)"></div>
+        </div>
+        <div class="float-left msg">
+          <div class="d-inline-block show-time">{{item.created_at}}</div>
+          <div class="d-inline-block show-position">{{item.address}}</div>
+
+        </div>
+      </div>
+    </div>
+    <!--分页-->
+    <paging :page_total="teacher_show.page_total" url="/teacher/shows?p=" :current="p"></paging>
+    <!--图片预览-->
+    <imgPreview :lists="lists" :initialSlide="initialSlide" @preClose="preClose"></imgPreview>
+  </div>
+</template>
+
+<script>
+  import paging from '@/components/aPaging'
+  import imgPreview from '@/components/img-preview'
+  import topBg from '@/components/topBg'
+  import localRoute from '@/components/localRoute'
+  export default {
+    name: 'shows',
+    head () {
+      return {
+        link: [
+          {
+            href: '/css/teacher.css',
+            type:'text/css',
+            rel: 'stylesheet',
+          }
+        ]
+      }
+    },
+    components: {paging, imgPreview,topBg, localRoute},
+    data() {
+      return {
+
+        route_data: [{name: '享学科技网', path: '/'}, {name: '导师秀', path: ''}],
+        // 预览数据
+        lists:[],
+        initialSlide:0,
+        // 加载动画
+        // fullscreenLoading: true,
+      }
+    },
+    async asyncData({store,query}) {
+      let p = query.p?Number(query.p):1
+      let res = await store.dispatch('httpGet', {
+        url: '/home/teacher_show/list',
+        data: {
+          teacher_id: '',
+          page: p,
+          psize: 5
+        }
+      });
+      console.log('秀', res);
+      return {
+        p: p,
+        teacher_show: res.data,
+
+      }
+    },
+    methods: {
+      //获取列表
+      // async get_list() {
+      //   const that = this;
+      //   that.fullscreenLoading = true;
+      //   let req = {
+      //     url: '/home/teacher_show/list',
+      //     data: {
+      //       teacher_id: '',
+      //       page: that.paging.currentPage,
+      //       psize: that.paging.page_size
+      //     }
+      //   };
+      //   let res = await that.$store.dispatch('httpGet', req);
+      //   if (res) {
+      //     that.fullscreenLoading = false
+      //   }
+      //   that.teacher_show = res.data.data;
+      //   that.paging.total = res.data.total;
+      // }
+
+      // 导师秀图片预览 轮播
+      preview(index,ind) {
+
+        this.initialSlide = ind
+        this.lists = this.teacher_show.data[index].images
+        // console.log(this.lists,ind)
+      },
+      preClose(){
+        this.lists = []
+      }
+    }
+  }
+</script>

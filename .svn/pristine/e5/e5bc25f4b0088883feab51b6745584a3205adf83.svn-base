@@ -1,0 +1,78 @@
+<template>
+  <div id="teachers" class="container teahcer-container">
+    <topBg src="/images/static/column02teacher.jpg"></topBg>
+    <localRoute :route="route_data"></localRoute>
+    <div class="teachers">
+      <div class="cursor-pointer teacher-li" v-for="(item, index) in teachers.data" :key="index"
+           :class="{'teacher-margin-right': (index + 1)%4===0}">
+        <nuxt-link :to="'/teacher/'+item.id">
+          <div class="cover-bg-list">
+            <div class="cover-list" :style="'background-image: url('+item.photo_small+');'">
+              <!--<img class="cover-img-list" :src="item.photo_small" alt="">-->
+            </div>
+          </div>
+          <div class="name">{{item.realname}}</div>
+          <div class="special">擅长领域：{{item.areas_of_expertise}}</div>
+          <div style="font-size: 0;height: 80px;">
+            <div class="text-center special1" v-for="(it, ind) in item.organization_teacher_tags.slice(0,4)" :key="ind"
+                 :class="{'special-margin-right': ind % 2 === 0}">{{it.name}}
+            </div>
+          </div>
+        </nuxt-link>
+      </div>
+    </div>
+    <!--分页-->
+    <paging :page_total="teachers.page_total" url="/teacher?p=" :current="p"></paging>
+  </div>
+</template>
+
+<script>
+  import paging from '@/components/aPaging'
+  import topBg from '@/components/topBg'
+  import localRoute from '@/components/localRoute'
+
+  export default {
+    name: 'teachers',
+    head () {
+      return {
+        link: [
+          {
+            href: '/css/teacher.css',
+            type:'text/css',
+            rel: 'stylesheet',
+          }
+        ]
+      }
+    },
+    data() {
+      return {
+        num: 2,
+        // 加载动画
+        fullscreenLoading: false,
+        route_data: [{name: '享学科技网', path: '/'}, {name: '金牌导师', path: ''}],
+      }
+    },
+    async asyncData({store,query}) {
+      let p = query.p?Number(query.p):1
+      console.log(typeof p)
+      let res = await store.dispatch('httpGet', {
+        url: '/home/teacher/list',
+        data: {
+          page: p,
+          psize: 12
+        }
+      });
+
+      console.log('列表', res.data);
+      return {
+        p,
+        teachers: res.code===0?res.data:{page_total:1},
+      }
+    },
+    components: {paging, topBg, localRoute},
+    methods: {
+
+    },
+    mounted() {}
+  }
+</script>

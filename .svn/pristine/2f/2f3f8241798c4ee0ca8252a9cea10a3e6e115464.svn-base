@@ -1,0 +1,56 @@
+<template>
+  <div class="mine-total mine-box">
+    <div class="mine-con">
+      <div class="title">
+        <h4 class="h-title">学习勋章</h4>
+      </div>
+      <div class="medals">
+        <ul class="d-inline-block"  v-for="(item,index) in medals" :key="index">
+          <li class="d-inline-block" v-for="(it,ind) in item.son" :key="ind" v-if="it.is_get">
+            <img class="medal-cover" :src="it.image_color" alt="">
+            <div class="medal-title">{{it.name}}</div>
+            <div class="medal-dec">{{it.medal_rule.rule_type.name}}{{it.medal_rule.rule_value}}{{it.medal_rule.rule_type.unit}}</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="mine-con">
+      <div class="title">
+        <h4 class="h-title">学习总天数</h4>
+      </div>
+      <div class="text">已累计学习天数 {{user.check_in_day_total}} 天</div>
+    </div>
+    <div class="mine-con">
+      <div class="title">
+        <h4 class="h-title">学习总课程数</h4>
+      </div>
+      <div class="text">已累计学习总课程数 {{user.course_completion_count}} 课</div>
+    </div>
+    <div class="mine-con">
+      <div class="title">
+        <h4 class="h-title">累计学习总时长</h4>
+      </div>
+      <div class="text">已累计学习总时长 {{user.total_studytime |s-h|fixed2}} 小时</div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'mine01tripTotal',
+  data () {
+    return {
+    }
+  },
+  props: ['user'],
+  async asyncData({store}) {
+    let res = await store.dispatch('mineGet', {
+      url: '/app/personal/medal'
+    })
+    console.log('勋章',res)
+    return {
+      medals:res.data
+    }
+  },
+}
+</script>

@@ -1,0 +1,647 @@
+<template>
+  <div class="admin_body">
+    <div class="admin_body_title">数据概述</div>
+    <div class="summary">
+      <ul>
+        <li @click="to_user">
+          <h3>注册用户数</h3>
+          <p>{{data_overview.person_count}}</p>
+        </li>
+        <li @click="to_jg">
+          <h3>机构数</h3>
+          <p>{{data_overview.organization_count}}</p>
+        </li>
+        <li @click="to_course">
+          <h3>上架课程数量</h3>
+          <p>{{data_overview.course_count}}</p>
+        </li>
+        <li @click="to_recharge">
+          <h3>今日充值金额</h3>
+          <p class="text-danger"><span>￥</span>{{data_overview.recharge_order_pay_money_total}}</p>
+        </li>
+        <li @click="to_order">
+          <h3>今日消费学币</h3>
+          <p class="text-danger">{{data_overview.person_order_pay_money_total}}<span>学币</span></p>
+        </li>
+      </ul>
+    </div>
+    <div class="admin_body_title">功能与业务</div>
+    <div class="admin_body_service row">
+
+      <div class="admin_body_service_s col-md-3">
+
+        <img src="/admin/images/main_body_server_bi.png">
+        <h3>BI功能</h3>
+        <p>运营数据呈现</p>
+
+      </div>
+
+      <div class="admin_body_service_s col-md-3">
+        <nuxt-link to="/admin/app" target="_blank">
+          <img src="/admin/images/main_body_server_app.png">
+          <h3>APP管理</h3>
+          <p>首页及基础功能管理</p>
+        </nuxt-link>
+      </div>
+      <div class="admin_body_service_s col-md-3" v-on:click="getPcRole()">
+        <img src="/admin/images/main_body_server_pc.png">
+        <h3>官网管理</h3>
+        <p>首页及基础功能管理</p>
+      </div>
+      <div class="admin_body_service_s col-md-3" v-on:click="getCourseRole()">
+        <img src="/admin/images/main_body_server_kc.png">
+        <h3>课程</h3>
+        <p>课程编辑局上架管理</p>
+      </div>
+      <div class="admin_body_service_s col-md-3" v-on:click="getTrainingRole()">
+        <img src="/admin/images/main_body_server_xly.png">
+        <h3>训练营</h3>
+        <p>平台训练营管理</p>
+      </div>
+      <div class="admin_body_service_s col-md-3" v-on:click="getUserRole()">
+        <img src="/admin/images/main_body_server_user.png">
+        <h3>用户管理</h3>
+        <p>用户情况及数据</p>
+      </div>
+      <div class="admin_body_service_s col-md-3" v-on:click="getOrgRole()">
+        <img src="/admin/images/main_body_server_ds.png">
+        <h3>机构及导师</h3>
+        <p>管理机构及导师信息</p>
+      </div>
+      <div class="admin_body_service_s col-md-3" v-on:click="getCompanyRole()">
+        <img src="/admin/images/main_body_server_qy.png">
+        <h3>企业管理</h3>
+        <p>入驻企业管理</p>
+      </div>
+      <div class="admin_body_service_s col-md-3" v-on:click="getRechargeRole()">
+        <img src="/admin/images/main_body_server_cz.png">
+        <h3>充值管理</h3>
+        <p>充值管理及数据查看</p>
+      </div>
+      <div class="admin_body_service_s col-md-3" v-on:click="getOrderRole()">
+        <img src="/admin/images/main_body_server_dd.png">
+        <h3>订单数据</h3>
+        <p>用户及企业订单数据</p>
+      </div>
+      <div class="admin_body_service_s col-md-3" v-on:click="getSetRole()">
+
+        <img src="/admin/images/main_body_server_set.png">
+        <h3>基础设置</h3>
+        <p>系统基础功能</p>
+
+      </div>
+
+    </div>
+    <div class="admin_body_title">功能与业务</div>
+    <div class="admin_body_m3 row">
+      <div class="admin_body_m3_s bg01 col-md-3" v-on:click="getSaleRole()">
+        <h3>促销活动</h3>
+        <p>课程营销活动</p>
+      </div>
+
+      <div class="admin_body_m3_s bg02 col-md-3" v-on:click="getIntRole()">
+        <h3>积分</h3>
+        <p>积分获取及消耗规则</p>
+      </div>
+
+      <div class="admin_body_m3_s bg03 col-md-3" v-on:click="getMedalRole()">
+        <h3>勋章体系</h3>
+        <p>勋章管理及发放规则</p>
+      </div>
+
+      <div class="admin_body_m3_s bg04 col-md-3" v-on:click="getInviteRole()">
+        <h3>邀请好友</h3>
+        <p>用户邀请好友获奖励</p>
+      </div>
+
+      <div class="admin_body_m3_s bg05 col-md-3" v-on:click="getSendMsgRole()">
+        <h3>消息推送</h3>
+        <p>给用户推送消息</p>
+      </div>
+
+
+    </div>
+    <div style="height: 50px"></div>
+    <div id="foot" class="admin_foot" style="position: fixed; left: 0; bottom: 0;z-index: 9999;text-align:center;">
+      Copyright &copy; 2017-2027 XIANGXUE 享学（深圳）科技有限公司 粤ICP备17065259号-1
+    </div>
+  </div>
+
+</template>
+
+<script>
+
+  export default {
+    layout: 'admin',
+    name: 'admin_body',
+    data() {
+      return {}
+    },
+    async asyncData({store}) {
+      let params = {url: "/manage/home/data_overview", data: {}}
+      let res = await store.dispatch("adminHttpGet", params);
+      let roles = store.state.admin.adminRole.data
+      return {
+        data_overview: res.data,
+        pageInfo: {
+          total: res.data.total,
+          pageSizes: [10, 20, 30, 400],
+          pageSize: 10,
+          currentPage: parseInt(res.data.page),
+        },
+      }
+    },
+    methods: {
+      getIntRole() {
+        let roles = this.$store.state.admin.adminRole.data
+        let person_point = this.comsys.adminGetMeau(roles, "person_point")
+        let person_point_list = []
+        if (person_point.length > 0) {
+          person_point_list = this.comsys.adminGetMeau(person_point[0].son, "list")
+        }
+        if (person_point_list.length > 0) {
+          open('/admin/setInt')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      getMedalRole() {
+        let roles = this.$store.state.admin.adminRole.data
+        let medal = this.comsys.adminGetMeau(roles, "medal")
+        let medal_list = []
+        if (medal.length > 0) {
+          medal_list = this.comsys.adminGetMeau(medal[0].son, "list")
+        }
+        if (medal_list.length > 0) {
+          open('/admin/medal')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+
+      },
+      getInviteRole() {
+        let roles = this.$store.state.admin.adminRole.data
+        let person_invitation = this.comsys.adminGetMeau(roles, "person_invitation")
+        let list = []
+        let setting = []
+        if (person_invitation.length > 0) {
+          list = this.comsys.adminGetMeau(person_invitation[0].son, "list")
+          setting = this.comsys.adminGetMeau(person_invitation[0].son, "setting")
+        }
+        if (list.length > 0) {
+          open('/admin/invite')
+        }
+        else if (setting.length > 0) {
+          open('/admin/invite/setInvite')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+
+      },
+      getSendMsgRole() {
+        let roles = this.$store.state.admin.adminRole.data
+        let message = this.comsys.adminGetMeau(roles, "message")
+        let add = []
+        let list = []
+        if (message.length > 0) {
+          add = this.comsys.adminGetMeau(message[0].son, "add")
+          list = this.comsys.adminGetMeau(message[0].son, "list")
+        }
+        if (add.length > 0) {
+          open('/admin/sendMsg')
+        }
+        else if (list.length > 0) {
+          open('/admin/sendMsg/list')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+
+      },
+      getPcRole() {
+        let roles = this.$store.state.admin.adminRole.data
+        //博客
+        let blog = this.comsys.adminGetMeau(roles, "blog")
+        let blog_list = []
+        let blog_sort_list = []
+        if (blog.length > 0) {
+          blog_list = this.comsys.adminGetMeau(blog[0].son, "blog_list")
+          blog_sort_list = this.comsys.adminGetMeau(blog[0].son, "blog_sort_list")
+
+        }
+
+        //行业资讯
+        let news = this.comsys.adminGetMeau(roles, "news")
+        let news_list = []
+        if (news.length > 0) {
+          news_list = this.comsys.adminGetMeau(news[0].son, "news_list")
+        }
+
+        //报名信息
+        let sign_up_msg = this.comsys.adminGetMeau(roles, "sign_up_msg")
+        let msg_list = []
+        if (sign_up_msg.length > 0) {
+          msg_list = this.comsys.adminGetMeau(sign_up_msg[0].son, "msg_list")
+        }
+
+        if (blog_list.length > 0) {
+          open('/admin/pc')
+        }
+        else if (blog_sort_list.length > 0) {
+          open('/admin/pc/blogClassify')
+        }
+        else if (news_list.length > 0) {
+          open('/admin/pc/news')
+        }
+        else if (msg_list.length > 0) {
+          open('/admin/pc/enroll')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      getCourseRole() {
+        let roles = this.$store.state.admin.adminRole.data
+
+        let manage_course = this.comsys.adminGetMeau(roles, "manage_course")
+        let manage_video = this.comsys.adminGetMeau(roles, "manage_video")
+        let video_list = [] //视频列表
+        let course_list = [] //课程列表
+        let course_sort_list = []  //课程分类
+        if (manage_video.length > 0) {
+          video_list = this.comsys.adminGetMeau(manage_video[0].son, "video_list")
+        }
+        if (manage_course.length > 0) {
+          course_list = this.comsys.adminGetMeau(manage_course[0].son, "course_list")
+          course_sort_list = this.comsys.adminGetMeau(manage_course[0].son, "course_sort_list")
+        }
+
+        if (course_list.length > 0) {
+          open('/admin/class')
+        }
+        else if (course_sort_list.length > 0) {
+          open('/admin/classification')
+        }
+        else if (video_list.length > 0) {
+          open('/admin/video')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      getUserRole() {
+        //用户列表
+        let person = this.comsys.adminGetMeau(this.$store.state.admin.adminRole.data, "person")
+        let person_list = []
+        if (person.length > 0) {
+          person_list = this.comsys.adminGetMeau(person[0].son, "list")
+        }
+        //授权列表
+        let sq = this.comsys.adminGetMeau(this.$store.state.admin.adminRole.data, "person_authorization_record")
+        let sq_list = []
+        if (sq.length > 0) {
+          sq_list = this.comsys.adminGetMeau(sq[0].son, "course_auth_log_list")
+        }
+        if (person_list.length > 0) {
+          open('/admin/user')
+        }
+        else if (sq_list.length > 0) {
+          open('/admin/user/accreditLits')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      getTrainingRole() {
+        let roles = this.$store.state.admin.adminRole.data
+        //训练营
+        let training = this.comsys.adminGetMeau(roles, "training")
+        let training_list = []
+        if (training.length > 0) {
+          training_list = this.comsys.adminGetMeau(training[0].son, "training_list")
+        }
+        //班级管理
+        let training_class = this.comsys.adminGetMeau(roles, "training_class")
+        let training_class_list = []
+        if (training_class.length > 0) {
+          training_class_list = this.comsys.adminGetMeau(training_class[0].son, "training_class_list")
+        }
+        if (training_list.length > 0) {
+          open('/admin/training')
+        }
+        else if (training_class_list.length > 0) {
+          open('/admin/training/classManage')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+
+      },
+      getCompanyRole() {
+        let roles = this.$store.state.admin.adminRole.data
+
+        let company = this.comsys.adminGetMeau(roles, "company")
+        let company_list = []
+        if (company.length > 0) {
+          company_list = this.comsys.adminGetMeau(company[0].son, "list")
+
+        }
+        let company_authorization_record = this.comsys.adminGetMeau(roles, "company_authorization_record")
+        let training_auth_log_list = []
+        let course_auth_log_list = []
+        if (company_authorization_record.length > 0) {
+          training_auth_log_list = this.comsys.adminGetMeau(company_authorization_record[0].son, "training_auth_log_list")
+          course_auth_log_list = this.comsys.adminGetMeau(company_authorization_record[0].son, "course_auth_log_list")
+
+        }
+
+        if (company_list.length > 0) {
+          open('/admin/companyManage')
+        }
+        else if (training_auth_log_list.length > 0 || course_auth_log_list.length > 0) {
+          open('/admin/companyManage/list')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      getRechargeRole() {
+        let roles = this.$store.state.admin.adminRole.data
+
+        let recharge_order = this.comsys.adminGetMeau(roles, "recharge_order")
+        let recharge_set_list = []
+        let recharge_order_list = []
+        if (recharge_order.length > 0) {
+          recharge_set_list = this.comsys.adminGetMeau(recharge_order[0].son, "recharge_set_list")
+          recharge_order_list = this.comsys.adminGetMeau(recharge_order[0].son, "recharge_order_list")
+        }
+
+        if (recharge_set_list.length > 0) {
+          open('/admin/recharge')
+        }
+        else if (recharge_order_list.length > 0) {
+          open('/admin/recharge/order')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+
+      },
+      getOrderRole() {
+        let roles = this.$store.state.admin.adminRole.data
+        let person_order = this.comsys.adminGetMeau(roles, "person_order")
+        let person_order_list = []
+        if (person_order.length > 0) {
+          person_order_list = this.comsys.adminGetMeau(person_order[0].son, "person_order_list")
+        }
+        if (person_order_list.length > 0) {
+          open('/admin/order')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+
+      },
+      getOrgRole() {
+        let roles = this.$store.state.admin.adminRole.data
+        //机构列表
+        let organization = this.comsys.adminGetMeau(roles, "organization")
+        let organization_list = []
+        if (organization.length > 0) {
+          organization_list = this.comsys.adminGetMeau(organization[0].son, "list")
+        }
+
+        //导师列表
+        let organization_teacher = this.comsys.adminGetMeau(roles, "organization_teacher")
+        let organization_teacher_list = []
+        if (organization_teacher.length > 0) {
+          organization_teacher_list = this.comsys.adminGetMeau(organization_teacher[0].son, "list")
+        }
+
+        //案例
+        let organization_cases = this.comsys.adminGetMeau(roles, "organization_cases")
+        let organization_cases_list = []
+        if (organization_cases.length > 0) {
+          organization_cases_list = this.comsys.adminGetMeau(organization_cases[0].son, "list")
+        }
+
+        //导师秀
+        let dsx = this.comsys.adminGetMeau(roles, "organization_teacher_show")
+        let dsx_list = []
+        if (dsx.length > 0) {
+          dsx_list = this.comsys.adminGetMeau(dsx[0].son, "list")
+        }
+
+        if (organization_list.length > 0) {
+          open('/admin/orgAndTch')
+        }
+        else if (organization_teacher_list.length > 0) {
+          open('/admin/orgAndTch/tch')
+        }
+        else if (organization_cases_list.length > 0) {
+          open('/admin/orgAndTch/case')
+        }
+        else if (dsx_list.length > 0) {
+          open('/admin/orgAndTch/tchShow')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      getSaleRole() {
+        let roles = this.$store.state.admin.adminRole.data
+        //更新管理
+        let course_activity = this.comsys.adminGetMeau(roles, "course_activity")
+        let course_new_list = [] //最新上架
+        let course_jp_list = []  //精品课程
+        let course_tj_list = [] //特价课程
+        let course_jf_list = [] //积分购
+        let course_myzy_list = [] //买一赠一
+        let course_free_list = [] //免费专区
+        let given_words_list = [] //课程赠送文案
+
+
+        if (course_activity.length > 0) {
+          course_new_list = this.comsys.adminGetMeau(course_activity[0].son, "course_new_list")
+          course_jp_list = this.comsys.adminGetMeau(course_activity[0].son, "course_jp_list")
+          course_tj_list = this.comsys.adminGetMeau(course_activity[0].son, "course_tj_list")
+          course_jf_list = this.comsys.adminGetMeau(course_activity[0].son, "course_jf_list")
+          course_myzy_list = this.comsys.adminGetMeau(course_activity[0].son, "course_myzy_list")
+          course_free_list = this.comsys.adminGetMeau(course_activity[0].son, "course_free_list")
+          given_words_list = this.comsys.adminGetMeau(course_activity[0].son, "given_words_list")
+
+        }
+        if (course_new_list.length > 0) {
+          open('/admin/promotion')
+        }
+        else if (course_jp_list.length > 0) {
+          open('/admin/promotion/boutique')
+        }
+        else if (course_tj_list.length > 0) {
+          open('/admin/promotion/special')
+        }
+        else if (course_jf_list.length > 0) {
+          open('/admin/promotion/integral')
+        }
+        else if (course_myzy_list.length > 0) {
+          open('/admin/promotion/present')
+        }
+        else if (course_free_list.length > 0) {
+          open('/admin/promotion/free')
+        }
+        else if (given_words_list.length > 0) {
+          open('/admin/promotion/document')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      getSetRole() {
+        let roles = this.$store.state.admin.adminRole.data
+
+        let manage = this.comsys.adminGetMeau(roles, "manage")
+        let acl = this.comsys.adminGetMeau(roles, "acl")
+        let log = this.comsys.adminGetMeau(roles, "log")
+        let manage_list = []
+        let acl_list = []
+        let log_list = []
+
+        if (manage.length > 0) {
+          manage_list = this.comsys.adminGetMeau(manage[0].son, "lists")
+        }
+        if (acl.length > 0) {
+          acl_list = this.comsys.adminGetMeau(acl[0].son, "role_list")
+        }
+        if (log.length > 0) {
+          log_list = this.comsys.adminGetMeau(log[0].son, "list")
+        }
+
+        if (manage_list.length > 0) {
+          open('/admin/account')
+        }
+        else if (acl_list.length > 0) {
+          open('/admin/role')
+        }
+        else if (log_list.length > 0) {
+          open('/admin/log')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      to_user() {
+        //用户列表
+        let person = this.comsys.adminGetMeau(this.$store.state.admin.adminRole.data, "person");
+        let person_list = [];
+        if (person.length > 0) {
+          person_list = this.comsys.adminGetMeau(person[0].son, "list")
+        }
+        if (person_list.length > 0) {
+          open('/admin/user')
+        } else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      to_jg() {
+        let roles = this.$store.state.admin.adminRole.data
+        //机构列表
+        let organization = this.comsys.adminGetMeau(roles, "organization")
+        let organization_list = []
+        if (organization.length > 0) {
+          organization_list = this.comsys.adminGetMeau(organization[0].son, "list")
+        }
+        if (organization_list.length > 0) {
+          open('/admin/orgAndTch')
+        } else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      to_course() {
+        let roles = this.$store.state.admin.adminRole.data;
+        let manage_course = this.comsys.adminGetMeau(roles, "manage_course");
+        let course_list = []; //课程列表
+        if (manage_course.length > 0) {
+          course_list = this.comsys.adminGetMeau(manage_course[0].son, "course_list")
+        }
+        if (course_list.length > 0) {
+          open('/admin/class')
+        } else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      to_recharge() {
+        let roles = this.$store.state.admin.adminRole.data;
+        let recharge_order = this.comsys.adminGetMeau(roles, "recharge_order");
+        let recharge_set_list = [];
+        if (recharge_order.length > 0) {
+          recharge_set_list = this.comsys.adminGetMeau(recharge_order[0].son, "recharge_set_list");
+        }
+        if (recharge_set_list.length > 0) {
+          open('/admin/recharge')
+        } else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      to_order() {
+        let roles = this.$store.state.admin.adminRole.data;
+        let person_order = this.comsys.adminGetMeau(roles, "person_order");
+        let person_order_list = [];
+        if (person_order.length > 0) {
+          person_order_list = this.comsys.adminGetMeau(person_order[0].son, "person_order_list")
+        }
+        if (person_order_list.length > 0) {
+          open('/admin/order')
+        }
+        else {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+
+    },
+    mounted() {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      loading.close();
+    },
+    head() {
+      return {
+        title: "运营中心",
+        meta: [{
+          hid: 'description',
+          name: 'description',
+          content: "123"
+        }],
+        link: [
+          {
+            href: '/admin/css/css.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          }
+        ],
+        script: [{
+          src: '/js/jquery.min.js'
+        }, {
+          src: '/js/index.js'
+        }, {}
+
+        ]
+      }
+
+    }
+  }
+</script>
+<style scoped>
+  .admin_foot {
+    position: relative;
+    width: 100%;
+    left: 0;
+  }
+</style>
+

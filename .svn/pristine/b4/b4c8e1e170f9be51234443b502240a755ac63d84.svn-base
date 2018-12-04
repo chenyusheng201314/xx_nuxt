@@ -1,0 +1,218 @@
+<template>
+<div class="app_update">
+   <div class="app_update_setting">
+     <div class="base_title">
+       <div class="title">
+          充值金额
+       </div>  
+     </div>
+     <div class="rech_money">
+      <ul>
+        <li v-for="(item,index) in priceInfo" :key="index"><p>{{item.xueb}}<span class="coin_unit">学币</span></p> <span class="coin">{{item.rmb}}元</span></li>
+ 
+      </ul>
+    </div>
+    <div class="schart">
+      <div class="base_title">
+         <div class="title">
+            充值统计
+         </div>  
+       </div>
+       <div class="schart_num">
+         <span v-if="schartDataNum.length==0" style="vertical-align: middle">暂无数据</span>
+         <div :style="'display:'+schartDataNum.length>0?'block':'none'">
+         <canvas id="canvasNum" width="500" height="400"></canvas>
+         <ul>
+           <li v-for="(vo, index) in schartDataNum" :key="index"><i :style="'background-color:'+ schartOptNum.colorList[index]"></i>{{vo.name}} <span>{{vo.value}}</span></li>
+         </ul>
+         </div>
+         
+         <div class="schart_change">
+           <el-select v-model="changeValNum" placeholder="请选择" @change="getSchartNum()">
+              <el-option
+                v-for="item in changeVal "
+
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+         </div>
+       </div>
+
+      <div class="schart_num">
+         <span v-if="schartDataMon.length==0" style="vertical-align:middle;">暂无数据</span>
+         <div :style="'display:'+schartDataMon.length>0?'block':'none'">
+         <canvas id="canvasMon" width="500" height="400"></canvas>
+         <ul>
+           <li v-for="(vo, index) in schartDataMon" :key="index"><i :style="'background-color:'+ schartOptMon.colorList[index]"></i>{{vo.name}} <span>{{vo.value}}</span></li>
+
+         </ul>
+         </div>
+
+         <div class="schart_change">
+      
+         </div>
+       </div>
+
+      <div class="clr"></div>
+    </div>
+
+    
+
+   </div>
+
+
+
+     
+     
+ 
+
+ 
+
+
+</div>
+</template>
+
+<script>
+import sChart from 'schart.js';
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  data () {
+    return {
+       schartDataNum:[
+            {name:'99学币', value:2260},
+            {name:'299学币', value:1170},
+            {name:'399学币', value:970},
+            {name:'599学币', value:1450},
+            {name:'699学币', value:2260},
+            {name:'999学币', value:1170}
+        ],
+        schartOptNum:{
+            title: '充值次数统计',
+            titlePosition: 'bottom',
+            legendTop: -100,
+            colorList: ['#71C945', '#118DF0', '#4667B4', '#FC8193', '#FB5575','#FCAA2B'], 
+         },
+         schartDataMon:[
+            {name:'99学币', value:2260},
+            {name:'299学币', value:1170},
+            {name:'399学币', value:970},
+            {name:'599学币', value:1450},
+            {name:'699学币', value:2260},
+            {name:'999学币', value:1170}
+        ],
+        schartOptMon:{
+            title: '充值金额统计',
+            titlePosition: 'bottom',
+            legendTop: -100,
+            colorList: ['#71C945', '#118DF0', '#4667B4', '#FC8193', '#FB5575','#FCAA2B'], 
+         },
+         changeVal:[
+             {id:0,name:'今天'},
+             {id:3,name:'近三天'},
+             {id:7,name:'近一周'},
+             {id:15,name:'近半个月'},
+             {id:30,name:'近一个月'},
+             {id:90,name:'近三个月'},
+             {id:180,name:'近半年'},
+             {id:365,name:'近一年'}
+         ],
+         changeValNum:0,
+         changeValMon:"",
+
+     
+    }
+  },
+  async asyncData({store}){
+      let params = {url: "/manage/recharge_order/recharge_set_list",data:{}}
+      let res  = await store.dispatch("adminHttpGet",params);
+      var time = new Date()
+      var year = time.getFullYear();
+      var month = time.getMonth()+1;
+      var day =  time.getDate();
+      var month = month.toString().length==2?month:(0+""+month)
+      var day = day.toString().length==2?day:(0+""+day)
+      var start_time = year+"-"+month+"-"+day+" 00:00:00"
+      var end_time = year+"-"+month+"-"+day+" 23:59:59"
+
+      let paramsList = {url: "/manage/recharge_order/recharge_statistics",data:{start_time:start_time,end_time:end_time}}
+      let resList  = await store.dispatch("adminHttpGet",paramsList);
+      console.log(resList)
+      if(resList.code==1) {
+        resList.data = {}
+        resList.data.money_total = []
+        resList.data.count_total = []
+      }
+      for (var i in resList.data.money_total) {
+        resList.data.money_total[i].value = parseFloat(resList.data.money_total[i].value)
+      }
+ 
+      return {
+          priceInfo:res.data,
+          schartDataNum:resList.data.count_total,
+          schartDataMon:resList.data.money_total,
+          today:year+"-"+month+"-"+day
+    }
+  },
+ 
+  methods: {
+    async getSchartNum(){
+      this.schartDataNum = []
+      this.schartDataMon = []
+      var date = new Date();
+      var t = date - 1000 * 60 * 60 * 24 * this.changeValNum
+ 
+      var lastDate = new Date(t);//最后30天可以更改，意义：是获取多少天前的时间
+
+      var lastY = lastDate.getFullYear();
+      var lastM = lastDate.getMonth()+1;
+      var lastD = lastDate.getDate();
+      var lastM = lastM.toString().length==2?lastM:(0+""+lastM)
+      var lastD = lastD.toString().length==2?lastD:(0+""+lastD)
+      var start_time = lastY+"-"+lastM+"-"+lastD+" 00:00:00"
+      var end_time = this.today+" 23:59:59"
+       console.log(start_time,end_time)
+      let paramsList = {url: "/manage/recharge_order/recharge_statistics",data:{start_time:start_time,end_time:end_time}}
+      let resList  = await this.$store.dispatch("adminHttpGet",paramsList);
+
+      if(resList.code==1) {
+        resList.data = {}
+        resList.data.money_total = []
+        resList.data.count_total = []
+      }
+      for (var i in resList.data.money_total) {
+        resList.data.money_total[i].value = parseFloat(resList.data.money_total[i].value)
+      }
+      
+      this.schartDataNum = resList.data.count_total
+      this.schartDataMon = resList.data.money_total
+
+
+      new sChart('canvasNum', 'ring', this.schartDataNum, this.schartOptNum);
+      new sChart('canvasMon', 'ring', this.schartDataMon, this.schartOptMon);
+
+    },
+    getSchartMon:function(){
+      this.schartDataMon = [
+            {name:'99学币', value:2260},
+            {name:'299学币', value:1170},
+            {name:'399学币', value:970},
+            {name:'599学币', value:1450},
+            {name:'699学币', value:2260},
+            {name:'999学币', value:1170}
+        ]
+    }
+ 
+  },
+  computed:{
+ 
+  },
+  mounted () {
+    new sChart('canvasNum', 'ring', this.schartDataNum, this.schartOptNum);
+    new sChart('canvasMon', 'ring', this.schartDataMon, this.schartOptMon);
+  },
+}
+</script>
+

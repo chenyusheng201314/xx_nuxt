@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html {{ HTML_ATTRS }}>
+  <head>
+    {{ HEAD }}
+  <link href="/_nuxt/app.406b8fbe6ced9e307bc1ad34ceb84df0.css" rel="stylesheet"></head>
+  <body {{ BODY_ATTRS }}>
+    {{ APP }}
+  <script type="text/javascript" src="/_nuxt/manifest.a4d52c0c26e7a6e897df.js"></script><script type="text/javascript" src="/_nuxt/vendor.c76c56012153a68c2cf9.js"></script><script type="text/javascript" src="/_nuxt/app.d5b6a5149d539bf37dbb.js"></script></body>
+</html>

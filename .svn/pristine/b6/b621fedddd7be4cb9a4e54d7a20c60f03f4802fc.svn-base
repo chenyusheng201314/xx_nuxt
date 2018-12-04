@@ -1,0 +1,101 @@
+<template>
+  <div class="mine">
+    <div class="row top-msg">
+      <div class="container">
+        <img class="user-cover" :src="user.photo" alt="">
+        <div class="d-inline-block user-con">
+          <h4 class="user-name">{{user.username}} ， 下午好！</h4>
+          <div class="user-note">{{user.mobile}}</div>
+        </div>
+        <div class="d-inline-block sign" :class="{signed:user.check_sign_in_status}" @click.stop="sign(user.check_sign_in_status)">
+          {{user.check_sign_in_status?'已签到':'签到'}}
+        </div>
+      </div>
+    </div>
+    <div class="row tabs">
+      <div class="container">
+        <ul class="text-center">
+          <li :class="{'tab-active': 1 === tab}" @click="tab=1"><nuxt-link to="/mine/mine/mine01trip/total">学习旅程</nuxt-link></li>
+          <li :class="{'tab-active': 6 === tab}" @click="tab=6"><nuxt-link to="/mine/mine/mine06train">训练营</nuxt-link></li>
+          <li :class="{'tab-active': 2 === tab}" @click="tab=2"><nuxt-link to="/mine/mine/mine02card">我的名片</nuxt-link></li>
+          <li :class="{'tab-active': 3 === tab}" @click="tab=3"><nuxt-link to="/mine/mine/mine03money">我的学币</nuxt-link></li>
+          <li :class="{'tab-active': 4 === tab}" @click="tab=4"><nuxt-link to="/mine/mine/mine04points/detail">我的积分</nuxt-link></li>
+          <li :class="{'tab-active': 5 === tab}" @click="tab=5"><nuxt-link to="/mine/mine/mine05medal">我的勋章</nuxt-link></li>
+          <!--<li :class="{'tab-active': 6 === tab}" @click="tab=6"><nuxt-link to="/mine/mine/mine06company">我的企业</nuxt-link></li>-->
+          <li :class="{'tab-active': 7 === tab}" @click="tab=7"><nuxt-link to="/mine/mine/mine07message/system">消息</nuxt-link></li>
+          <li :class="{'tab-active': 8 === tab}" @click="tab=8"><nuxt-link to="/mine/mine/mine08order">我的订单</nuxt-link></li>
+          <li :class="{'tab-active': 9 === tab}" @click="tab=9"><nuxt-link to="/mine/mine/mine09request">邀请好友</nuxt-link></li>
+          <li :class="{'tab-active': 10 === tab}" @click="tab=10"><nuxt-link to="/mine/mine/mine10follow/course">我的关注</nuxt-link></li>
+          <li :class="{'tab-active': 11 === tab}" @click="tab=11"><nuxt-link to="/mine/mine/mine11feedback">意见反馈</nuxt-link></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container content">
+      <!--<transition name="router-fade" mode="out-in">-->
+        <keep-alive>
+          <nuxt-child :user="user"/>
+        </keep-alive>
+      <!--</transition>-->
+    </div>
+  </div>
+</template>
+
+<script>
+
+export default {
+  name: 'mine',
+  head () {
+    return {
+      link: [
+        {
+          href: '/css/mine.css',
+          type:'text/css',
+          rel: 'stylesheet',
+        }
+      ]
+    }
+  },
+  data () {
+    return {
+      tab: 1
+    }
+  },
+  async asyncData({store}) {
+    let res = await store.dispatch('mineGet', {
+      url: '/app/personal/my_info',
+      data: {}
+    })
+    console.log('个人信息',res.data)
+
+    return {
+      user:res.data
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      // 通过 `vm` 访问组件实例
+      // vm.$router.push('/mine/mine/mine01trip')
+    })
+  },
+  comments: {
+  },
+  methods: {
+    // 签到
+    async sign (t) {
+      if (!t) {
+        let res = await this.$store.dispatch('minePost', {
+          url: '/app/personal/sign_in',
+          data: {}
+        })
+        console.log('签到',res)
+        if (res.code ===0) {
+          this.user.check_sign_in_status = 1
+        }
+      }
+    },
+  },
+  mounted () {
+
+  }
+}
+</script>

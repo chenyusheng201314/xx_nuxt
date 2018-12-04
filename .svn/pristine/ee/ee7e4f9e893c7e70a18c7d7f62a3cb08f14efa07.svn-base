@@ -1,0 +1,955 @@
+<template>
+<div class="admin_body_right">
+   <div class="base_body">
+     <div class="base_title">
+       <div class="title">公司学员
+          <p>Company cadets</p>
+       </div> 
+     </div>
+     <div class="searchFilter">
+        <el-form :inline="true" :model="searchFilter" class="demo-form-inline">
+          <el-form-item label="用户昵称" label-width="80px">
+            <el-input v-model="searchFilter.username" auto-complete="off" clearable></el-input>
+          </el-form-item>
+ 
+          <el-form-item label="账号" label-width="80px">
+               <el-input v-model="searchFilter.mobile" auto-complete="off" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="真实姓名" label-width="80px">
+               <el-input v-model="searchFilter.realname" auto-complete="off" clearable></el-input>
+          </el-form-item>
+           <el-form-item label="性别" label-width="80px">
+              
+              <el-select v-model="searchFilter.sex" placeholder="请选择" clearable>
+                 <el-option label="全部" value=""></el-option>
+                  <el-option
+                    v-for="item in sex"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+          </el-form-item>
+
+          <el-form-item label="生日" label-width="80px" clearable>
+            <el-date-picker
+      v-model="searchFilter.birthday_start_time"
+      value-format="yyyy-MM-dd 00:00:00"
+      type="date"
+      placeholder="选择日期">
+          </el-date-picker> -
+          <el-date-picker
+      v-model="searchFilter.birthday_end_time"
+      value-format="yyyy-MM-dd 23:59:59"
+      type="date"
+      placeholder="选择日期">
+          </el-date-picker>
+          </el-form-item>
+
+
+      <el-form-item class="fRight">
+          
+          <el-button   @click="setData(1)" class="btn_search">搜索</el-button>
+          <el-button   @click="add()" class="btn_create"> + 添加学员 </el-button>
+      </el-form-item>
+
+        </el-form>
+
+       
+     </div>
+     <div class="table-responsive">
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="8%">序号</th>
+          <th width="12%">学员</th>
+          <th width="6%">真实姓名</th>
+          <th width="6%">部门</th>
+          <th width="8%">账号</th>
+          <th width="6%">性别</th>
+          <th width="8%">生日</th>
+          <th width="12%">加入时间</th>
+          <th width="12%">操作</th>
+        </tr>
+        <tr v-for="(vo, index) in updateInfo" :key="index"  >
+          <td>{{index+1}}</td>
+          <td align="left"><div v-if="vo.person"><div class="head_img" v-if="vo.person.photo.value"><img :src="vo.person.photo.value" /></div>{{vo.person.username}}</div></td>
+          <td>{{vo.realname}}</td>
+          <td>{{vo.department}}</td>
+          <td>{{vo.person.mobile}}</td>
+          <td><span v-if="vo.person.sex!=''">{{vo.person.sex==0?"--":$store.state.company.sex[vo.person.sex]}}</span><span v-else>--</span></td>
+          <td><span v-if="vo.person.birthday!=''">{{vo.person.birthday}}</span><span v-else>--</span></td>
+          <td>{{vo.created_at}}</td>
+          <td>
+ 
+            <i class="iconfont icon_btn icon_btn_see" v-on:click="see(vo.id)">&#xe610;</i>
+            <i class="iconfont icon_btn icon_btn_edit" v-on:click="edit(vo.id)">&#xe678;</i>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="page">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage"
+      :page-sizes="pageInfo.pageSizes"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total">
+    </el-pagination>
+    </div>
+   </div>
+
+
+<el-dialog :title="(saveAction=='edit'?'编辑':'添加')+'学员'" v-if="dialogFormVisible" :visible.sync="dialogFormVisible" width="40%">
+  <div class="base_tab" v-if="saveAction!='edit'">
+      <div :class="isOne?'tab hover':'tab'" v-on:click="setIsOne(true)" >单个添加</div>
+      <div :class="isOne?'tab':'tab hover'" v-on:click="setIsOne(false)">批量导入</div>
+  </div>
+  <div v-if="isOne">
+    <el-form :model="addInfo" :rules="rules" ref="addInfo">  
+        <el-form-item label="姓名" :label-width="formLabelWidth" prop="realname">
+          <el-input v-model="addInfo.realname" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="账号（手机号）" :label-width="formLabelWidth" prop="mobile">
+          <el-input type="number" v-model="addInfo.mobile" auto-complete="off" :disabled="saveAction=='edit'?true:false"></el-input> 
+        </el-form-item>
+        <el-form-item label="所属部门" :label-width="formLabelWidth"  prop="department">
+           <el-input v-model="addInfo.department" auto-complete="off" ></el-input>
+       </el-form-item>
+   
+    </el-form>
+    <div slot="footer" class="dialog-footer" style="text-align: center;">
+      <el-button class="el-button--del" v-if="saveAction=='edit'" @click="delT()">删除账号</el-button>
+      <el-button type="primary" @click="submitForm('addInfo')">保存</el-button>
+    </div>
+ </div>
+ <div v-else>
+     <el-input
+      type="textarea"
+      :rows="20"
+      disabled
+      placeholder="请批量导入"
+      v-model="user_data" style="width:60%; display: inline-block;vertical-align: top;">
+    </el-input>
+    <div class="all_person">
+      <span>模板</span>
+      <p @click="downloadTemp()">下载模板</p>
+      <span>上传名单</span>
+      <p>
+        <el-upload
+          :action="$store.state.company.baseUrl+'/company/company_person/excel_parsing'"
+          :headers="{token:$store.state.company.token}"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload">
+          <el-button size="small">点击上传</el-button>
+        </el-upload>
+      </p>
+      <p style="margin-bottom: 0px">有效名单数量统计</p>
+      <span style="margin-top:0 ">{{submitDataAll.length}}</span>
+
+    </div>
+     <div slot="footer" class="dialog-footer" style="text-align: center; margin-top: 20px">
+      <el-button type="primary" @click="submitFormAll()">保存</el-button>
+    </div>
+
+ </div>
+
+</el-dialog>
+
+
+
+ 
+<el-dialog title="设置初始密码" append-to-body :visible.sync="dialogSetPWDVisible" width="30%">
+    <p style="text-align: center;">该用户尚未注册，请为他设置一个6~16位的初始密码 </p>
+    <el-form :model="addInfo" :rules="rules" ref="addInfo2">
+      <el-form-item label="初始密码" :label-width="formLabelWidth"  prop="password">
+           <el-input v-model="addInfo.password" auto-complete="off" ></el-input>
+       </el-form-item>
+   </el-form>
+   <div slot="footer" class="dialog-footer" style="text-align:center">
+ 
+    <el-button type="primary" @click="addSubmit('addInfo2')" v-if="isOne">确 定</el-button>
+    <el-button type="primary" @click="addSubmitAll('addInfo2')" v-else>确 定</el-button>
+  </div>
+</el-dialog>
+
+<el-dialog title="学员主页"  :visible.sync="dialogTableVisible" v-if="dialogTableVisible" width="60%">
+    <div class="memeber_info_user">
+            <div class="memeber_user_header"><img :src="personInfo.person.photo.value" v-if="personInfo.person.photo" /></div>
+            <div class="memeber_user_info">
+             <div class="title">用户账号：{{personInfo.person.mobile}}  <span style="font-size:16px;display: none"> {{status==1?"正常":"冻结"}}</span></div>  
+               <ul>
+                 <li>昵称：{{personInfo.person.username?personInfo.person.username:'--'}} </li>
+                 <li>部门：{{personInfo.department?personInfo.department:'--'}}</li>
+                 <li>姓名：{{personInfo.realname?personInfo.realname:'--'}}</li>
+                 <li>现任职位：{{personInfo.person.company_position?personInfo.person.company_position:'--'}}</li>
+                 
+                 <li>身份证号：{{personInfo.person.identification_number?personInfo.person.identification_number:'--'}}</li>
+                 <li>邮箱：{{personInfo.person.email?personInfo.person.email:'--'}}</li>
+                 <li>生日：{{personInfo.person.birthday?personInfo.person.birthday:'--'}}</li>
+                 <li>从事培训年限：{{personInfo.person.years_of_training?personInfo.person.years_of_training:'--'}}年</li>
+                 <li>性别：{{personInfo.person.sex?$store.state.admin.sex[personInfo.person.sex]:'--'}}</li>
+                 <div class="clr"></div>
+               </ul>
+            </div>
+            <div class="clr"></div>
+
+    </div>
+    <div class="clr"></div>
+    <div class="base_tab">
+      <div :class="isCourse?'tab hover':'tab'" v-on:click="setIsCourse(true)" v-if="isCourseShow">课程</div>
+      <div :class="isCourse?'tab':'tab hover'" v-on:click="setIsCourse(false)" v-if="isTrainingShow">训练营</div>
+    </div>
+ 
+    <div class="table-responsive" v-if="isCourse">
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="6%">序号</th>
+          <th width="8%">课程封面</th>
+          <th width="8%">课程名称</th>
+          <th width="8%">主讲导师</th>
+          <th width="8%">获取时间</th>
+          <th width="8%">学习时长</th>
+  
+        </tr>
+        <tr v-for="(vo, index) in personInfo.course" :key="index"  >
+          <td>{{index+1}}</td>
+
+          <td><img :src="vo.get_type==5?vo.companycourse.cover.value:vo.course.cover.value" style="width:100px" /></td>
+          <td>{{vo.get_type==5?vo.companycourse.course_name:vo.course.course_name}}</td>
+          <td>{{vo.get_type==5?vo.companycourse.teacher.realname:vo.course.teacher.realname}}</td>
+          <td>{{vo.get_type==5?vo.companycourse.created_at:vo.course.created_at}}</td>
+          <td>{{vo.get_type==5?vo.companycourse.all_time:vo.course.all_time}}</td>
+ 
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="page" v-if="isCourse&isCourseShow">
+    <el-pagination
+      @size-change="courseSizeChange"
+      @current-change="courseCurrentChange"
+      :current-page="personInfo.coursePageInfo.currentPage"
+      :page-sizes="personInfo.coursePageInfo.pageSizes"
+      :page-size="personInfo.coursePageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="personInfo.coursePageInfo.total">
+    </el-pagination>
+    </div>
+
+    <div class="table-responsive" v-if="!isCourse&isTrainingShow">
+       <table class="table">
+         <tbody>
+         <tr>
+          <th width="6%">序号</th>
+          <th width="8%">班级封面图</th>
+          <th width="8%">所在班级</th>
+          <th width="8%">所属训练营</th>
+          <th width="8%">入班时间</th>
+          <th width="8%">操作</th>
+ 
+  
+        </tr>
+        <tr v-for="(vo, index) in personInfo.training" :key="index"  >
+          <td>{{index+1}}</td>
+          <td><img :src="vo.class.class_cover.value" style="width:100px" /></td>
+          <td>{{vo.class.class_name}}</td>
+          <td>{{vo.training.training_name}}</td>
+          <td>{{vo.created_at}}</td>
+          <td v-on:click="seeM(vo.person_id,vo.training_id,vo.class_id)">查看</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+
+
+</el-dialog>
+
+
+<el-dialog title="班级学员信息" :visible.sync="dialogMemberVisible" v-if='dialogMemberVisible'  :close-on-click-modal="false" width="80%">
+   
+         <div class="memeber_info_user">
+            <div class="memeber_user_header"><img :src="memberInfo.person.photo.value"/></div>
+            <div class="memeber_user_info">
+             <div class="title">用户账号：{{memberInfo.person.mobile}}  <span style="font-size:16px"> {{memberInfo.join_time}}入班</span></div>  
+               <ul>
+                 <li>昵称：{{personInfo.person.username?personInfo.person.username:'--'}} </li>
+                 <li>部门：{{personInfo.department?personInfo.department:'--'}}</li>
+                 <li>姓名：{{personInfo.realname?personInfo.realname:'--'}}</li>
+                 <li>现任职位：{{personInfo.person.company_position?personInfo.person.company_position:'--'}}</li>
+                 
+                 <li>身份证号：{{personInfo.person.identification_number?personInfo.person.identification_number:'--'}}</li>
+                 <li>邮箱：{{personInfo.person.email?personInfo.person.email:'--'}}</li>
+                 <li>生日：{{personInfo.person.birthday?personInfo.person.birthday:'--'}}</li>
+                 <li>从事培训年限：{{personInfo.person.years_of_training?personInfo.person.years_of_training:'--'}}年</li>
+                 <li>性别：{{personInfo.person.sex?$store.state.admin.sex[personInfo.person.sex]:'--'}}</li>
+            
+
+
+
+               </ul>
+            </div>
+         </div>
+        <div class="clr"></div>
+        <div class="el-dialog__header"><span class="el-dialog__title">Ta的学习情况</span> </div>
+        <div class="learn_status">
+          <div class="learn_status_info">
+            今日获得经验值<span>{{memberInfo.rank_list.today.experience_value}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            本周获得经验值<span>{{memberInfo.rank_list.week.experience_value}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            总经验值 <b v-on:click="expDetail()">明细>></b><span>{{memberInfo.rank_list.all.experience_value}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            作业提交次数<span>{{memberInfo.task_count}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            闯关进度<span>{{memberInfo.jinduMun}}/{{memberInfo.trainingCount}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            今日排名<span>{{memberInfo.rank_list.today.rank}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            本周排名<span>{{memberInfo.rank_list.week.rank}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            总排名<span>{{memberInfo.rank_list.all.rank}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            作业总得分<span>{{memberInfo.fraction_total}}</span>
+          </div>
+          <div class="learn_status_info">
+            
+            被点赞总数<span>{{memberInfo.digg_up_total}}</span>
+          </div>
+        </div>
+        <div class="clr"></div>
+        <div class="el-dialog__header"><span class="el-dialog__title">Ta的作业</span> </div>
+      
+        <div class="work_list" v-for="(vo, index) in workInfo" :key="index">
+              <div class="work_list_binfo">
+               
+                   <div style="float: right" class="has_score" v-if="vo.fraction_status==1">
+                      <b>{{vo.fraction}}</b> 经验值  <div v-if="vo.come_late == 1">未按时提交</div>
+                   </div>
+                   <div style="float: right" class="has_score" v-else-if="vo.fraction_status==2">
+                      <b>{{vo.fraction}}</b> 经验值  <div v-if="vo.come_late == 1">未按时提交</div>
+                   </div>
+                   <div style="float: right" class="has_score" v-else>
+                    <b>未批改</b>    <div v-if="vo.come_late == 1">未按时提交</div>
+                   </div>
+                   <span class="work_list_honer" style="display: block;">{{vo.training_class_topic.title}}</span> 
+                   <span class="work_list_time">{{vo.created_at}}</span>
+               </div>
+              <div class="work_list_content">{{vo.content}}</div>
+             <div class="work_list_imgs">
+                      <ul>
+                         <li v-for="(item, index) in vo.photos" :key="index" :style="'background-image: url('+item.value.value+');'" v-on:click="setPic(item.value.value)"></li>
+                       </ul>
+               </div>
+              <div class="work_list_address">
+                赞：{{vo.digg_up}} &nbsp;&nbsp;&nbsp;  评论：{{vo.comment_count}}
+              </div>
+        
+         </div>
+          <div class="page">
+              <el-pagination
+                @size-change="handleSizeChangeWork"
+                @current-change="handleCurrentChangeWork"
+                :current-page="pageInfoWork.currentPage"
+                :page-sizes="pageInfoWork.pageSizes"
+                :page-size="pageInfoWork.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="pageInfoWork.total">
+              </el-pagination>
+              </div>
+
+ <div class="clr"></div>
+    <div slot="footer" class="dialog-footer" style="text-align: right">
+      <el-button v-on:click="dialogMemberVisible = false">取 消</el-button>
+    </div>
+    </el-dialog>
+
+<el-dialog title="总经验值明细" :visible.sync="dialogExpVisible" v-if='dialogExpVisible' append-to-body width="40%" :close-on-click-modal="false">
+           <ul class="exp_detail">
+             <li v-for="(item,index) in expDetailInfo" :key="index">
+              <span class="green" v-if="item.method==1">+{{item.experience_value}}</span>
+              <span class="red" v-else>-{{item.experience_value}}</span>
+              <span>{{item.remark}}</span>
+              <span>{{item.updated_at}}</span>
+            </li>
+           </ul>
+           <div class="page">
+              <el-pagination
+                @size-change="handleSizeExp"
+                @current-change="handleCurrentExp"
+                :current-page="pageInfoExp.currentPage"
+                :page-sizes="pageInfoExp.pageSizes"
+                :page-size="pageInfoExp.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="pageInfoExp.total">
+              </el-pagination>
+              </div>
+ </el-dialog>
+  
+<el-dialog title="重要操作确认" append-to-body :visible.sync="dialogDelVisible" v-if="dialogDelVisible" width="30%">
+    <p style="text-align: center;">将学员移除后，学员在贵公司的学习数据都将被清空，<br>
+也将同步从公司的训练营班级中移除，确定移除该学员？ </p>
+    <div align="center"><el-button @click="del(addInfo.id)" class="el-button--del2">移 除</el-button> </div>
+    <div align="center"><el-button @click="dialogDelVisible = false"  class="el-button--cancel2">取 消</el-button></div>
+</el-dialog>
+<el-dialog title="图片预览" :visible.sync="dialogPicVisible" v-if='dialogPicVisible' append-to-body width="80%" :close-on-click-modal="false">
+       <div style="text-align:center;"><img :src="picView"   style="max-width: 100%;max-height:100%"></div>
+    </el-dialog>
+</div>
+</template>
+
+<script>
+ 
+
+export default {
+  layout: 'companyManage',
+  name: 'admin_body',
+ 
+  data () {
+    return {
+      isRresetPW:false,
+      isOne:true,
+      isCourse:true,
+      addInfo:{},
+ 
+      status:[{id:1,title:"正常"},{id:0,title:"冻结"}],
+      searchFilter:{sex:''},    
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      dialogSetPWDVisible: false,
+      dialogDelVisible:false,
+      formLabelWidth: '200px',
+      saveAction:"",
+      choose:null,
+      sex:[{id:1,title:"男"},{id:2,title:"女"}],
+      rules:{
+        mobile: [
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          {pattern: /^1[345789]\d{9}$/, message: '手机号格式错误',trigger: 'blur'}
+        ],
+        password: [
+          {required: true, message: '请输入密码', trigger: 'blur' },
+          {pattern: /^[0-9A-Za-z]{6,16}$/, message: '请正确输入6~16位的初始密码',trigger: 'blur'} 
+          //{pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/, message: '请正确输入6~16位的初始密码',trigger: 'blur'}
+        ],
+        realname: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }],
+        department: [{ required: true, message: ' 请输入所属部门', trigger: 'blur' }],
+      },
+      cutPicDic:"",
+      cutPicInfo:{},
+      courseInfo:{},
+      company_id:0,
+      personInfo:{},
+      user_data:"",
+      submitDataAll:[],
+      dialogMemberVisible:false,
+      memberFilter:{},
+      memberPage : {
+          pageSize:20,
+          currentPage:1,
+        },
+      memberInfo:{person:{photo:{}},rank_list:{today:{},week:{},all:{}}},
+      workInfo:{},
+      pageInfoWork:{
+          total:0,
+          pageSizes:[10, 20, 30, 400],
+          pageSize:20,
+          currentPage:1,
+      },
+      expDetailInfo:[],
+      pageInfoExp:{
+          total:0,
+          pageSizes:[10, 20, 30, 400],
+          pageSize:20,
+          currentPage:1,
+      },
+      dialogExpVisible:false,
+      isCourseShow:false,
+      isTrainingShow:false,
+      dialogPicVisible:false,
+      picView:"",
+      
+    }
+  },
+  async asyncData({store}){
+      let params = {url: "/company/company_person/list",data:{page:1,psize:20}}
+      let res  = await store.dispatch("companyHttpGet",params);
+      if(res.code==1) {
+        res.data = {}
+        res.data.data = []
+      }
+      let roleParams = {url: "/company/acl/role_list",data:{page:1,psize:100}}
+      let roleRes  = await store.dispatch("companyHttpGet",roleParams);
+      if(roleRes==1) {
+        roleRes.data = {}
+        roleRes.data.data = []
+      }
+ 
+      return {
+        updateInfo: res.data.data,
+        roleInfo:roleRes.data.data,
+        pageInfo:{
+          total:res.data.total,
+          pageSizes:[10, 20, 30, 400],
+          pageSize:20,
+          currentPage:parseInt(res.data.page),
+        },
+      }
+  },
+
+  
+
+  methods: {
+    setPic(img) {
+
+         this.picView = img
+         this.dialogPicVisible = true
+
+     },
+    handleSizeChangeWork(val) {
+      this.pageInfoWork.pageSize = val;
+      this.setWorkData();
+    },  
+    handleCurrentChangeWork(val) {
+      this.pageInfoWork.currentPage = val;
+      this.setWorkData()
+    },
+    expDetail() {
+      this.expDetailInfo = {}
+      this.dialogExpVisible = true
+      this.getExpDetail()
+    },
+    async getExpDetail() {
+      var paramsData = {}
+      paramsData.person_id = this.memberInfo.person.id
+      paramsData.training_class_id = this.memberInfo.training_class_id
+      paramsData.page = this.pageInfoExp.currentPage
+      paramsData.psize = this.pageInfoExp.pageSize
+ 
+      let params = {url: "/company/training_class_experience/list",data:paramsData}
+      let res  = await this.$store.dispatch("companyHttpGet",params);
+      console.log(res.data.data)
+ 
+      this.expDetailInfo = res.data.data
+      this.pageInfoExp.currentPage = parseInt(res.data.page);
+      this.pageInfoExp.total = res.data.total;
+    },
+    handleSizeExp(val) {
+      this.$set(this.pageInfoExp,'pageSize',val)
+      this.getExpDetail()
+    },
+    handleCurrentExp(val) {
+      this.$set(this.pageInfoExp,'currentPage',val)
+      this.getExpDetail()
+    },
+    async setWorkData(person_id,training_class_id){
+      console.log(this.pageInfo.currentPage,this.pageInfo.pageSize)
+      let paramsWork = {url: "/company/training_class_task/person_list",data:{person_id:person_id,training_class_id:training_class_id,page:this.pageInfo.currentPage,psize:this.pageInfo.pageSize}}
+      let resWork  = await this.$store.dispatch("companyHttpGet",paramsWork);
+      console.log(resWork)
+      this.workInfo = resWork.data.data
+      this.pageInfo.currentPage = parseInt(resWork.data.page);
+      this.pageInfo.total = resWork.data.total;
+    },
+    async seeM(person_id,training_id,training_class_id) {
+      console.log(person_id,training_id,training_class_id) 
+      let params = {url: "/company/training_class_member/info",data:{person_id:person_id,training_id:training_id,training_class_id:training_class_id}}
+      let res  = await this.$store.dispatch("companyHttpGet",params);
+      if(res.code!=0) {
+        this.$message.error(res.message)
+        return false
+
+      }
+      this.memberInfo = res.data
+      var jinduMun = 0
+      this.$set(this.memberInfo,'trainingCount',res.data.trainging_rete.length)
+      for (var j in res.data.trainging_rete) {
+           if(res.data.trainging_rete[j].jindu>=parseFloat(res.data.trainging_rete[j].stage_pct)) {
+                  jinduMun++
+           }
+       }
+       this.$set(this.memberInfo,'jinduMun',jinduMun)
+      this.setWorkData(person_id,training_class_id)
+      this.dialogMemberVisible = true
+    },
+    downloadTemp() {
+      window.open("/company_manage/files/temp.xlsx");
+
+    },
+    setIsOne(val) {
+      this.isOne = val
+    },
+    delT() {
+      let checkInfo = this.comsys.adminCheckRole(this.$store.state.company.companyRole.data,'company_person','del')
+        if(!checkInfo) {
+            this.$message({message: '警告，您无此权限',type: 'warning'});  
+            return false
+        }
+      this.dialogFormVisible=false
+      this.dialogDelVisible=true
+    },
+    async del(id) {
+ 
+        let params = {url: "/company/company_person/del",data:{id:id}}
+        let res  = await this.$store.dispatch("companyHttpPost",params)
+        console.log(res)
+        if(res.code==0) {
+          this.dialogDelVisible=false
+          this.$message({message: '移除成功',type: 'success'});
+          this.setData()
+        }
+        else {
+          this.dialogDelVisible=false
+          this.$message.error('移除失败');
+        }
+    },
+ 
+    see:async function(id) {
+
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.company.companyRole.data,'company_person','info')
+        if(!checkInfo) {
+            this.$message({message: '警告，您无此权限',type: 'warning'});  
+            return false
+        }
+
+        this.isCourse = this.isCourseShow = this.comsys.adminCheckRole(this.$store.state.company.companyRole.data,'company_person','person_course_list')
+        this.isTrainingShow = this.comsys.adminCheckRole(this.$store.state.company.companyRole.data,'company_person','person_training_list')
+   
+
+        this.isRresetPW = false
+        this.saveAction = "edit"
+        let params = {url: "/company/company_person/info",data:{id:id}}
+        let res  = await this.$store.dispatch("companyHttpGet",params);
+        this.personInfo = JSON.parse(JSON.stringify(res.data))
+        console.log(this.personInfo)
+        
+        let paramsCourse = {url: "/company/company_person/person_course_list",data:{person_id:res.data.person_id,page:1,psize:20}}
+        let resCourse  = await this.$store.dispatch("companyHttpGet",paramsCourse)
+        
+        if(resCourse.code==1) {
+          resCourse.data = {}
+          resCourse.data.data = []
+        }
+        console.log(resCourse)
+
+        this.$set(this.personInfo,'course',JSON.parse(JSON.stringify(resCourse.data.data)))
+
+ 
+        let pageInfo={
+          total:resCourse.data.total,
+          pageSizes:[10, 20, 30, 400],
+          pageSize:20,
+          currentPage:parseInt(resCourse.data.page),
+        }
+
+        this.$set(this.personInfo,'coursePageInfo',pageInfo)
+
+
+        let paramsTraining = {url: "/company/company_person/person_training_list",data:{person_id:res.data.person_id,page:1,psize:20}}
+        let resTraining  = await this.$store.dispatch("companyHttpGet",paramsTraining)
+        if(resTraining.code==1) {
+          resTraining.data = []
+        }
+        this.$set(this.personInfo,'training',resTraining.data)
+
+        
+        this.dialogTableVisible = true
+    },
+    setIsCourse(val) {
+      this.isCourse = val
+      console.log(this.isCourse)
+    },
+    courseSizeChange(val) {
+      this.personInfo.coursePageInfo.pageSize = val;
+      this.personInfo.coursePageInfo.currentPage = 1;
+      this.setCourseData();
+    },
+    courseCurrentChange(val) {
+      this.personInfo.coursePageInfo.currentPage=val
+      this.setCourseData();
+    },
+    async setCourseData(val=0){
+      var ht = {}
+      ht.page = val==0?this.personInfo.coursePageInfo.currentPage:val
+      ht.psize = this.personInfo.coursePageInfo.pageSize
+      ht.person_id = this.personInfo.person_id
+      let params = {url: "/company/company_person/person_course_list",data:ht}
+      let res  = await this.$store.dispatch("companyHttpGet",params)
+      this.personInfo.coursePageInfo.currentPage = parseInt(res.data.page)
+      this.personInfo.coursePageInfo.total = res.data.total;
+      this.$set(this.personInfo,'course',JSON.parse(JSON.stringify(res.data.data)))
+    },
+    add:function(){
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.company.companyRole.data,'company_person','add')
+        if(!checkInfo) {
+            this.$message({message: '警告，您无此权限',type: 'warning'});  
+            return false
+        }
+        this.submitDataAll = []
+        this.user_data = ''
+        this.isOne = true
+        this.dialogFormVisible = true;
+        this.isRresetPW = true
+        this.addInfo = {}
+        this.saveAction = "add"
+        
+     },
+     cancel() {
+        this.dialogFormVisible = false
+        this.$refs["addInfo"].resetFields();
+     },
+     edit:async function(id) {
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.company.companyRole.data,'company_person','edit')
+        if(!checkInfo) {
+            this.$message({message: '警告，您无此权限',type: 'warning'});  
+            return false
+        }
+        this.isOne = true
+        this.saveAction = "edit"
+        let params = {url: "/company/company_person/info",data:{id:id}}
+        let res  = await this.$store.dispatch("companyHttpGet",params);
+        this.addInfo = {}
+        this.addInfo.id = res.data.id
+        this.addInfo.mobile = res.data.person.mobile
+        this.addInfo.realname = res.data.realname
+        this.addInfo.department = res.data.department
+        this.dialogFormVisible = true;
+     },
+     resetPw(){
+       this.isRresetPW = true
+     },
+     submitForm(formName) {
+         this.$refs[formName].validate(async (valid) => {
+          if (valid) {
+            if(this.saveAction=='edit') {
+              this.addSubmit('addInfo')
+            }
+            else {
+              var submitInfo = JSON.parse(JSON.stringify(this.addInfo))
+              let params = {url: "/company/company_person/check_add",data:{mobile:submitInfo.mobile}}
+              let res  = await this.$store.dispatch("companyHttpPost",params);
+              console.log(res)
+              if(res.code!=0) {
+                 this.dialogSetPWDVisible = true
+              }
+              else {
+                 this.$message.error('该用户已添加');
+                 //this.dialogSetPWDVisible = true
+                 //this.addSubmit('addInfo')
+              }
+            }
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+        
+     },
+     async addSubmit(formName) {
+        var submitInfo = JSON.parse(JSON.stringify(this.addInfo))   
+        console.log(submitInfo)
+        this.$refs[formName].validate(async (valid) => {
+          if (valid) {
+            if(this.saveAction=='edit') {
+              var url = "/company/company_person/edit"
+            }else {
+              var url = "/company/company_person/add"
+            }
+            console.log(url)
+            var submitInfo = JSON.parse(JSON.stringify(this.addInfo))
+            let params = {url: url,data:submitInfo}
+            let res  = await this.$store.dispatch("companyHttpPost",params);
+            console.log(res)
+            if(res.code==0) {
+               this.dialogSetPWDVisible = false
+               this.dialogFormVisible = false
+               this.$message({message: '保存成功',type: 'success'});
+               this.setData();
+            }
+            else {
+               this.dialogSetPWDVisible = false
+               this.dialogFormVisible = false
+               this.$message.error('保存失败'+res.message);
+               console.log(res.message)
+            }
+
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+        console.log(submitInfo)
+     },
+ 
+     async update() {
+        var submitInfo = JSON.parse(JSON.stringify(this.addInfo))
+
+        let params = {url: "/company/company_person/add",data:submitInfo}
+        let res  = await this.$store.dispatch("companyHttpPost",params);
+ 
+        if(res.code==0) {
+          this.$message({message: '保存成功',type: 'success'});
+          this.setData();
+          this.dialogFormVisible = false
+        }
+        else {
+          this.$message.error("保存失败")
+        }   
+     },
+     handleSizeChange(val) {
+      this.pageInfo.pageSize = val;
+      this.currentPage = 1;
+      this.setData();
+    },
+    handleCurrentChange(val) {
+      this.pageInfo.currentPage=val
+      this.setData();
+    },
+
+    sortByKey: function(array, key) { //(数组、排序的列)
+      return array.sort(function(a, b) {
+        var x = a[key];
+        var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      })
+    }, 
+    handleAvatarSuccess(res, file,fileList) {
+ 
+      if(res.code ==0) {
+        this.submitDataAll = res.data
+        for(var i in res.data) {
+          this.user_data = this.user_data + res.data[i].realname+' '+res.data[i].mobile+' '+res.data[i].department+'\n'
+        }
+      }
+      else {
+        this.$message.error('上传失败，'+res.message);
+      }
+
+    },
+    beforeAvatarUpload(file) {
+      console.log(file)
+      const isXlsx = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type ==='application/vnd.ms-excel';
+      if (!isXlsx) {
+        this.$message.error('上传只能是xlsx或xls格式!');
+      }
+      return isXlsx ;
+    },
+    submitFormAll() {   
+      if(this.submitDataAll.length>0) {
+        this.dialogSetPWDVisible = true
+      }else {
+        this.$message.error("请上传xlsx文件") 
+      }
+    },
+    async addSubmitAll(formName) {
+        for (var i in this.submitDataAll) {
+          this.submitDataAll[i].password = this.addInfo.password
+        }
+        console.log(JSON.stringify(this.submitDataAll))
+        this.$refs[formName].validate(async (valid) => {
+          if (valid) {
+            let params = {url: "/company/company_person/add_batch",data:{user_data:JSON.stringify(this.submitDataAll)}}
+            let res  = await this.$store.dispatch("companyHttpPost",params);
+            if(res.code==0) {
+                this.$message({message: '保存成功',type: 'success'});
+                this.setData()
+                this.dialogSetPWDVisible = false
+                this.dialogFormVisible = false
+            }
+            else {
+                this.$message.error("保存失败")
+            } 
+     
+
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+     
+           
+    },
+ 
+    async setData(val=0) {
+      this.searchFilter.page = val==0?this.pageInfo.currentPage:val;
+      this.searchFilter.psize = this.pageInfo.pageSize;
+      let params = {url: "/company/company_person/list",data:this.searchFilter}
+      let res  = await this.$store.dispatch("companyHttpGet",params);
+      this.pageInfo.currentPage = parseInt(res.data.page);
+      this.pageInfo.total = res.data.total;
+      this.updateInfo = res.data.data
+    },
+    async getCourseInfo(id) {
+       
+      let params = {url: "/manage/company/company_course_list",data:{company_id:id,page:1,psize:20}}
+      let res  = await this.$store.dispatch("adminHttpGet",params);
+
+
+      var pageInfo = {
+          total:res.data.total,
+          pageSizes:[10, 20, 30, 400],
+          pageSize:20,
+          currentPage:parseInt(res.data.page),
+        }
+      this.$set(this.courseInfo,'pageInfo',pageInfo)
+      this.$set(this.courseInfo,'ownCourse',res.data.data)
+      console.log(res)
+      //this.dialogCourseVisible = true
+
+
+    }
+
+ 
+  },
+  computed:{
+ 
+  },
+  mounted () {
+ 
+  },
+  head () {
+    return {
+      title: "公司学员",
+      meta: [{
+        hid: 'description',
+        name: 'description',
+        content: "123"
+      }],
+      link: [
+          {
+            href: '/admin/css/cropper.min.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+        ],
+        script: [
+          {src: '/admin/js/cropper.min.js'},
+        ]
+    }
+  }
+}
+</script>
+

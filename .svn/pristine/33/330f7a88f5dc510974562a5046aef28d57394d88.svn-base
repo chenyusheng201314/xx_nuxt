@@ -1,0 +1,576 @@
+<!--
+   author :cys
+-->
+
+<template>
+  <div>
+    <div class="admin-blog">
+      <h2 class="title">导师博客</h2>
+      <ul class="classify">
+        <li>
+          <span>标题</span>
+          <input type="text" class="inp" v-model="search_info.name">
+        </li>
+        <li>
+          <span>发布日期</span>
+          <el-date-picker
+            v-model="search_info.time"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+          </el-date-picker>
+        </li>
+        <li>
+          <span>导师</span>
+          <input type="text" class="inp" v-model="search_info.teacher">
+        </li>
+        <li>
+          <span>分类</span>
+          <el-select v-model="search_info.fir_id" placeholder="请选择" class="m-r-15">
+            <el-option
+              v-for="(item,index) in search_info.fir_select"
+              :key="index"
+              :label="item.sort_name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select v-model="search_info.sec_id" placeholder="请选择">
+            <el-option
+              v-for="(item,index) in search_info.sec_select"
+              :key="index"
+              :label="item.sort_name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </li>
+        <li class="last-li">
+          <div class="set-btn btn" @click="_create(true)">创建博客</div>
+          <div class="search-btn btn" @click="get_list">搜索</div>
+        </li>
+      </ul>
+      <table>
+        <thead>
+        <tr>
+          <th>序号</th>
+          <th>标题</th>
+          <th>发布日期</th>
+          <th>导师</th>
+          <th>浏览次数</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item,index) in blog_list" :key="index">
+          <td width="80">{{index + 1}}</td>
+          <td width="450">
+            <div class="p1">{{item.blog_title}}</div>
+          </td>
+          <td width="250">{{item.created_at}}</td>
+          <td width="150"><p class="p2">{{item.blog_teacher}}</p></td>
+          <td width="150">{{item.pv}}</td>
+          <td width="250">
+            <span class="edit m-r-10" @click="_edit(item)">配置</span>
+            <span class="see m-r-10" @click="_see(item)">查看</span>
+            <span class="delete" @click="_delete(item.id)">删除</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="paging">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="paging.currentPage"
+          :page-sizes="paging.page_sizes"
+          :page-size="paging.page_size"
+          layout="prev, pager, next, sizes, jumper"
+          :total="paging.total"
+          v-loading.fullscreen.lock="fullscreenLoading"
+          :pager-count="5">
+        </el-pagination>
+      </div>
+    </div>
+
+    <div class="blog-cover" v-show="cover_show">
+      <!-- 编辑-->
+      <div class="cover-con">
+        <h2>{{cover_tit}}</h2>
+        <span class="close" @click="_create(false)"><img src="/admin/images/blog/close.png" alt=""></span>
+        <ul class="edit-detail">
+          <li>
+            <span class="type-name"><label>*</label>博客标题</span>
+            <input type="text" maxlength="30" class="inp" v-model="blog_con.tit" :disabled="cover_type === 2">
+            <label class="error_info" v-show="!blog_con.tit">必填项不能为空</label>
+          </li>
+          <li>
+            <span class="type-name" style="float: left"><label>*</label>博客摘要</span>
+            <textarea maxlength="250" v-model="blog_con.digest" :disabled="cover_type === 2"></textarea>
+            <label class="error_info" style="float: right; margin-right: 95px;"
+                   v-show="!blog_con.digest">必填项不能为空</label>
+          </li>
+          <li>
+            <span class="type-name" style="float: left"><label>*</label>分类</span>
+            <el-select v-model="blog_con.fir_id" placeholder="请选择" class="m-r-15" :disabled="cover_type === 2">
+              <el-option
+                v-for="(item,index) in blog_con.fir_select"
+                :key="index"
+                :label="item.sort_name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+            <el-select v-model="blog_con.sec_id" placeholder="请选择" :disabled="cover_type === 2">
+              <el-option
+                v-for="(item,index) in blog_con.sec_select"
+                :key="index"
+                :label="item.sort_name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+            <label class="error_info" style="float: right; margin-right: 95px;"
+                   v-show="!blog_con.fir_id || !blog_con.sec_id">必填项不能为空</label>
+          </li>
+          <li>
+            <span class="type-name" style="float: left"><label>*</label>导师</span>
+            <input type="text" maxlength="30" class="inp" v-model="blog_con.teacher" :disabled="cover_type === 2">
+            <label class="error_info" style="float: right; margin-right: 95px;"
+                   v-show="!blog_con.teacher">必填项不能为空</label>
+          </li>
+          <li>
+            <span class="type-name" style="float: left">关键词</span>
+            <textarea v-model="blog_con.keywords" :disabled="cover_type === 2"></textarea>
+          </li>
+          <li class="quill_fixed ">
+            <span class="type-name">博客内容</span>
+            <quill-editor
+              v-model="blog_con.con"
+              :disabled="cover_type === 2"
+              ref="myQuillEditor"
+              @blur="onEditorBlur($event)"
+              @focus="onEditorFocus($event)"
+              @change="onEditorChange($event)">
+            </quill-editor>
+          </li>
+        </ul>
+        <div class="add-btn" @click="add_save" v-show="cover_type === 1">立即发布</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import LeftNav from '~/components/admin/LeftNav'
+  import axios from 'axios'
+
+  export default {
+    name: "index",
+    layout: 'admin',
+    components: {
+      LeftNav
+    },
+    head() {
+      return {
+        link: [
+          {
+            href: '/admin/css/blog.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+        ],
+      }
+    },
+    data() {
+      return {
+        // 加载动画
+        fullscreenLoading: false,
+        // 弹窗显示与消失
+
+        // 弹窗显示
+        cover_show: false,
+        // 编辑还是查看 1 编辑  2查看
+        cover_type: 1,
+        // 弹窗标题
+        cover_tit: '创建博客',
+
+      }
+    },
+    async asyncData({store}) {
+      // 获取博客列表
+      let list_req = {
+        url: '/manage/blog/blog_list',
+        data: {
+          page: 1,
+          psize: 20,
+          first_sort_id: '',
+          second_sort_id: '',
+          blog_title: '',
+          blog_teacher: '',
+          start_time: '',
+          end_time: '',
+        }
+      };
+      let list_res = await store.dispatch('adminHttpGet', list_req);
+
+      // 列表筛选条件-分类
+      let cla_req = {
+        url: '/manage/blog/blog_add_sort_list',
+        data: {
+          father_id: 0,
+        }
+      };
+      let cla_res = await store.dispatch('adminHttpGet', cla_req);
+      if (cla_res.code === 0) {
+        cla_res.data.unshift({id: '', sort_name: '全部'});
+      } else {
+        cla_res.data = [{id: '', sort_name: '全部'}];
+      }
+
+
+      // 新增或编辑下的分类
+      let add_res = await store.dispatch('adminHttpGet', cla_req);
+      return {
+        // 列表
+        blog_list: list_res.data.data,
+        // 分页
+        paging: {
+          currentPage: 1,  //当前页
+          page_sizes: [10, 20, 30], //每页显示多少条下拉
+          page_size: 20,// 默认显示多少条
+          total: list_res.data.total,
+        },
+        // 搜索信息
+        search_info: {
+          name: '',
+          time: [],
+          teacher: '',
+          fir_select: cla_res.data,
+          fir_id: '',
+          sec_select: [
+            {
+              id: '',
+              sort_name: '全部',
+            }
+          ],
+          sec_id: '',
+        },
+        // 编辑、新增的内容
+        blog_con: {
+          id: '',
+          tit: '',
+          digest: '',
+          fir_select: add_res.data,
+          fir_id: '',
+          sec_select: [],
+          sec_id: '',
+          teacher: '',
+          keywords: '',
+          con: '假装有内容！',
+        }
+      }
+    },
+    methods: {
+      // 获取列表
+      async get_list() {
+        const that = this;
+        that.fullscreenLoading = true;
+        // 获取博客列表
+        let list_req = {
+          url: '/manage/blog/blog_list',
+          data: {
+            page: that.paging.currentPage,
+            psize: that.paging.page_size,
+            first_sort_id: that.search_info.fir_id,
+            second_sort_id: that.search_info.sec_id,
+            blog_title: that.search_info.name,
+            blog_teacher: that.search_info.teacher,
+            start_time: that.search_info.time ? that.search_info.time[0] : '',
+            end_time: that.search_info.time ? that.search_info.time[1] : '',
+          }
+        };
+        let list_res = await that.$store.dispatch('adminHttpGet', list_req);
+        if (list_res !== '') {
+          that.fullscreenLoading = false;
+        }
+        console.log('sdasd', list_res);
+        if (list_res.code === 1) {
+          this.$message.error('暂无内容');
+          that.blog_list = [];
+        } else {
+          that.blog_list = list_res.data.data;
+          that.paging.total = list_res.data.total;
+        }
+
+      },
+
+      // 分页 每页显示数量
+      handleSizeChange(val) {
+        console.log('每页显示数量', val);
+        this.paging.page_size = val;
+        this.paging.currentPage = 1;
+        this.get_list();
+      },
+      // 分页 当前页
+      handleCurrentChange(val) {
+        console.log('当前页', val);
+        this.paging.currentPage = val;
+        this.get_list();
+      },
+      // 新建博客
+      _create(bool) {
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data, 'blog', 'blog_add');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        } else {
+          this.cover_show = bool;
+          // 初始化
+          this.blog_con.id = '';
+          this.blog_con.tit = '';
+          this.blog_con.digest = '';
+          this.blog_con.fir_id = '';
+          this.blog_con.sec_id = '';
+          this.blog_con.teacher = '';
+          this.blog_con.keywords = '';
+          this.blog_con.con = '';
+          this.cover_type = 1;
+          this.cover_tit = '创建博客';
+        }
+      },
+      // 编辑
+      async _edit(item) {
+        const that = this;
+        // 权限
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data, 'blog', 'blog_add');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        } else {
+          // 编辑弹窗的显示
+          that.cover_show = true;
+          that.cover_type = 1;
+          that.cover_tit = '编辑博客';
+          that.fullscreenLoading = true;
+          //编辑赋值
+          that.blog_con.id = item.id;
+          that.blog_con.tit = item.blog_title;
+          that.blog_con.digest = item.blog_description;
+          that.blog_con.fir_id = item.first_sort_id;
+          that.blog_con.teacher = item.blog_teacher;
+          that.blog_con.keywords = item.keywords;
+          that.blog_con.con = item.blog_content;
+          // 分类 根据一级求情二级分类
+          let cla_req = {
+            url: '/manage/blog/blog_add_sort_list',
+            data: {
+              father_id: item.first_sort_id,
+            }
+          };
+          let cla_res = await that.$store.dispatch('adminHttpGet', cla_req);
+          if (cla_res.code === 0) {
+            that.blog_con.sec_select = cla_res.data;
+            that.blog_con.sec_id = item.second_sort_id;
+            that.fullscreenLoading = false;
+          } else {
+            that.blog_con.sec_select = [];
+          }
+
+        }
+
+
+      },
+      // 查看
+      _see(item) {
+        // 权限
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data, 'blog', 'blog_info');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        } else {
+          this._edit(item);
+          // 编辑弹窗的显示
+          this.cover_show = true;
+          this.cover_type = 2;
+          this.cover_tit = '查看博客';
+        }
+
+
+      },
+      // 删除
+      _delete(id) {
+        const that = this;
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data, 'blog', 'blog_del');
+        console.log('权限', checkInfo);
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        } else {
+          this.$confirm('此操作将永久删除该博客, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            axios({
+              method: 'post',
+              url: '/manage/blog/blog_del',
+              baseURL: that.$store.state.admin.baseUrl,
+              headers: {
+                token: that.$store.state.admin.token,
+              },
+              data: {
+                id
+              }
+            }).then((res) => {
+              console.log(res);
+              if (res.data.code === 0) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                });
+                that.get_list();
+              } else {
+                this.$message.error(res.data.message);
+              }
+            }).catch((err) => {
+              console.log(err);
+            });
+
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        }
+
+
+      },
+      // 保存
+      add_save() {
+        const that = this;
+        // 判断条件
+        if (that.blog_con.tit && that.blog_con.digest && that.blog_con.fir_id && that.blog_con.sec_id && that.blog_con.teacher) {
+          axios({
+            method: 'post',
+            url: '/manage/blog/blog_add',
+            baseURL: that.$store.state.admin.baseUrl,
+            headers: {
+              token: that.$store.state.admin.token,
+            },
+            data: {
+              id: that.blog_con.id,
+              blog_title: that.blog_con.tit,
+              blog_description: that.blog_con.digest,
+              first_sort_id: that.blog_con.fir_id,
+              second_sort_id: that.blog_con.sec_id,
+              blog_teacher: that.blog_con.teacher,
+              blog_content: that.blog_con.con,
+              keywords: that.blog_con.keywords,
+            }
+          }).then((res) => {
+            console.log(res);
+            if (res.data.code === 0) {
+              this.$message({
+                message: '保存成功！',
+                type: 'success'
+              });
+              // 关闭弹窗
+              this.cover_show = false;
+              // 初始化
+              this.blog_con.id = '';
+              this.blog_con.tit = '';
+              this.blog_con.digest = '';
+              this.blog_con.fir_id = '';
+              this.blog_con.sec_id = '';
+              this.blog_con.teacher = '';
+              this.blog_con.keywords = '';
+              this.blog_con.con = '';
+              // 刷新列表
+              that.get_list();
+            } else {
+              this.$message.error(res.data.message);
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
+        } else {
+          this.$message.error('信息填写不完整！')
+        }
+      },
+      // 富文本编辑器
+      onEditorBlur() { //失去焦点事件
+      },
+      onEditorFocus() { //获得焦点事件
+      },
+      async onEditorChange() { //内容改变事件
+        const that = this;
+        var imgReg = /<img.*?(?:>|\/>)/gi;
+        var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+        var arr = that.blog_con.con.match(imgReg);
+        arr = arr == null ? [] : arr;
+        for (var i = 0; i < arr.length; i++) {
+          var src = arr[i].match(srcReg);
+          //获取图片地址
+          if (src[1]) {
+            if (src[1].indexOf('data:image') > -1) {
+              let params = {url: "/common/file/add", data: {file_base64: src[1]}};
+              let res = await this.$store.dispatch("adminHttpPost", params);
+              that.blog_con.con = that.blog_con.con.replace(src[1], res.data.file_url);
+            }
+          }
+        }
+        console.log(that.blog_con.con);
+      },
+
+    },
+    watch: {
+      // 列表筛选条件-分类
+      'search_info.fir_id': async function () {
+        const that = this;
+        // 初始化
+        that.search_info.sec_id = '';
+        if (that.search_info.fir_id === '') {
+          that.search_info.sec_select = [{id: '', sort_name: '全部'}];
+        } else {
+          // 列表筛选条件-分类
+          let cla_req = {
+            url: '/manage/blog/blog_add_sort_list',
+            data: {
+              father_id: that.search_info.fir_id,
+            }
+          };
+          let cla_res = await that.$store.dispatch('adminHttpGet', cla_req);
+          if (cla_res.code === 0) {
+            cla_res.data.unshift({id: '', sort_name: '全部'});
+            that.search_info.sec_select = cla_res.data;
+          } else {
+            that.search_info.sec_select = [{id: '', sort_name: '全部'}];
+          }
+        }
+      },
+      // 新增或编辑下的分类
+      'blog_con.fir_id': async function () {
+        const that = this;
+        // 初始化
+        that.blog_con.sec_id = '';
+        let cla_req = {
+          url: '/manage/blog/blog_add_sort_list',
+          data: {
+            father_id: that.blog_con.fir_id,
+          }
+        };
+        let cla_res = await that.$store.dispatch('adminHttpGet', cla_req);
+        if (cla_res.code === 0) {
+          that.blog_con.sec_select = cla_res.data;
+        } else {
+          that.blog_con.sec_select = [];
+        }
+      },
+    },
+    mounted() {
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

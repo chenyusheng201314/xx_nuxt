@@ -1,0 +1,414 @@
+<template>
+  <div class="company" v-loading.fullscreen.lock="fullscreenLoading" id="company" @scroll="handleScroll($event)">
+    <h2>企业信息</h2>
+    <p class="eng-name">Enterprise information</p>
+    <el-row :gutter="20">
+      <!-- 基础信息-->
+      <el-col :span="12">
+        <div class="grid-content bg-purple">
+          <div class="info-top">
+            <span class="span-left">基础信息</span>
+            <span class="span-right" @click="basics_edit(basics_edit_type)">{{basics_edit_type? '保存': '编辑'}}</span>
+          </div>
+          <!-- 未编辑状态-->
+          <ul class="info-bottom" v-show="!basics_edit_type">
+            <li>
+              <span class="li-name">企业名称</span>
+              <span class="li-con">{{company_info.company_name === '' || company_info.company_name === null ? '--' : company_info.company_name}}</span>
+            </li>
+            <li>
+              <span class="li-name">企业logo</span>
+              <span class="li-con"><img :src="company_info.company_logo.value" alt="你猜猜图片去哪了"></span>
+            </li>
+            <li>
+              <span class="li-name">企业地址</span>
+              <span class="li-con">{{company_info.company_address === '' || company_info.company_address === null ? '--' : company_info.company_address}}</span>
+            </li>
+            <li>
+              <span class="li-name">联系人</span>
+              <span class="li-con">{{company_info.company_link_man === '' || company_info.company_link_man === null ? '--' : company_info.company_link_man}}</span>
+            </li>
+            <li>
+              <span class="li-name">联系方式</span>
+              <span class="li-con">{{company_info.company_link_phone === '' || company_info.company_link_phone === null ? '--' : company_info.company_link_phone}}</span>
+            </li>
+          </ul>
+          <!-- 编辑状态-->
+          <ul class="info-bottom" v-show="basics_edit_type">
+            <li>
+              <span class="li-name edit">企业名称</span>
+              <span class="li-con"><input type="text" v-model="company_info.company_name"></span>
+            </li>
+            <li>
+              <span class="li-name edit">企业logo</span>
+              <span class="li-con"><img :src="company_info.company_logo.value" alt="" @click="cut_pic(800,800)"></span>
+            </li>
+            <li>
+              <span class="li-name edit">企业地址</span>
+              <span class="li-con"><input type="text" v-model="company_info.company_address"></span>
+            </li>
+            <li>
+              <span class="li-name edit">联系人</span>
+              <span class="li-con"><input type="text" v-model="company_info.company_link_man"></span>
+            </li>
+            <li>
+              <span class="li-name edit">联系方式</span>
+              <span class="li-con"><input type="text" v-model="company_info.company_link_phone"></span>
+            </li>
+
+          </ul>
+        </div>
+      </el-col>
+      <!--开票信息-->
+      <el-col :span="12">
+        <div class="grid-content bg-purple">
+          <div class="info-top">
+            <span class="span-left">开票信息</span>
+            <span class="span-right" @click="billing_edit(billing_edit_type)">{{billing_edit_type? '保存': '编辑'}}</span>
+          </div>
+          <!--未编辑状态-->
+          <ul class="info-bottom" v-show="!billing_edit_type">
+            <li>
+              <span class="li-name li-name2">纳税人识别号</span>
+              <span class="li-con li-con2">{{company_info.company_invoice.taxpayer_identification_number === '' || company_info.company_invoice.taxpayer_identification_number === null ? '--' : company_info.company_invoice.taxpayer_identification_number}}</span>
+            </li>
+            <li>
+              <span class="li-name li-name2">银行账号</span>
+              <span class="li-con li-con2">{{company_info.company_invoice.bank_account === '' || company_info.company_invoice.bank_account === null ? '--' : company_info.company_invoice.bank_account}}</span>
+            </li>
+            <li>
+              <span class="li-name li-name2">地址</span>
+              <span class="li-con li-con2">{{company_info.company_invoice.address === null || company_info.company_invoice.address === '' ? '--' : company_info.company_invoice.address}}</span>
+            </li>
+            <li>
+              <span class="li-name li-name2">电话</span>
+              <span class="li-con li-con2">{{company_info.company_invoice.phone === '' || company_info.company_invoice.phone === null ? '--' : company_info.company_invoice.phone}}</span>
+            </li>
+          </ul>
+          <!-- 编辑状态-->
+          <ul class="info-bottom" v-show="billing_edit_type">
+            <li>
+              <span class="li-name li-name2 edit">纳税人识别号</span>
+              <span class="li-con li-con2"><input type="text"
+                                                  v-model="company_info.company_invoice.taxpayer_identification_number"></span>
+            </li>
+            <li>
+              <span class="li-name li-name2 edit">银行账号</span>
+              <span class="li-con li-con2"><input type="text"
+                                                  v-model="company_info.company_invoice.bank_account"></span>
+            </li>
+            <li>
+              <span class="li-name li-name2 edit">地址</span>
+              <span class="li-con li-con2"><input type="text" v-model="company_info.company_invoice.address"></span>
+            </li>
+            <li>
+              <span class="li-name li-name2 edit">电话</span>
+              <span class="li-con li-con2"><input type="text" v-model="company_info.company_invoice.phone"></span>
+            </li>
+          </ul>
+        </div>
+      </el-col>
+    </el-row>
+    <!-- 消息-->
+    <el-row :gutter="24">
+      <el-col :span="24">
+        <div class="grid-content bg-purple">
+          <div class="info-top">
+            <span class="span-left">消息</span>
+          </div>
+          <ul class="news-list">
+            <li @click="open_cover(news)" v-for="(news,index) in news_list" :key="index">
+              <div class="new-left">
+                <img :src="news.image.value" alt="">
+              </div>
+              <div class="new-right">
+                <p class="news-tit">{{news.title}}</p>
+                <p class="news-con">{{news.summary}}</p>
+                <p class="news-con">{{news.created_at}}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </el-col>
+    </el-row>
+    <!-- 新闻弹窗-->
+    <el-dialog
+      title="消息"
+      :visible.sync="cover_show"
+      width="50%">
+      <div class="new-cover-con">
+        <p class="con-tit">{{news_detail.tit}}</p>
+        <p class="con-date">{{news_detail.date}}</p>
+        <div v-html="news_detail.con"></div>
+      </div>
+    </el-dialog>
+    <!--图片裁剪框-->
+    <el-dialog title="图片裁剪" :visible.sync="dialogCropperVisible" append-to-body width="50%">
+      <cropper
+        :cutPicInfo="cutPicInfo"
+        v-on:cutPicSuccess="cutPicSuccess"/>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+  import cropper from '~/components/companyManage/cropper'
+
+  export default {
+    layout: 'companyManage',
+    name: "index",
+    components: {
+      cropper
+    },
+    data() {
+      return {
+        // 消息弹窗
+        cover_show: false,
+        // 基础信息编辑状态
+        basics_edit_type: false,
+        // 开票信息编辑状态
+        billing_edit_type: false,
+        // 裁剪框的状态
+        dialogCropperVisible: false,
+        cutPicInfo: {},
+        // 新闻详细信息
+        news_detail: {
+          tit: '',
+          date: '',
+          con: ''
+        },
+        busy: true,//默认允许滚动执行loadMore函数
+        // 分页
+        paging: {
+          size: 20,
+          currentPage: 1,
+        },
+        // 加载动画
+        fullscreenLoading: false,
+      }
+    },
+    async asyncData({store}) {
+      // 企业信息
+      let info_req = {
+        url: '/company/company/company_info',
+      };
+      let res_info = await store.dispatch('companyHttpGet', info_req);
+      console.log('企业信息', res_info);
+      // 新闻
+      let news_req = {
+        url: '/company/message/list',
+        data: {
+          page: 1,
+          psize: 20,
+        }
+      };
+      let news_res = await store.dispatch('companyHttpGet', news_req);
+
+      console.log(news_res);
+      return {
+        // 公司信息
+        company_info: res_info.data,
+        // 消息列表
+        news_list: news_res.data.data,
+      }
+    },
+    methods: {
+
+      // 获取信息
+      async get_info() {
+        this.fullscreenLoading = true;
+        let info_req = {
+          url: '/company/company/company_info',
+        };
+        let res_info = await this.$store.dispatch('companyHttpGet', info_req);
+        if (res_info) {
+          this.fullscreenLoading = false;
+        }
+        this.company_info = res_info.data;
+      },
+      open_cover(item) {
+        this.cover_show = true;
+        this.news_detail.tit = item.title;
+        this.news_detail.date = item.created_at;
+        this.news_detail.con = item.content;
+      },
+      close_cover() {
+        this.cover_show = false;
+      },
+
+      // 基础信息编辑
+      async basics_edit(bool) {
+        const that = this;
+        // 权限
+        let checkInfo = that.comsys.adminCheckRole(that.$store.state.company.companyRole.data, 'company', 'company_update');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        }
+
+
+        if (bool) {
+          // 判断空值
+          if (that.company_info.company_name !== '' && that.company_info.company_address !== '' && that.company_info.company_link_man !== '' && that.company_info.company_link_phone !== '') {
+            // 发送请求
+            let req = {
+              url: '/company/company/company_update',
+              data: {
+                company_name: that.company_info.company_name,
+                company_logo: that.company_info.company_logo.name,
+                company_address: that.company_info.company_address,
+                company_link_man: that.company_info.company_link_man,
+                company_link_phone: that.company_info.company_link_phone,
+              }
+            };
+            let res = await that.$store.dispatch('companyHttpPost', req);
+            console.log('发送结果', res);
+            if (res.code === 0) {
+              this.$message({
+                message: '企业信息保存成功!',
+                type: 'success'
+              });
+              that.basics_edit_type = !bool;
+              that.get_info();
+            } else {
+              that.$message.error(res.message);
+            }
+          } else {
+            that.$message.error('信息请填写完整!')
+          }
+
+        } else {
+          that.basics_edit_type = !bool;
+        }
+      },
+      // 开票信息编辑
+      async billing_edit(bool) {
+        const that = this;
+        // 权限
+        let checkInfo = that.comsys.adminCheckRole(that.$store.state.company.companyRole.data, 'company', 'company_invoice_update');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        }
+
+        if (bool) {
+          // 判断空值
+          if (that.company_info.company_invoice.taxpayer_identification_number !== '' && that.company_info.company_invoice.bank_account !== '' && that.company_info.company_invoice.address !== '' && that.company_info.company_invoice.phone !== '') {
+
+            let req = {
+              url: '/company/company/company_invoice_update',
+              data: {
+                taxpayer_identification_number: that.company_info.company_invoice.taxpayer_identification_number,
+                bank_account: that.company_info.company_invoice.bank_account,
+                address: that.company_info.company_invoice.address,
+                phone: that.company_info.company_invoice.phone,
+              }
+            };
+            let res = await that.$store.dispatch('companyHttpPost', req);
+            if (res.code === 0) {
+              this.$message({
+                message: '开票信息保存成功!',
+                type: 'success'
+              });
+              that.billing_edit_type = !bool;
+              that.get_info();
+            } else {
+              that.$message.error(res.message);
+            }
+          } else {
+            that.$message.error('信息请填写完整!');
+          }
+
+
+        } else {
+          that.billing_edit_type = !bool;
+        }
+      },
+      // 图片裁剪成功
+      async cutPicSuccess(res) {
+        const that = this;
+        this.dialogCropperVisible = res.visible;
+        let params = {url: "/common/file/add", data: {file_base64: res.data}};
+        let rest = await this.$store.dispatch("companyHttpPost", params);
+        console.log('1111', rest);
+        if (rest.code === 4002) {
+          that.company_info.company_logo.value = rest.data.file_url;
+          that.company_info.company_logo.name = rest.data.filename;
+        }
+        else {
+          this.$message.error('图片上传失败');
+        }
+      },
+      // 裁剪
+      cut_pic(picWidth, picHeight) {
+        this.$set(this.cutPicInfo, "aspectRatio", picWidth / picHeight);
+        this.dialogCropperVisible = true;
+      },
+      // 获取新闻
+      async get_news() {
+        const that = this;
+        // 加载过程中禁止滑动
+        that.busy = false;
+        that.fullscreenLoading = true;
+        // 新闻
+        let news_req = {
+          url: '/company/message/list',
+          data: {
+            page: 1,
+            psize: that.paging.currentPage * 20,
+          }
+        };
+        let news_res = await that.$store.dispatch('companyHttpGet', news_req);
+        if (news_res.code === 0) {
+          that.busy = true;
+          that.fullscreenLoading = false;
+        }
+        that.news_list = news_res.data.data;
+      },
+      // 滚轮触底加载
+      handleScroll(event) {
+        const that = this;
+        if (this.busy) {
+          let w_h = window.innerHeight;
+          let h_h = document.getElementById('company').clientHeight;
+          let top = event.target.scrollTop;
+          if ((w_h - (h_h + top)) < 36) {
+            that.paging.currentPage++;
+            that.get_news();
+          }
+        }
+      },
+    },
+    mounted() {
+    },
+    head() {
+      return {
+        link: [
+          {
+            href: '/company_manage/css/iconfont.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+          {
+            href: '/company_manage/css/cropper.min.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+          {
+            href: '/company_manage/css/company.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+        ],
+        script: [
+
+          {src: '/admin/js/cropper.min.js'},
+        ]
+      }
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>

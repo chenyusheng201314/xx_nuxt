@@ -1,0 +1,245 @@
+<template>
+   <div class="base_body">
+        <div class="work_list_title">今日任务</div>
+        <div class="base_form_list">
+           <div class="title">日期：</div>
+           <div class="content">{{workInfo.taskSuccessData.date}}</div>
+        </div>
+        <div class="base_form_list">
+           <div class="title">课题：</div>
+           <div class="content">{{workInfo.taskSuccessData.title}}</div>
+        </div>
+        <div class="base_form_list">
+           <div class="title">任务：</div>
+           <div class="content">
+            <p v-for="(item,index) in workInfo.taskSuccessData.contentArr" :key="index">{{item}}</p></div>
+        </div>
+        <div class="clr"></div>
+       <div class="base_tab">
+          <div v-on:click="fractionStatus(0)" :class="workInfo.taskSuccessData.fraction_status==0?'tab hover':'tab'">待批改({{workInfo.fraction_status_false}})</div>
+          <div v-on:click="fractionStatus(1)" :class="workInfo.taskSuccessData.fraction_status==1?'tab hover':'tab'">已经批改({{workInfo.fraction_status_true}})</div>
+       </div>
+          <div class="work_list" v-for="(vo, index) in workInfo.workMoreInfo.data" :key="index">
+              <div class="work_list_binfo">
+                  
+                   <div style="float: right" class="has_score" v-if="vo.fraction_status==1">
+                      <b>{{vo.fraction}}</b> 经验值<div v-if="vo.come_late == 1">未按时提交</div>
+                   </div>
+                   <div style="float: right" class="has_score" v-else-if="vo.fraction_status==2">
+                     <b>无</b> 经验值<div v-if="vo.come_late == 1">未按时提交</div>
+                   </div>
+                   <div style="float: right" class="give_score" v-else>
+                   <el-button   @click="giveScore(vo.id)" class="btn_create" v-if="vo.fraction_status==0" >打分</el-button>
+                     <div v-if="vo.come_late == 1">未按时提交</div>
+                   </div>
+
+                    <span class="work_list_img" v-if="vo.person"><img :src="vo.person.photo.value" v-if="vo.person.photo"></span>
+                    <span class="work_list_honer" v-if="vo.person" style="display: block;">
+                      <span v-if="vo.person">{{vo.person.realname}}</span>
+                      <span>{{vo.person.username}}</span>
+                    </span> 
+                   <span class="work_list_time">{{vo.created_at}}</span>
+               </div>
+              <div class="work_list_content">{{vo.content}}</div>
+              <div class="work_list_imgs">
+                      <ul>
+                        <li v-for="(item, index) in vo.photos" :key="index" :style="'background-image: url('+item.value.value+');'" v-on:click="setPic(item.value.value)"></li>
+                       </ul>
+               </div>
+              <div class="work_list_address">
+                赞：{{vo.digg_up}} &nbsp;&nbsp;&nbsp;  评论：{{vo.comment_count}}
+              </div>
+        
+         </div>
+ 
+              <div class="page">
+              <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="workInfo.pageInfo.currentPage"
+                :page-sizes="workInfo.pageInfo.pageSizes"
+                :page-size="workInfo.pageInfo.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="workInfo.pageInfo.total">
+              </el-pagination>
+              </div>
+ 
+    <el-dialog title="作业打分" :visible.sync="dialogScoreVisible" append-to-body width="40%" :close-on-click-modal="false">
+       <p>作业满分为{{setScore}}点经验值，请根据作业质量赋予相应经验值</p>
+       <ul class="score_radio">
+         <li><el-radio v-model="addInfo.fraction_status" :label="1" border></el-radio>
+          打分，给与
+          <el-input v-model="addInfo.fraction" auto-complete="off" type="number" maxlength="5" oninput="if(value.length>5)value=value.slice(0,5)" style="width: 80px"></el-input>
+          经验值</li>
+         <li><el-radio v-model="addInfo.fraction_status" :label="2" border></el-radio>不给分，并隐藏此作业</li>
+       </ul>
+       <div slot="footer" class="dialog-footer" style="text-align:center;">
+ 
+        <el-button type="primary" @click="submitScore()">确 定</el-button>
+      </div>
+    </el-dialog>
+
+
+    <el-dialog title="图片预览" :visible.sync="dialogPicVisible" append-to-body width="80%" :close-on-click-modal="false">
+       <!-- <div class="swiper-container">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide" v-for="(item, index) in picView" :key="index">
+                <img :src="item.value.value" class="swiper_banner">
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+       </div> -->
+       <div style="text-align:center;"><img :src="picView"   style="max-width: 100%;max-height:100%"></div>
+    </el-dialog>
+
+         
+
+    </div>
+
+
+</template>
+<style scoped>
+.swiper-container {
+      width: 100%;
+      height: 100%;
+ }
+.swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+    }
+</style>
+<script>
+ 
+import Swiper from 'swiper';
+import 'swiper/dist/css/swiper.min.css';
+ 
+export default {
+ 
+  props: ['classManagerInfo','workInfo'],
+  data() {
+    return {  
+      formLabelWidth:"120px",
+      searchFilter:{},
+      dialogScoreVisible:false,
+      dialogPicVisible:false,
+      picView:"",
+      addInfo:{fraction_status:"",fraction:""},
+      setScore:0
+    }
+  },
+  computed: {
+     
+    },
+
+  methods: {
+     setPic(img) {
+
+         this.picView = img
+         this.dialogPicVisible = true
+
+     },
+     handleSizeChange(val) {
+      this.workInfo.pageInfo.pageSize = val;
+      this.setData();
+    },
+    handleCurrentChange(val) {
+      this.workInfo.pageInfo.currentPage = val;
+      this.setData()
+    },
+    fractionStatus(val) {
+      this.$set(this.workInfo.taskSuccessData,'fraction_status',val)  
+      this.setData()
+    },
+    async setData() {
+      this.$set(this.workInfo.taskSuccessData,'page',this.workInfo.pageInfo.currentPage)
+      this.$set(this.workInfo.taskSuccessData,'psize',this.workInfo.pageInfo.pageSize)
+      console.log(this.workInfo.taskSuccessData)
+      let params = {url: "/company/training_class_task/list",data:this.workInfo.taskSuccessData}
+      let res = await this.$store.dispatch("companyHttpGet",params)
+      this.$set(this.workInfo,"fraction_status_false",res.data.fraction_status_false)
+      this.$set(this.workInfo,"fraction_status_true",res.data.fraction_status_true)
+      this.workInfo.pageInfo.currentPage = parseInt(res.data.page);
+      this.workInfo.pageInfo.total = res.data.total;
+      this.workInfo.workMoreInfo = res.data
+    },
+    async giveScore(id){
+      let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data,'training_class_task','update_fraction')
+        if(!checkInfo) {
+            this.$message({message: '警告，您无此权限',type: 'warning'});  
+            return false
+        }
+      this.$set(this.addInfo,"id",id)
+      this.workInfo.taskSuccessData.role=1
+      let params = {url: "/company/training_class_experience_rule/list",data:this.workInfo.taskSuccessData}
+      let res = await this.$store.dispatch("companyHttpGet",params)
+      if(res.code===0) {
+        var tasks = res.data.filter(function(p){
+            return p.experience_type === 30;
+        });
+        this.setScore = tasks[0].experience_value
+      } 
+      this.dialogScoreVisible = true 
+    },
+    async submitScore(){
+      if(this.addInfo.fraction_status == 1) {
+        if(this.addInfo.fraction=="") {
+          this.$message.error('经验值必填')
+          return false
+        }
+      }
+      else if(this.addInfo.fraction_status == 2){
+         this.$set(this.addInfo,"fraction",0)
+      }
+      else{
+        this.$message.error('请选择给分或不给分')
+        return false
+      }
+      if (!(/(^[1-9]\d*$)/.test(this.addInfo.fraction))) { 
+           this.$message.error('经验值必须为正整数')
+　　　　　　return false; 
+　　　　}
+
+      if(this.setScore<this.addInfo.fraction) {
+           this.$message.error('经验值不能大于满分,满点分'+this.setScore+'点')
+　　　　　　return false; 
+      }
+      console.log(this.addInfo)
+      let params = {url: "/company/training_class_task/update_fraction",data:this.addInfo}
+      let res = await this.$store.dispatch("companyHttpPost",params)
+      console.log(res)
+      if(res.code==0) {
+         this.$message({message: '打分成功',type: 'success'})
+         this.setData()
+      }
+      else {
+        this.$message.error('打分失败，稍后尝试，'+res.message)
+      }
+      this.dialogScoreVisible = false
+    }
+  
+  },
+  created() {
+      
+  },
+  async mounted () {
+       
+  },   
+}
+</script>
+
+ 

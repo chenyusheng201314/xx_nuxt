@@ -1,0 +1,74 @@
+<template>
+  <div class="mine-message-system clearfix">
+    <div class="cursor-pointer msg-read-all" @click="read_all">全部标记为已读</div>
+    <div class="mine-title">
+      <div class="h-title">系统消息</div>
+    </div>
+    <ul v-loading="loading">
+      <li class="msg-li" v-for="(item, index) in news.data" :key="index">
+        <nuxt-link :to="'./'+item.id">
+          <div class="d-inline-block msg-msg" :title="item.message.title">{{item.message.title}}<span class="msg-read" v-show="!item.is_read">·</span></div>
+          <div class="d-inline-block text-right msg-time">{{item.created_at |y-m-d}}</div>
+        </nuxt-link>
+      </li>
+    </ul>
+    <paging v-if="news.total" :page_total="news.page_total"  @pageChange="pageChange" :current="p"></paging>
+  </div>
+</template>
+
+<script>
+  import paging from '@/components/dataPaging'
+export default {
+  name: 'system',
+  data () {
+    return {
+      p:1,
+      loading:false
+    }
+  },
+  components: {paging},
+  async asyncData({store}) {
+    let res = await store.dispatch('mineGet', {
+      url: '/app/personal/message_list',
+      data: {
+        page:1,
+        psize: 2
+      }
+    })
+    console.log('消息',res)
+    return {
+      news:res.data
+    }
+  },
+  methods: {
+    // 全部标记为已读
+    async read_all () {
+      let res = await this.$store.dispatch('mineGet', {
+        url: '/app/personal/message_read_all',
+      })
+      console.log('已读？',res)
+      if(res.code===0) {
+        this.pageChange(this.p)
+      }
+    },
+    // 切换分页
+    async pageChange (num) {
+      // console.log(num)
+      this.loading = true
+      this.p = num
+      let res = await this.$store.dispatch('mineGet', {
+        url: '/app/personal/message_list',
+        data: {
+          page: num,
+          psize: 2
+        }
+      })
+
+      if (res.code === 0) {
+        this.news = res.data
+        this.loading = false
+      }
+    },
+  }
+}
+</script>

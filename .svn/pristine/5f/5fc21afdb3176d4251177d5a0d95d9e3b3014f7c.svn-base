@@ -1,0 +1,336 @@
+<template>
+  <div id="detail" class="container teahcer-container">
+    <topBg src="/images/static/column02teacher.jpg"></topBg>
+    <localRoute :route="route_data"></localRoute>
+    <div class="border">
+      <div class="top-title">导师介绍</div>
+      <div class="cover-bg">
+        <div class="cover" :style="'background-image: url('+teacher.photo_big+')'">
+          <!--<img class="cover-img" :src="teacher.photo_big" alt="">-->
+        </div>
+      </div>
+      <div class="d-inline-block con">
+        <div class="teacher-name">
+          <div class="d-inline-block cn-name" style="margin-right: 15px">{{teacher.realname}}</div>
+          <div class="d-inline-block teacher-job">{{teacher.title}}</div>
+          <div class="d-inline-block en-name">{{teacher.realname_en}}</div>
+          <!--<div class="d-inline-block text-right shares">-->
+            <!--<div class="d-inline-block icon icon-follow" @click="follow(teacher.id)">关注导师</div>-->
+            <!--<div class="d-inline-block icon position-relative icon-share">分享导师-->
+              <!--<div class="position-absolute share-icon">-->
+                <!--<div class="share-icon-con">-->
+                  <!--<div class="share-out-icon share-weixin"></div>-->
+                  <!--<div class="share-out-icon share-qq"></div>-->
+                  <!--<div class="share-out-icon share-weibo"></div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+        <div class="teacher-dec" v-html="teacher.introduction"></div>
+        <div class="text-overflow-one cursor-pointer teacher-special" :title="teacher.special"><span
+          class="little-title">擅长领域：</span>{{teacher.areas_of_expertise}}
+        </div>
+        <div class="text-overflow-one cursor-pointer teacher-style" :title="teacher.style"><span class="little-title">授课风格：</span>{{teacher.teaching_style}}
+        </div>
+        <div class="labels">
+          <div class="d-inline-block label" v-for="(item, index) in teacher.organization_teacher_tags"
+               :key="index">{{item.name}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="border">
+      <div class="beijing" v-html="teacher.details_web"></div>
+    </div>
+    <!--服务案例-->
+    <div class="position-relative border">
+      <div class="top-title">服务案例</div>
+      <p class="position-absolute go pre" :class="{gray:pc===1}" @click="pre(1)">《</p>
+      <div class="services">
+        <div class="server-scroll" id="server-scroll">
+          <div class="d-inline-block text-center service" v-for="(item, index) in cases.data" :key="index">
+            <nuxt-link :to="'/case/'+item.cases_id">
+              <img class="service-cover" :src="item.organization_cases.organization_big_logo" alt="">
+              <div class="text-overflow-two service-name">{{item.organization_cases.title}}</div>
+            </nuxt-link>
+          </div>
+        </div>
+      </div>
+      <p class="position-absolute go next" :class="{gray:pc===cases.page_total}" @click="next(1)"> 》</p>
+    </div>
+    <!--在线课程-->
+    <div class="position-relative border lesson">
+      <div class="top-title">他/她的在线课程</div>
+      <p class="position-absolute go pre" :class="{gray:pl===1}" @click="pre(2)">《</p>
+      <div class="online-courses">
+        <div class="d-inline-block text-center online-course" v-for="(item, index) in lesson.data" :key="index">
+          <nuxt-link :to="'/class/'+item.id">
+            <img class="course-cover" :src="item.cover" alt="">
+            <div class="course-con">
+              <div class="text-overflow-one course-title">{{item.course_name}}</div>
+              <div class="text-overflow-one course-teacher">{{teacher.realname}} | {{teacher.title}}</div>
+              <div class="text-overflow-one course-nums">
+                <div class="d-inline-block course-num">{{item.section_num}} 课时</div>
+                <div class="d-inline-block course-time">{{item.media_time|s-h|fixed1}} 小时</div>
+              </div>
+              <div class="course-price">
+                <div class="d-inline-block course-price-now"><span class="price-num">{{item.price}}</span> 学币</div>
+                <!--<div class="d-inline-block course-price-old">{{item.price_old}} 学币</div>-->
+              </div>
+            </div>
+          </nuxt-link>
+        </div>
+      </div>
+      <p class="position-absolute go next" :class="{gray:pl===lesson.page_total}" @click="next(2)"> 》</p>
+      <!--分页-->
+      <!--<div class="paging">-->
+        <!--<el-pagination-->
+          <!--@current-change="handleCurrentChange"-->
+          <!--:current-page="paging.currentPage"-->
+          <!--:page-size="paging.page_size"-->
+          <!--layout="prev, pager, next, jumper"-->
+          <!--:total="paging.total"-->
+          <!--:pager-count="5"-->
+          <!--v-loading.fullscreen.lock="fullscreenLoading"-->
+        <!--&gt;-->
+        <!--</el-pagination>-->
+      <!--</div>-->
+    </div>
+    <!--公开课时间  暂时先拿掉-->
+    <!--<div class="border">-->
+    <!--<div class="top-title">公开课开课时间</div>-->
+    <!--<div class="open-courses">-->
+    <!--<div class="d-inline-block open-course" v-for="(item, index) in teacher.open_course" :key="index">-->
+    <!--<div class="d-inline-block open-course-icon">◇</div>-->
+    <!--<div class="d-inline-block text-overflow-one open-title">{{item.title}}</div>-->
+    <!--<div class="d-inline-block text-overflow-one open-time">{{item.time}}</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--学员评价 暂时先拿掉-->
+    <!--<div class="border">-->
+    <!--<div class="top-title">学员评价</div>-->
+    <!--<div class="text-center accesses">-->
+    <!--<div class="d-inline-block access" v-for="(item, index) in teacher.stu_access" :key="index">-->
+    <!--<img class="access-cover" :src="item.cover" alt="">-->
+    <!--<div class="text-overflow-one access-name">{{item.name}}</div>-->
+    <!--<div class="text-overflow-fore cursor-pointer access-con" :title="item.con">{{item.con}}</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--导师秀-->
+    <div class="border show-border">
+      <div class="top-title">导师秀</div>
+      <div class="teacher-show-li" v-for="(item,index) in show.data" :key="index">
+        <div class="d-inline-block teacher-cover"
+             :style="'background-image: url('+item.teacher.photo_big+')'"></div>
+        <div class="d-inline-block show-con-list">
+          <div class="d-inline-block teacher-show-name">{{item.teacher.realname}} | {{item.teacher.title}}</div>
+          <div class="d-inline-block show-company" style="margin-left: 15px;">{{item.teacher.organization.title}}</div>
+          <div class="show-dec">{{item.teacher.areas_of_expertise}}</div>
+        </div>
+        <div class="show-dec show-dec-left">{{item.content}}</div>
+        <div class="teacher-show-list">
+          <!--<img class="show-cover" v-for="(it, index) in item.images" :key="index" :src="it"-->
+               <!--alt="">-->
+          <div class="d-inline-block cursor-pointer show-covers"  v-for="(it, ind) in item.images" :key="ind"
+               :style="'background-image: url('+it+')'"  @click="preview(index,ind)"></div>
+        </div>
+        <div class="text-left show-dec-left msg">
+          <div class="d-inline-block show-time">{{item.created_at}}</div>
+          <div class="d-inline-block show-position">{{item.address}}</div>
+        </div>
+        <!--<div class="show-time-list">{{item.created_at}}</div>-->
+      </div>
+      <!--分页-->
+      <!--<div class="paging">-->
+        <!--<el-pagination-->
+          <!--@current-change="show_handleCurrentChange"-->
+          <!--:current-page="show_paging.currentPage"-->
+          <!--:page-size="show_paging.page_size"-->
+          <!--layout="prev, pager, next, jumper"-->
+          <!--:total="show_paging.total"-->
+          <!--:pager-count="5"-->
+        <!--&gt;-->
+        <!--</el-pagination>-->
+      <!--</div>-->
+    </div>
+    <!--图片预览-->
+    <imgPreview :lists="lists" :initialSlide="initialSlide" @preClose="preClose"></imgPreview>
+  </div>
+</template>
+
+<script>
+
+  import topBg from '@/components/topBg'
+  import localRoute from '@/components/localRoute'
+  import imgPreview from '@/components/img-preview'
+  export default {
+    name: 'detail',
+    head() {
+      return {
+        title:this.teacher.realname,
+        meta: [
+          {
+            hid: 'keywords',
+            name: 'keywords',
+            content: this.teacher.realname
+          },{
+            hid: 'description',
+            name: 'description',
+            content: this.teacher.introduction
+          }],
+        link: [
+          {
+            href: '/css/teacher.css',
+            type:'text/css',
+            rel: 'stylesheet',
+          }
+        ]
+      }
+    },
+    data() {
+      return {
+        route_data: [],
+        pc:1,
+        pl:1,
+        // 预览数据
+        lists:[],
+        initialSlide:0,
+        //加载动画
+        fullscreenLoading: false,
+      }
+    },
+    async asyncData({store,params,query}) {
+      // let pc = query.pc?Number(query.pc):1
+      // let pl = query.pl?Number(query.pl):1
+      // let ps = query.ps?Number(query.ps):1
+      // 信息
+      let res = await store.dispatch('httpGet', {
+        url: '/home/teacher/info',
+        data: {
+          id:params.id
+        }
+      })
+      // 获取老师案例
+      let cases = await store.dispatch('httpGet', {
+        url: '/home/organization_cases/list',
+        data: {
+          teacher_id: params.id,
+          psize: 6,
+          page: 1,
+        }
+      })
+      //获取老师的课程
+      let lesson = await store.dispatch('httpGet', {
+        url: '/home/teacher/course',
+        data: {
+          teacher_id: params.id,
+          psize: 4,
+          page: 1,
+        }
+      })
+      //  获取老师导师秀
+      let show = await store.dispatch('httpGet', {
+        url: '/home/teacher_show/list',
+        data: {
+          teacher_id: params.id,
+          psize: 3,
+          page: 1,
+        }
+      });
+      console.log('老师',res.data,'案例',cases,'课程',lesson,'秀',show)
+      return {
+        id: params.id,
+        teacher: res.data,
+        cases: cases.code===0?cases.data:{page_total:1},
+        lesson: lesson.code===0?lesson.data:{page_total:1},
+        show: show.code===0?show.data:{page_total:1},
+      }
+    },
+
+    components: {
+      topBg, localRoute,imgPreview
+    },
+    methods: {
+      // 上页下页
+      async pre(t) {
+        if (t===1){
+          if (this.pc>1) {
+            // 获取老师案例
+            let cases = await this.$store.dispatch('httpGet', {
+              url: '/home/organization_cases/list',
+              data: {
+                teacher_id: this.id,
+                psize: 6,
+                page: this.pc-1,
+              }
+            })
+            this.cases=cases.code===0?cases.data:{page_total:1}
+            this.pc -= 1
+          }
+        }else if (t===2){
+          if (this.pl>1) {
+            //获取老师的课程
+            let lesson = await this.$store.dispatch('httpGet', {
+              url: '/home/teacher/course',
+              data: {
+                teacher_id: this.id,
+                psize: 4,
+                page: this.pl-1,
+              }
+            })
+            this.lesson=lesson.code===0?lesson.data:{page_total:1}
+            this.pl -= 1
+          }
+        }
+      },
+      async next(t){
+        if (t===1){
+          if (this.pc<this.cases.page_total) {
+            // 获取老师案例
+            let cases = await this.$store.dispatch('httpGet', {
+              url: '/home/organization_cases/list',
+              data: {
+                teacher_id: this.id,
+                psize: 6,
+                page: this.pc+1,
+              }
+            })
+            this.cases=cases.code===0?cases.data:{page_total:1}
+            this.pc += 1
+          }
+        }else if (t===2){
+          //获取老师的课程
+          if(this.pl<this.lesson.page_total) {
+            let lesson = await this.$store.dispatch('httpGet', {
+              url: '/home/teacher/course',
+              data: {
+                teacher_id: this.id,
+                psize: 4,
+                page: this.pl+1,
+              }
+            })
+            this.lesson=lesson.code===0?lesson.data:{page_total:1}
+            this.pl += 1
+          }
+
+        }
+      },
+      // 导师秀图片预览 轮播
+      preview(index,ind) {
+
+        this.initialSlide = ind
+        this.lists = this.show.data[index].images
+        // console.log(this.lists,ind)
+      },
+      preClose(){
+        this.lists = []
+      }
+    },
+    mounted() {
+      this.route_data=[{name: '享学科技网', path: '/'}, {name: '金牌导师', path: '/teacher'},{name: this.teacher.realname, path: ''}]
+    }
+  }
+</script>

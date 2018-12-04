@@ -1,0 +1,288 @@
+<template>
+  <div class="class-list">
+    <topBg src="/images/static/column03lessonSort.jpg"></topBg>
+    <localRoute :route="route_data"></localRoute>
+    <!--分类-->
+    <ul class="class-condition">
+      <li>
+        <span class="li-tit">课程分类：</span>
+        <span class="li-choose" :class="{active:fi===index}" v-for="(item,index) in class_list"
+              :key="index">
+          <a :href="'/class/list?f='+item.id+'&fi='+index+'&a='+a+'&ai='+ai+'&pn='+pn+'&pni='+pni+'&pmax='+pmax">{{item.sort_name}}</a>
+        </span>
+      </li>
+      <li>
+        <span class="li-tit">优惠活动：</span>
+        <span class="li-choose" :class="{active:ai===index}" v-for="(item,index) in discounts_list"
+              :key="index">
+          <a :href="'/class/list?f='+f+'&fi='+fi+'&a='+item.num+'&ai='+index+'&pn='+pn+'&pni='+pni+'&pmax='+pmax">{{item.con}}</a>
+        </span>
+      </li>
+      <li>
+        <span class="li-tit">培训费用：</span>
+        <span class="li-choose" :class="{active:pni===index}" v-for="(item,index) in price_list"
+              :key="index">
+        <a :href="'/class/list?f='+f+'&fi='+fi+'&a='+a+'&ai='+ai+'&pn='+item.min+'&pni='+index+'&pmax='+item.max">{{item.con}}</a></span>
+      </li>
+    </ul>
+    <div>
+      <ul class="details-list">
+        <li class="detail-class" @click="viea_skip(lesson.id)" v-for="(lesson,index) in lesson_list.data" :key="index"
+            v-show="lesson.id !== -1">
+          <img :src="lesson.cover" alt="" width="230" height="150">
+          <p class="class-title">{{lesson.course_name}}</p>
+          <p class="class-teacher">{{lesson.organization_teacher.realname}} |
+            {{lesson.organization_teacher.title}}</p>
+          <p class="class-teacher">
+        <span class="class-num">
+          <img src="/images/class/num.png" alt="" width="16" height="16">
+          <span>{{lesson.section_num}}课时</span>
+        </span>
+            <span class="class-time">
+          <img src="/images/class/time.png" alt="" width="16" height="16">
+          <span>{{(lesson.media_time / 60).toFixed(2)}}分钟</span>
+        </span>
+          </p>
+          <div class="class-price">
+            <div v-if="lesson.is_activity===2">
+              <p class="now-price">
+                <span>{{lesson.coures_tj.sale_price}}</span>学币
+              </p>
+              <p class="old-price">
+                <span>{{lesson.price}}</span>学币
+              </p>
+            </div>
+            <div v-else-if="lesson.is_activity===3">
+              <p class="now-price">
+                <span>{{lesson.price}}</span>学币
+              </p>
+              <p class="free-time">
+                有效时间<span>{{lesson.course_free.time_free.name}}</span>
+              </p>
+
+            </div>
+            <div v-else>
+              <p class="now-price">
+                <span>{{lesson.price}}</span>学币
+              </p>
+            </div>
+
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!--分页-->
+    <paging :page_total="lesson_list.page_total" :url="'/class/list?f='+f+'&fi='+fi+'&a='+a+'&ai='+ai+'&pn='+pn+'&pni='+pni+'&pmax='+pmax+'&p='" :current="p"></paging>
+  </div>
+</template>
+
+<script>
+  import paging from '@/components/aPaging'
+  import topBg from '@/components/topBg'
+  import localRoute from '@/components/localRoute'
+
+  export default {
+    name: 'list',
+    head () {
+      return {
+        link: [
+          {
+            href: '/css/class.css',
+            type:'text/css',
+            rel: 'stylesheet',
+          }
+        ]
+      }
+    },
+    components: {
+      paging,
+      topBg,
+      localRoute
+    },
+    data() {
+      return {
+        // route_data: [{name: '享学科技网', path: '/'}, {name: '课程分类', path: ''}],
+        // 条件筛选活动  1精品课程，2最新课程，3买一赠一，4折扣活动，5限时免费，6积分购
+        discounts_list: [
+          {con: '全部',num: ''},
+          {con: '精品课程',num: 1},
+          {con: '最新课程',num: 2},
+          {con: '买一赠一',num: 3},
+          {con: '折扣活动',num: 4},
+          {con: '限时免费',num: 5},
+          {con: '积分购',num: 6}
+        ],
+        // 条件筛选价格
+        price_list: [
+          {con: '全部', min: '', max: ''},
+          {con: '100以下', min: '', max: 100},
+          {con: '100-300', min: 100, max: 300},
+          {con: '300-500', min: 300, max: 500},
+          {con: '500-1000',min: 500, max: 1000},
+          {con: '1000以上', min: 1000, max: ''}
+        ],
+        // 分页信息
+        page_total:1,
+        currentPage:1,
+        // 加载动画
+        fullscreenLoading: false,
+      }
+    },
+    // 初始化数组
+    async asyncData({store,query,route}) {
+      console.log(route)
+
+      // f 课程分类 a优惠活动 pn培训费用 低 pmax  当前索引
+      let p = query.p?Number(query.p):1
+      let f = query.f?query.f:''
+      let a = query.a?query.a:''
+      let pn =query.pn?query.pn:''
+      let pmax =query.pmax?query.pmax:''
+
+      let fi = query.fi?Number(query.fi):0
+      let ai = query.ai?Number(query.ai):0
+      let pni =query.pni?Number(query.pni):0
+      // let pxi =query.pxi?Number(query.pxi):0
+      // 获取课程分类
+      let nav_res = await store.dispatch('httpGet', {
+        url: '/home/course/course_sort_list'
+      });
+      nav_res.data.unshift({
+        "id": '',
+        "sort_name": "全部",
+      })
+      let res = await store.dispatch('httpGet', {
+        url: '/home/course/course_list',
+        data: {
+          page: p,
+          psize: 20,
+          first_sort_id: f,
+          activity_type: a,
+          price_min: pn,
+          price_max: pmax,
+        }
+      });
+      console.log('参数','f=',f,'a=',a,'pn=',pn,'pmax=',pmax)
+      console.log('lesson_list',res.data)
+
+      return {
+        route_data: [{name: '享学科技网', path: '/'}, {name: '课程分类', path: ''}],
+        class_list: nav_res.data.length ? nav_res.data : '',
+        currentPage:query.p?query.p:1,
+        lesson_list:res.code === 0?res.data:{page_total:1},
+        p, f, a, pn, pmax, fi,ai,pni
+      }
+    },
+    methods: {
+      choose_now_list: function (val) {
+        this.now_class_list = val
+      },
+      // 获取列表
+      async get_list() {
+
+      },
+      // 课程分类选择条件
+      choose_class(val, index) {
+        const that = this;
+        console.log('c',JSON.stringify(this.class_list));
+        // 当前课程
+        that.choose_now_list(val);
+        // 添加选择之后的效果
+        if (this.class_list){
+          if (val === "全部") {
+            that.all_choose_type = true;
+            that.class_list.forEach(function (v, key) {
+              v.type = false;
+            });
+            that.search_info.first_sort_id = '';
+
+          } else {
+            that.all_choose_type = false;
+            that.class_list.forEach(function (v, key) {
+              if (key === index) {
+                v.type = true;
+                that.search_info.first_sort_id = v.id;
+              } else {
+                v.type = false;
+              }
+            });
+          }
+        }
+
+        that.get_list();
+      },
+
+      // 价格选择条件
+      choose_price(val, index) {
+        const that = this;
+        const {price_list} = this;
+        // 添加选择之后的效果
+        if (val === "全部") {
+          price_list.forEach(function (v, key) {
+            v.type = false;
+            that.all_price_type = true;
+          });
+          that.search_info.price_min = '';
+          that.search_info.price_max = '';
+        } else {
+          that.all_price_type = false;
+          price_list.forEach(function (v, key) {
+            if (key === index) {
+              v.type = true;
+              that.search_info.price_max = v.max;
+              that.search_info.price_min = v.min;
+            } else {
+              v.type = false;
+            }
+          });
+        }
+        that.get_list();
+      },
+
+      // 优惠活动选择条件
+      choose_discounts(val, index) {
+        const that = this;
+        const {discounts_list} = this;
+        // 添加选择之后的效果
+        if (val === "全部") {
+          discounts_list.forEach(function (v, key) {
+            v.type = false;
+            that.all_discounts_type = true;
+          });
+          that.search_info.activity_type = '';
+        } else {
+          that.all_discounts_type = false;
+          discounts_list.forEach(function (v, key) {
+            if (key === index) {
+              v.type = true;
+              that.search_info.activity_type = v.num;
+            } else {
+              v.type = false;
+            }
+          });
+        }
+        that.get_list();
+      },
+      // 详情页
+      viea_skip(lesson_id) {
+        this.$router.push('/class/'+lesson_id);
+      },
+
+      // 分页
+      handleSizeChange(val) {
+        this.paging.page_size = val;
+        this.get_list();
+      },
+      handleCurrentChange(val) {
+        this.paging.currentPage = val;
+        this.get_list();
+      }
+    },
+
+    mounted() {
+      // this.get_list();
+    }
+
+  }
+</script>
+

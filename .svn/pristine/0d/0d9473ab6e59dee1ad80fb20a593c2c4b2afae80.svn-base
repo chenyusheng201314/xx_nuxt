@@ -1,0 +1,208 @@
+<template>
+  <div class="blog-detail">
+    <topBg src="/images/static/column04blog.jpg"></topBg>
+    <localRoute :route="route_data"></localRoute>
+    <div class="blog-detail-article">
+      <div class="article-left">
+        <h3>{{blog.info.blog_title}}</h3>
+        <p class="article-info">
+          <span class="article-info-span">讲师：{{blog.info.blog_teacher}}</span>
+          <span class="article-info-span">浏览次数：{{blog.info.pv}}</span>
+          <!--<span class="article-info-share article-info-span" @mouseover="pic_change(true)"-->
+                <!--@mouseleave="pic_change(false)">-->
+            <!--<img class="m-r-5" :src="share_pic" alt="" width="23" height="23">-->
+            <!--分享导师-->
+            <!--<div class="article-info-share-con" v-show="share_type">-->
+              <!--<div class="share-con-detail">-->
+                <!--<span class="share-con-icon m-r-8" @mouseover="wx_change(true)" @mouseleave="wx_change(false)"-->
+                      <!--@click="wx_share">-->
+                  <!--<img :src="wx_pic" alt="">-->
+                <!--</span>-->
+                <!--<span class="share-con-icon m-r-8" @mouseover="qq_change(true)" @mouseleave="qq_change(false)"-->
+                      <!--@click="qq_share">-->
+                  <!--<img :src="qq_pic" alt="">-->
+                <!--</span>-->
+                <!--<span class="share-con-icon" @mouseover="wb_change(true)" @mouseleave="wb_change(false)"-->
+                      <!--@click="wb_share">-->
+                  <!--<img :src="wb_pic" alt="">-->
+                <!--</span>-->
+                <!--<div class="xsj"></div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</span>-->
+        </p>
+        <!--<p class="article-sm">{{blog.info.blog_description}}</p>-->
+        <div class="article-con ql-editor" v-html="blog.info.blog_content"></div>
+
+        <!--上下一篇-->
+        <div class="another">
+          <a :href="blog.info_up.id?'/blogs/'+blog.info_up.id:'##'" class="another-blog">上一篇：<span>{{blog.info_up.blog_title?blog.info_up.blog_title:blog.info_up}}</span></a>
+          <a :href="blog.info_down.id?'/blogs/'+blog.info_down.id:'##'" class="another-blog">下一篇：<span>{{blog.info_down.blog_title?blog.info_down.blog_title:blog.info_down}}</span></a>
+        </div>
+      </div>
+
+      <div class="article-right">
+        <h2>相关文章</h2>
+        <ul class="tuijian-list">
+          <li v-for="(item,index) in others" :key="index">
+            <!--<nuxt-link :to="'/blogs/'+item.id">-->
+            <a :href="'/blogs/'+item.id">
+              <span style="display:inline-block;vertical-align: text-bottom;font-size: 30px;height:20px;line-height: 20px">·</span>
+              <span>{{item.blog_title}}</span>
+            </a>
+            <!--</nuxt-link>-->
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<script>
+  import topBg from '@/components/topBg'
+  import localRoute from '@/components/localRoute'
+  export default {
+    name: 'detail',
+    head() {
+      return {
+        title:this.blog.info.blog_title,
+        meta: [
+          {
+            hid: 'keywords',
+            name: 'keywords',
+            content: this.blog.info.keywords
+          },{
+            hid: 'description',
+            name: 'description',
+            content: this.blog.info.blog_description
+          }
+        ],
+        link: [
+          {
+            href: '/css/blogs.css',
+            type:'text/css',
+            rel: 'stylesheet',
+          }
+        ]
+      }
+    },
+    components: {
+      topBg,
+      localRoute
+    },
+
+    data() {
+      return {
+        route_data: [{name: '享学科技网', path: '/'}, {name: '名师博客', path: '/blogs/list'},{name: '博客详情', path: ''}],
+        // 分享图标
+        share_pic: '/images/blogs/icon-share1.png',
+        // qq等小图标的显示
+        share_type: false,
+        qq_pic: '/images/blogs/icon-qq1.png',
+        wx_pic: '/images/blogs/icon-wx1.png',
+        wb_pic: '/images/blogs/icon-wb1.png'
+      }
+    },
+    async asyncData({store,params}) {
+      // 增加点击量
+      // console.log(params)
+      await store.dispatch('httpPost', {
+        url: '/home/blog/blog_click',
+        data: {
+          id: params.id
+        }
+      })
+      // 详情
+      let res = await store.dispatch('httpGet', {
+        url: '/home/blog/blog_info',
+        data: {
+          id: params.id
+        }
+      })
+      // 相关文章
+      // 博客列表
+      let list = await store.dispatch('httpGet', {
+        url: '/home/blog/blog_list',
+        data: {
+          page: 1,
+          psize: 10,
+          first_sort_id: '',
+          second_sort_id: '',
+          blog_teacher: res.data.info.blog_teacher,
+        }
+      })
+      let l = []
+      console.log('博客',res)
+
+      list.data.data.forEach((item,index)=>{
+        if(item.id!==Number(params.id)) {
+          l.push(item)
+        }
+      })
+      return {
+        blog: res.data,
+        others: l
+      }
+    },
+
+    updated () {
+      document.documentElement.scrollTop = '0px'
+      // console.log('顶部',document.documentElement.scrollTop)
+    },
+    methods: {
+      // 分享图标切换
+      pic_change(bool) {
+        var that = this
+        that.share_type = bool
+        if (bool) {
+          that.share_pic = '/images/blogs/icon-share2.png'
+        } else {
+          that.share_pic = '/images/blogs/icon-share1.png'
+        }
+      },
+      //  微信图标切换
+      wx_change(bool) {
+        var that = this
+        if (bool) {
+          that.wx_pic = '/images/blogs/icon-wx2.png'
+        } else {
+          that.wx_pic = '/images/blogs/icon-wx1.png'
+        }
+      },
+      //  qq图标切换
+      qq_change(bool) {
+        var that = this
+        if (bool) {
+          that.qq_pic = '/images/blogs/icon-qq2.png'
+        } else {
+          that.qq_pic = '/images/blogs/icon-qq1.png'
+        }
+      },
+      //  微博图标切换
+      wb_change(bool) {
+        var that = this
+        if (bool) {
+          that.wb_pic = '/images/blogs/icon-wb2.png'
+        } else {
+          that.wb_pic = '/images/blogs/icon-wb1.png'
+        }
+      },
+      wx_share() {
+        console.log('微信分享')
+      },
+
+      qq_share() {
+        console.log('qq分享')
+      },
+
+      wb_share() {
+        console.log('微博分享')
+      },
+      // 其他文章ID
+      get_other_id(id){
+        console.log('其他文章ID  ' + id)
+      }
+    }
+  }
+</script>

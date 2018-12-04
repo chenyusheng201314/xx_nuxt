@@ -1,0 +1,143 @@
+<template>
+  <div class="mine-box mine-box-buy">
+    <!--已购买课程-->
+    <div class="mine-con">
+      <div class="mine-title">
+        <h4 class="h-title">已购买课程</h4>
+      </div>
+      <div class="text-left online-courses">
+        <div class="d-inline-block online-course" v-for="(item, index) in lessons" :key="index"
+             :class="{'online-course-right':(index+1)%3===0}">
+          <img class="course-cover" :src="item.course.cover" alt="">
+          <div class="text-center course-con">
+            <div class="text-overflow-one course-title">{{item.course.course_name}}</div>
+            <div class="text-overflow-one course-teacher">{{item.course.teacher.realname}} | {{item.course.teacher.title}}</div>
+            <div class="text-overflow-one course-nums">
+              <div class="d-inline-block course-num">{{item.course.section_num}} 课时</div>
+              <div class="d-inline-block course-time">{{item.course.media_time|s-h|fixed2}} 小时</div>
+            </div>
+            <div class="course-process">
+              <div class="d-inline-block position-relative process-box">
+                <div class="position-absolute process-bar" :style="'width:'+item.course.rate * 100+'%'"></div>
+              </div>
+              <span>已完成{{item.course.rate * 100}}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--可以赠送给好友-->
+    <div class="mine-con">
+      <div class="mine-title">
+        <h4 class="h-title">未观看的课程 <small>（可以赠送给好友）</small></h4>
+      </div>
+      <div class="text-left online-courses">
+        <div class="d-inline-block position-relative online-course" v-for="(item, index) in sendable" :key="index"
+             :class="{'online-course-right':(index+1)%3===0}">
+          <div class="position-absolute cursor-pointer send">赠送</div>
+          <img class="course-cover" :src="item.course.cover" alt="">
+          <div class="text-center course-con">
+            <div class="text-overflow-one course-title">{{item.course.course_name}}</div>
+            <div class="text-overflow-one course-teacher">{{item.course.teacher_info.realname}} | {{item.course.teacher_info.title}}</div>
+            <div class="text-overflow-one course-nums">
+              <div class="d-inline-block course-num">{{item.course.section_num}} 课时</div>
+              <div class="d-inline-block course-time">{{item.course.media_time|s-h|fixed1}} 小时</div>
+            </div>
+            <!--<div class="course-process">-->
+              <!--<div class="d-inline-block position-relative process-box">-->
+                <!--<div class="position-absolute process-bar" :style="'width:'+item.course.rate * 100+'%'"></div>-->
+              <!--</div>-->
+              <!--<span>已完成{{item.course.rate * 100}}%</span>-->
+            <!--</div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--已送出的课程-->
+    <div class="mine-con">
+      <div class="mine-title">
+        <h4 class="h-title">已送出的课程</h4>
+      </div>
+      <div class="text-left online-courses" v-if="send.length">
+        <div class="d-inline-block online-course" v-for="(item, index) in send" :key="index"
+             :class="{'online-course-right':(index+1)%3===0}">
+          <img class="course-cover" :src="item.course.cover" alt="">
+          <div class="text-center course-con">
+            <div class="text-overflow-one course-title">{{item.course.course_name}}</div>
+            <div class="text-overflow-one course-teacher">{{item.course.teacher_info.realname}} | {{item.course.teacher_info.title}}</div>
+            <div class="text-overflow-one course-nums">
+              <div class="d-inline-block course-num">{{item.course.section_num}} 课时</div>
+              <div class="d-inline-block course-time">{{item.course.media_time|s-h|fixed1}} 小时</div>
+            </div>
+            <div class="course-receive">已送出数量：{{item.total_count}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--已收到的课程-->
+    <div class="mine-con">
+      <div class="mine-title">
+        <h4 class="h-title">已收到的课程</h4>
+      </div>
+      <div class="text-left online-courses" v-if="geted.length">
+        <div class="d-inline-block online-course" v-for="(item, index) in geted" :key="index"
+             :class="{'online-course-right':(index+1)%3===0}">
+          <img class="course-cover" :src="item.course.cover" alt="">
+          <div class="text-center course-con">
+            <div class="text-overflow-one course-title">{{item.course.course_name}}</div>
+            <div class="text-overflow-one course-teacher">{{item.course.teacher_info.realname}} | {{item.course.teacher_info.title}}</div>
+            <div class="text-overflow-one course-nums">
+              <div class="d-inline-block course-num">{{item.course.section_num}} 课时</div>
+              <div class="d-inline-block course-time">{{item.course.media_time|s-h|fixed2}} 小时</div>
+            </div>
+            <div class="course-receive">赠送人：{{item.person_given.username}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'mine01trip03buy',
+  data () {
+    return {
+    }
+  },
+  async asyncData({store}) {
+    // let lesson_buy = await axios.get(context.store.state.apiUrl + '/api/v1/app/personal/person_course_buy', {
+    //   headers: {'token': context.store.state.userInfo.token},
+    //   params: {
+    //     page: 1,
+    //     psize: 10
+    //   }
+
+    let res = await store.dispatch('mineGet', {
+      url: '/app/personal/person_course_buy',
+      data: {
+        page: 1,
+        psize: 1000
+      }
+    })
+    let sendable = await store.dispatch('mineGet', {
+      url: '/app/personal/person_course_more',
+    })
+    let send = await store.dispatch('mineGet', {
+      url: '/app/personal/person_course_given',
+    })
+    let geted = await store.dispatch('mineGet', {
+      url: '/app/personal/person_course_get',
+    })
+    console.log('已购买',res.data,'可赠',sendable,'已赠',send,'获得',geted)
+
+    return {
+      lessons:res.data.data,
+      sendable:sendable.data,
+      send:send.data,
+      geted:geted.data,
+
+    }
+  },
+}
+</script>

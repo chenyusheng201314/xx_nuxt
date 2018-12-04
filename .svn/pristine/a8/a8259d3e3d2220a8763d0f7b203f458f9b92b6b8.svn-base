@@ -1,0 +1,154 @@
+<template>
+  <div class="case-detail-con">
+    <topBg :src="case_info.cases_content_picture"></topBg>
+    <localRoute :route="route_data"></localRoute>
+    <div class="case-detail-tit">
+      <a href="javascript:;" class="case-tit-con" v-for="(item,index) in case_info.organization_cases_content"
+         :class="{active:index === now_ind}"
+         @click="tab_change(index)" :key="index">{{item.title}}</a>
+    </div>
+    <!-- 内容-->
+    <ul class="case-detail-article">
+      <li>
+        <h3>{{case_info.title}}</h3>
+        <div class="tit-introduce" v-html="case_info.description"></div>
+      </li>
+      <li v-for="(item,index) in case_info.organization_cases_content" :key="index">
+        <p class="name" :id="'name'+index">{{item.title}}</p>
+        <div class="ql-editor" v-html="item.content"></div>
+      </li>
+    </ul>
+    <!--其他案列-->
+    <div class="position-relative other-case">
+      <p class="name">其他案列</p>
+      <p class="position-absolute go pre" :class="{gray:pc===1}" @click="pre">《</p>
+      <ul>
+        <li v-for="(item,index) in other_case.data" :key="index">
+          <a :href="'/case/'+item.id">
+            <img class="other-case-img" :src="item.organization_small_logo" alt="" width="208" height="117">
+            <p class="text-overflow-one">{{item.title}}</p>
+          </a>
+        </li>
+      </ul>
+      <p class="position-absolute go next" :class="{gray:pc===other_case.page_total}" @click="next"> 》</p>
+    </div>
+  </div>
+</template>
+
+<script>
+  import topBg from "@/components/topBg";
+  import localRoute from "@/components/localRoute";
+  export default {
+    name: "case-detail",
+    head() {
+      return {
+        title:this.case_info.title,
+        meta: [
+          {
+            hid: 'keywords',
+            name: 'keywords',
+            content: this.case_info.title
+          },{
+            hid: 'description',
+            name: 'description',
+            content: this.case_info.description.substr(0,100)
+          }
+        ],
+        link: [
+          {
+            href: '/css/case.css',
+            type:'text/css',
+            rel: 'stylesheet',
+          }
+        ]
+      }
+    },
+    components: {
+      topBg,
+      localRoute
+    },
+    data() {
+      return {
+        num: 3,
+        route_data: [
+          {name: "享学科技网", path: "/"},
+          {name: "企业案例", path: "/case/list"},
+          {name: "案例详情", path: ""}
+        ],
+        now_ind: 0, // 默认选择第一个
+        pc:1
+      };
+    },
+    async asyncData({store,params}) {
+      let id = Number(params.id)
+      let detail = await store.dispatch('httpGet',  {
+        url: '/home/organization_cases/info',
+        data: {
+          cases_id: id,
+        }
+      })
+      let res = await store.dispatch('httpGet', {
+        url: '/home/organization_cases/list',
+        data: {
+          teacher_id: '',
+          psize: 10,
+          page: 1,
+        }
+      });
+
+      console.log('案例详情', detail);
+      console.log('其他案例', res);
+      return {
+        case_info: detail.data,
+        other_case: res.data,
+      }
+    },
+
+    updated () {
+      // document.documentElement.scrollTop = '0px'
+      // console.log('顶部',document.documentElement.scrollTop)
+    },
+    methods: {
+      // 锚点跳转
+      tab_change(ind) {
+        this.now_ind = ind;
+        $("html, body").animate(
+          {scrollTop: $("#name" + ind).offset().top - 45 + "px"},
+          500
+        );
+      },
+
+      async pre() {
+        if (this.pc>1) {
+          let res = await this.$store.dispatch('httpGet', {
+            url: '/home/organization_cases/list',
+            data: {
+              teacher_id: '',
+              psize: 10,
+              page: this.pc-1,
+            }
+          })
+          this.other_case=res.code===0?res.data:{page_total:1}
+          this.pc -= 1
+        }
+      },
+      async next() {
+        if (this.pc<this.other_case.page_total) {
+          let res = await this.$store.dispatch('httpGet', {
+            url: '/home/organization_cases/list',
+            data: {
+              teacher_id: '',
+              psize: 10,
+              page: this.pc+1,
+            }
+          })
+          this.other_case=res.code===0?res.data:{page_total:1}
+          this.pc += 1
+        }
+      },
+    },
+    mounted() {
+    }
+  };
+</script>
+

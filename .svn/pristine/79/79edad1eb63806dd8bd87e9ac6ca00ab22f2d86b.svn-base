@@ -1,0 +1,311 @@
+<template>
+   <div class="base_body">
+ 
+      <div>班级时间：{{classManagerInfo.open_class_start_time}} 至 {{classManagerInfo.open_class_end_time}}</div>
+
+      <div class="swiper-container task_day">
+ 
+         <div  class="swiper-wrapper " >
+   
+            <div v-for = "(item2,key2) in dateInfoNew" :key="key2" class="swiper-slide" style="display: inline-block;width: auto;">
+             <div class="task_month"> {{item2.month}}月</div>
+              <div v-for = "(item3,key3) in item2.day" :key="key3" :class="'task_days '+item3.isToday" v-on:click="editTask(item2.year+'',item2.month+'',key3)">
+          
+                <div class="task_week">{{item3.week}}</div>
+                 <div class="task_info">  
+                      {{key3}} <br/>
+                      <span v-if="item3.tasks.topic.content || item3.tasks.topic.title"> 
+                      任务<br/>作业{{item3.tasks.task_count}}<br/> 待批改：{{item3.tasks.fraction_status_no_count}}
+                     </span>
+
+                 </div>
+              </div>     
+            </div>
+ 
+         </div>
+ 
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+      </div>
+
+     <div class="el-dialog__header" style="padding-left:0 "><span class="el-dialog__title">今日任务</span></div>
+
+     <el-form :model="taskInfo" :rules="rules" ref="taskInfo" style="width:60%" v-if="isEdit == 'after'">
+          <el-form-item label="课题"  :label-width="formLabelWidth" prop="title">
+             <el-input v-model="taskInfo.title" auto-complete="off"></el-input>
+          </el-form-item>
+          <div v-for = "(item,index) in taskInfo.contentArr" :key="index" style="position:relative;" >
+          <el-form-item 
+          :label="(index==0)?'任务':''" 
+          :label-width="formLabelWidth"  
+          :prop="'contentArr['+index+']'" 
+          :rules="[{validator:comssr.validatorLen25, trigger: 'blur'}]">
+        
+            <el-input v-model="taskInfo.contentArr[index]" auto-complete="off"></el-input>
+
+             
+          </el-form-item>
+          <div class="add_info_more_del" v-on:click="tasksDel(index)" v-if="taskInfo.contentArr.length>1">×</div>
+
+          </div>
+          <div v-on:click="addNew()" class="base_btn_add" style="float: left; margin-left: 120px" v-if="taskInfo.contentArr.length<5"><strong>+</strong> 增加</div>
+         <div class="base_btn_add"   v-else style="float: left; margin-left: 120px;background: #F2F2F2;color: #BCBCBC">
+          <strong>+</strong> 增加
+         </div>
+
+     </el-form>
+     <div style="width:60%" v-else-if="isEdit=='today'">
+          <div v-if="todaySuccessData.title">
+           <div class="base_form_list" >
+               <div class="title">今日课题：</div>
+               <div class="content"> {{todaySuccessData.title}}</div>
+            </div>
+           
+            <div class="base_form_list" v-if="todaySuccessData.title">
+               <div class="title">任务：</div>
+               <div class="content">
+                 <div v-for = "(item,index) in todaySuccessData.contentArr" :key="index" > {{todaySuccessData.contentArr[index]}}</div>
+               </div>
+            </div>
+           </div> 
+           <div class="" v-else>今日无任务</div>
+      
+
+
+     </div>
+     <div style="width:60%" v-else>
+      <div v-if="taskSuccessData.title || todaySuccessData.content">
+       <div class="base_form_list" >
+           <div class="title">课题：</div>
+           <div class="content"> {{taskSuccessData.title}}</div>
+        </div>
+       
+        <div class="base_form_list" v-if="taskSuccessData.content">
+           <div class="title">任务：</div>
+           <div class="content">
+             <div v-for = "(item,index) in taskSuccessData.contentArr" :key="index" > {{taskSuccessData.contentArr[index]}}</div>
+           </div>
+        </div>
+       </div> 
+       <div class="" v-else>当天无任务</div>
+    </div>
+    
+
+     <div class="clr"></div>
+     <div align="center">
+      <el-button  type="primary" @click="addTasksYz()"   v-if="isEdit=='after'">保存</el-button>
+      <el-button  type="primary" @click="workManagerT()"   v-else-if="isEdit=='today'">今日作业</el-button>
+      <el-button  type="primary" @click="workManager()"   v-else>作业</el-button>
+     </div>
+
+
+    </div>
+</template>
+<style scoped>
+.swiper-container {
+      width: 100%;
+      height: 100%;
+ }
+.swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+    }
+</style>
+<script>
+ 
+import Swiper from 'swiper';
+import 'swiper/dist/css/swiper.min.css';
+ 
+export default {
+ 
+  props: ['classManagerInfo','dateInfo','dateInfoNew','taskInfo','todaySuccessData','isEdit'],
+  data() {
+    return {  
+ 
+      formLabelWidth:"120px",
+      //isEdit:"today",
+      taskSuccessData:{},
+      rules:{
+        title:[
+        // { required: true, message: '必填', trigger: 'blur' },
+        {validator:this.comssr.validatorLen25, trigger: 'blur'}],
+      },
+      selectDate:""
+    }
+  },
+  computed: {
+     
+    },
+
+  methods: {
+     addNew:function() {
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.company.companyRole.data,'training_class_topic','add')
+        if(!checkInfo) {
+            this.$message({message: '警告，您无此权限',type: 'warning'});  
+            return false
+        }
+        this.taskInfo.contentArr.push("")
+     },
+     tasksDel:function(index) {
+        this.taskInfo.contentArr.splice(index,1)
+     },
+     async addTasksYz() {
+          let checkInfo = this.comsys.adminCheckRole(this.$store.state.company.companyRole.data,'training_class_topic','add')
+          if(!checkInfo) {
+              this.$message({message: '警告，您无此权限',type: 'warning'});  
+              return false
+          }
+          this.$refs['taskInfo'].validate((valid) => {
+            if (valid) {
+              this.addTasks()         
+            } else {
+              this.$message.error('必填项不能为空');
+              return false;
+            }
+          });
+
+     },
+     async addTasks() {
+
+        
+        let contentFlag = 0
+        for(let i in this.taskInfo.contentArr) {
+           if(this.taskInfo.contentArr[i]!='') {
+             contentFlag =1
+           }
+        }
+
+        if(contentFlag==1) {
+          this.$set(this.taskInfo,'content',this.taskInfo.contentArr.join("@!@")) 
+        }
+        else {
+          this.$set(this.taskInfo,'content','') 
+        }
+        
+        let params = {url: "/company/training_class_topic/add",data:this.taskInfo}
+        let res  = await this.$store.dispatch("companyHttpPost",params)
+        
+        if(res.code == 0) {
+           this.$message({message: '保存成功',type: 'success'});
+           this.taskInfo.id = res.data.id
+           let keys = this.taskInfo.date.split('-')
+           var key0 = parseInt(keys[0])
+           var key1 = parseInt(keys[1])
+           var key2 = parseInt(keys[2])
+           this.$set(this.dateInfo[key0][key1][key2].tasks,'topic',this.taskInfo)
+
+        }
+        else {
+          this.$message.error('保存失败');
+        }
+        this.setData()
+
+     },
+     editTask(key1,key2,key3) {
+       
+       var thisDay = new Date(key1+"-"+key2+"-"+key3).getTime()
+       this.taskInfo = {training_class_id:this.classManagerInfo.id}
+       key2 = key2.length==2?key2:(0+""+key2)
+       key3 = key3.length==2?key3:(0+""+key3)
+       this.$set(this.taskInfo,'date',key1+"-"+key2+"-"+key3)
+       var myDate = new Date()
+       console.log(this.classManagerInfo.taskData)
+       var tasks = this.classManagerInfo.taskData.calendar_data.filter(function(p){
+            return p.date === (key1+"-"+key2+"-"+key3);
+       });
+       
+       if(tasks[0].topic.content != undefined || tasks[0].topic.title != undefined) {
+         this.taskSuccessData = JSON.parse(JSON.stringify(tasks[0].topic))
+         this.$set(this.taskSuccessData,"training_class_topic_id",tasks[0].topic.id)
+         if(tasks[0].topic.content) {
+          this.$set(this.taskSuccessData,"contentArr",JSON.parse(JSON.stringify(tasks[0].topic.content.split("@!@"))))
+         }
+         else {
+          this.$set(this.taskSuccessData,"contentArr",[''])
+         }
+         this.$set(this.taskInfo,"title",JSON.parse(JSON.stringify(tasks[0].topic.title))) 
+         this.$set(this.taskInfo,"id",JSON.parse(JSON.stringify(tasks[0].topic.id)))
+         if(tasks[0].topic.content) {
+          this.$set(this.taskInfo,"contentArr",JSON.parse(JSON.stringify(tasks[0].topic.content.split("@!@"))))
+         }
+         else {
+          this.$set(this.taskInfo,"contentArr",[''])
+         }
+       }
+       else {
+         this.$set(this.taskSuccessData,"training_class_topic_id",'')
+         this.$set(this.taskSuccessData,"contentArr",'')
+         this.$set(this.taskSuccessData,"title","") 
+          this.$set(this.taskInfo,"title","") 
+          this.$set(this.taskInfo,"contentArr",[""])
+       }
+       var today = new Date(myDate.getFullYear()+"-"+(myDate.getMonth()+1)+"-"+myDate.getDate()).getTime()
+       console.log(today,thisDay)
+       if(today==thisDay) {
+           this.isEdit = "today"
+       }
+       else if(today>thisDay) {
+           this.isEdit = "before"
+       }
+       else {
+           this.isEdit = "after"
+
+       }
+     },
+     async setData() {
+        let params = {url: "/company/training_class_topic/list",data:{training_class_id:this.classManagerInfo.id}}
+        let res  = await this.$store.dispatch("companyHttpGet",params);
+        this.$set(this.classManagerInfo,'taskData',res.data)
+
+
+     },
+     workManager() {
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.company.companyRole.data,'training_class_task','list')
+        if(!checkInfo) {
+            this.$message({message: '警告，您无此权限',type: 'warning'});  
+            return false
+        }
+        var res = {}
+        this.taskSuccessData.training_class_id = this.classManagerInfo.id
+        res.taskSuccessData = this.taskSuccessData
+        res.isEdit = this.isEdit
+        this.$emit('taskSuccess',res) 
+     },
+     workManagerT() {
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.company.companyRole.data,'training_class_task','list')
+        if(!checkInfo) {
+            this.$message({message: '警告，您无此权限',type: 'warning'});  
+            return false
+        }
+        var res = {}
+        this.taskSuccessData.training_class_id = this.classManagerInfo.id
+        res.taskSuccessData = this.todaySuccessData
+        res.isEdit = this.isEdit
+        this.$emit('taskSuccess',res) 
+     }
+  },
+  created() {
+      
+  },
+  async mounted () {
+
+  },   
+}
+</script>
+
+ 

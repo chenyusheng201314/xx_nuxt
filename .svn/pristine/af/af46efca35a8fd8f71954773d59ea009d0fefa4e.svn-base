@@ -1,0 +1,568 @@
+<template>
+  <div id="nav-head" class="container position-sticky head">
+    <nuxt-link target="_blank" to="/">
+      <img class="cursor-pointer header-logo" src="/images/logo.png" alt="">
+      <!--@click="check(0)"-->
+    </nuxt-link>
+    <div class="position-relative d-inline-block">
+      <ul class="head-ul">
+        <li class="cursor-pointer head-li"
+            :class="{'head-li-active':item.active,'train-shadow bg-white':hindex===1&&index===1}"
+            v-for="(item, index) in menus" :key="index" @mouseenter="hindex=index" @mouseleave="hindex=-1">
+          <!--@click="check(index)"-->
+          <router-link target="_blank" :to="item.link">{{item.name}}</router-link>
+          <ul v-if="hindex===1 &&index===1" class="bg-white select-train">
+            <li :class="{active: tindex===ind+1}" v-for="(it,ind) in item.list" :key="ind">
+              <!--@click="trainSele(ind+1)"-->
+              <a target="_blank" :href="'/openStatic/2'+(ind+1)">{{it}}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <!--<ul class="position-absolute bg-white black select-train" v-show="hindex===1">-->
+      <!--<li>房产行业</li>-->
+      <!--<li>服装行业</li>-->
+      <!--<li>金融行业</li>-->
+      <!--<li>汽车行业</li>-->
+      <!--<li>物流行业</li>-->
+      <!--<li>医药行业</li>-->
+      <!--<li>IT行业</li>-->
+      <!--</ul>-->
+    </div>
+
+
+    <div class=" login">
+      <div class="d-inline-block cursor-pointer" @click="to_login">登录</div>
+      <div class="d-inline-block line"  v-if='false'>|</div>
+      <div class="d-inline-block cursor-pointer register" @click="to_register(true)"  v-if='false'>注册</div>
+    </div>
+    <!--登录分类-->
+    <div class="classify" v-show="classify.show">
+      <div class="classify-con">
+        <div class="classify-close" @click="colse_classify">
+          <img src="/images/login/colse-cover.png" alt="" width="16">
+        </div>
+        <div class="classify-tit">
+          <h4>选择你的会员类型</h4>
+        </div>
+        <div class="classify-type" v-for="(item,index) in classify_info" :class="{active:index === now_ind}"
+             @mouseover="icon_change(index)" @click="type_to_login(item.login_type)" :key="index" v-if="item.login_type!==1 && item.login_type !==2">
+          <img :src="item.show_icon" alt="">
+          <span>{{item.name}}</span>
+        </div>
+      </div>
+    </div>
+    <!--登录-->
+    <Login v-show="login.show" :login_type="login_type" @to_register="to_register" @to_forget="to_forget"
+           @login_close="login_close"></Login>
+    <!--<div class="login-cover" :data="login">-->
+      <!--<div class="login-cover-con">-->
+       <!--<span class="cover-close" @click="">-->
+        <!--<img src="/images/login/colse-cover.png" alt="" width="16">-->
+      <!--</span>-->
+
+      <!--</div>-->
+    <!--</div>-->
+    <!--注册-->
+    <modal :data="zhuce">
+      <div class="register-cover">
+        <div class="register-con">
+        <span class="cover-close" @click="register_close">
+          <img src="/images/login/colse-cover.png" alt="" width="16">
+       </span>
+          <div class="register-tit">
+            <div class="register-tit-left active">
+              <img src="/images/login/register.png" alt="" width="13">
+              账户登录
+            </div>
+          </div>
+          <div class="register-inp">
+            <img src="/images/login/icon-phone.png" alt="" width="9">
+            <input type="text" placeholder="请输入手机号" v-model="zhuce_info.phone">
+          </div>
+          <div class="register-yzm">
+            <div class="yzm-left">
+              <img src="/images/login/icon-yzm.png" alt="" width="15">
+              <input type="text" placeholder="请输入验证码" v-model="zhuce_info.yzm">
+            </div>
+            <div class="yzm-right">
+              <img src="/images/login/yzm.png" alt="">
+            </div>
+          </div>
+          <div class="register-duanxin">
+            <img src="/images/login/icon-duanxin.png" alt="" width="13">
+            <input type="text" placeholder="输入短信码" v-model="zhuce_info.duanxin">
+            <span class="line">|</span>
+            <span class="get_num" @click="get_yzm">{{zhuce_info.duanxin_info}}</span>
+          </div>
+          <div class="register-inp">
+            <img src="/images/login/icon-pwd.png" alt="" width="13">
+            <input type="password" placeholder="请输入密码" v-model="zhuce_info.pwd">
+          </div>
+          <div class="register-inp">
+            <img src="/images/login/icon-pwd.png" alt="" width="13">
+            <input type="password" placeholder="再次输入密码" v-model="zhuce.pwd_again">
+          </div>
+          <p class="register-error" v-show="zhuce_info.error_type">
+            <img src="/images/login/icon-error.png" alt="" width="12">
+            {{zhuce_info.error_info}}
+          </p>
+          <div class="register-btn" @click="user_register">注 册</div>
+          <div class="login-type">
+            <div class="login-type-left">
+          <span class="box" @click="agree_change">
+            <img src="/images/login/icon-gou.png" alt="" width="12" v-show="zhuce_info.agree">
+          </span>
+              <span class="f12 color-999">我同意</span>
+              <a href="javascript:;" class="f12 color-999">《服务条款》</a>
+              <span class="f12 color-999">和</span>
+              <a href="javascript:;" class="f12 color-999">《享学隐私政策》</a>
+            </div>
+            <div class="login-type-right">
+              <span class="go-zhuce" @click="to_login">去登录 &gt;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </modal>
+    <!--忘记密码-->
+    <modal :data="forget">
+      <div class="forget">
+        <div class="forgrt-con">
+      <span class="forget-close" @click="forget_close">
+          <img src="/images/login/colse-cover.png" alt="" width="16">
+      </span>
+          <div class="forget-tit">
+            <div class="forget-tit-left active">
+              <img src="/images/login/forget.png" alt="" width="16">
+              忘记密码
+            </div>
+          </div>
+          <div class="forget-inp">
+            <img src="/images/login/icon-phone.png" alt="" width="9">
+            <input type="text" placeholder="请输入手机号" v-model="forget_info.phone">
+          </div>
+          <div class="forget-duanxin">
+            <img src="/images/login/icon-duanxin.png" alt="" width="13">
+            <input type="text" placeholder="输入短信码" v-model="forget_info.yzm">
+            <span class="line">|</span>
+            <span class="get_num" @click="forget_get_yzm">{{forget_info.yzm_info}}</span>
+          </div>
+          <div class="forget-inp">
+            <img src="/images/login/icon-pwd.png" alt="" width="13">
+            <input type="password" placeholder="设置新密码" v-model="forget_info.pwd">
+          </div>
+          <div class="forget-inp">
+            <img src="/images/login/icon-pwd.png" alt="" width="13">
+            <input type="password" placeholder="再次输入新密码" v-model="forget_info.pwd_again">
+          </div>
+          <p class="forget-error" v-show="forget_info.error_show">
+            <img src="/images/login/icon-error.png" alt="" width="12">
+            {{forget_info.error_info}}
+          </p>
+          <div class="forget-btn" @click="user_forget">完 成</div>
+          <div class="login-type">
+            <div class="login-type-right">
+              <span class="go-zhuce" @click="forget_go_login">去登录 &gt;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </modal>
+  </div>
+
+</template>
+<script>
+  import Login from './login'
+  import modal from '@/components/modal'
+
+  export default {
+    name: 'nav-head',
+    head () {
+      return {
+        link: [
+          {
+            href: '/css/login.css',
+            type:'text/css',
+            rel: 'stylesheet',
+          }
+        ]
+      }
+    },
+    components: {Login, modal},
+    data() {
+      return {
+        menus: [
+          {
+            name: '首页',
+            link: '/',
+            active: true
+          },
+          {
+            name: '企业解决方案',
+            link: '/openStatic/21',
+            active: false,
+            list: [
+              '房产行业',
+              '服装行业',
+              '金融行业',
+              '汽车行业',
+              '物流行业',
+              '医药行业',
+              'IT行业'
+            ]
+          },
+          {
+            name: '导师秀',
+            link: '/teacher/shows',
+            active: false
+          },
+          {
+            name: '企业案例',
+            link: '/case/list',
+            active: false
+          },
+          {
+            name: '名师博客',
+            link: '/blogs/list',
+            active: false
+          },
+          {
+            name: 'APP下载',
+            link: '/download',
+            active: false
+          },
+          {
+            name: '账户中心',
+            link: '/mine/mine/mine01trip/total',
+            active: false
+          }
+        ],
+        hindex: -1,//企业解决方案
+        tindex: -1,
+        login: {
+          title: '',
+          show: false,
+          class: 'edit-pwd-modal'
+        },
+        classify: {
+          title: '',
+          show: false,
+          class: 'edit-pwd-modal'
+        },
+        zhuce: {
+          title: '',
+          show: false,
+          class: 'edit-pwd-modal'
+        },
+        forget: {
+          title: '',
+          show: false,
+          class: 'edit-pwd-modal'
+        },
+        // 分类
+        now_ind: 0,
+        type_show: false,
+        classify_info: [
+          {
+            name: '个人用户',
+            show_icon: '/images/login/user-icon2.png',
+            mouseover_icon: '/images/login/user-icon2.png',
+            mouseleave_icon: '/images/login/user-icon1.png',
+            login_type: 1
+          },
+          {
+            name: '机构用户',
+            show_icon: '/images/login/jigou-icon1.png',
+            mouseover_icon: '/images/login/jigou-icon2.png',
+            mouseleave_icon: '/images/login/jigou-icon1.png',
+            login_type: 2
+          },
+          {
+            name: '公司用户',
+            show_icon: '/images/login/com-icon1.png',
+            mouseover_icon: '/images/login/com-icon2.png',
+            mouseleave_icon: '/images/login/com-icon1.png',
+            login_type: 3
+          }
+        ],
+
+        login_type: 0,   // 1 个人  2机构  3 企业.
+        zhuce_info: {
+          phone: '', // 注册手机号
+          yzm: '', // 注册验证码
+          duanxin: '', // 短信验证码
+          pwd: '',
+          pwd_again: '',
+          error_type: false, // 错误信息提示
+          error_info: '错误信息提示',
+          agree: true, // 同意
+          duanxin_info: '获取验证码',
+          on_off: true, // 防恶意点击
+          time: 60 // 60s后再次获取
+        },
+        forget_info: {
+          phone: '',
+          yzm: '',
+          pwd: '',
+          pwd_again: '',
+          error_show: false,
+          error_info: '错误信息',
+          Isphone: /^1[34578]\d{9}$/,
+          on_off: true,
+          time: 60,
+          yzm_info: '获取验证码',
+          cover_show: true
+        },
+      }
+    },
+    watch:{
+      'classify.show' (v) {
+        if (v) {
+          document.getElementsByTagName('body')[0].className = 'modal-open'
+        }else {
+          document.getElementsByTagName('body')[0].className = ''
+        }
+      },
+      'login.show' (v) {
+        if (v) {
+          document.getElementsByTagName('body')[0].className = 'modal-open'
+        }else {
+          document.getElementsByTagName('body')[0].className = ''
+        }
+      }
+
+    },
+    methods: {
+      // 切换选择 tab  使用a target=_blank时 不用此方法
+      check(index) {
+        if (index === 1) {
+          this.hindex = 1
+        } else {
+          this.tindex = -1,
+            index = String(index)
+
+          let menus = this.menus
+          for (let i in menus) {
+            menus[i].active = false
+            // console.log(index, i)
+            if (index === i) {
+              menus[i].active = true
+            }
+          }
+        }
+      },
+      // 选择 企业解决方案
+      trainSele(ind) {
+        let menus = this.menus
+        for (let i in menus) {
+          menus[i].active = false
+        }
+        menus[1].active = true
+        this.tindex = ind
+        this.$router.push('/openStatic/2' + ind)
+      },
+      // 登录页面关闭
+      login_close() {
+        this.login.show = false
+      },
+      icon_change(ind) {
+        const that = this
+        that.now_ind = ind
+        $.each(that.classify_info, function (key, val) {
+          if (key === ind) {
+            val.show_icon = val.mouseover_icon
+          } else {
+            val.show_icon = val.mouseleave_icon
+          }
+        })
+      },
+
+      type_to_login(logintype) {
+        this.login_type = logintype;
+        this.classify.show = false;
+        this.login.show = true
+
+
+      },
+      to_register(data) {
+        this.zhuce.show = data;
+        this.login.show = !data
+      },
+      to_forget(data) {
+        this.forget.show = data;
+        this.login.show = !data
+      },
+      // 获取验证码
+      get_yzm() {
+        var that = this.zhuce_info
+        if (that.on_off) {
+          // console.log(that.on_off)
+          that.on_off = false
+          var set = setInterval(function () {
+            if (that.time > 1) {
+              that.time--
+              that.duanxin_info = that.time + 's'
+            } else {
+              that.time = 60
+              clearInterval(set)
+              that.duanxin_info = '获取验证码'
+              that.on_off = true
+            }
+          }, 500)
+        }
+      },
+      //  同意或者不同意
+      agree_change() {
+        this.zhuce_info.agree = !this.zhuce_info.agree
+      },
+      // 注册条件判断
+      user_register() {
+        var that = this.zhuce_info,
+          Isphone = /^1[34578]\d{9}$/
+        if (that.phone === '') {
+          that.error_info = '手机号不能为空'
+          that.error_type = true
+        } else if (!Isphone.test(that.phone)) {
+          that.error_info = '手机号格式不正确'
+          that.error_type = true
+        } else if (that.yzm === '') {
+          that.error_info = '验证码不能为空'
+          that.error_type = true
+        } else if (that.duanxin === '') {
+          that.error_info = '短信验证码不能为空'
+          that.error_type = true
+        } else if (that.pwd === '') {
+          that.error_info = '密码不能为空'
+          that.error_type = true
+        } else if (that.pwd_again !== that.pwd) {
+          that.error_info = '两次密码不一致'
+          that.error_type = true
+        } else if (!that.agree) {
+          that.error_info = '是否同意政策'
+          that.error_type = true
+        } else {
+          that.error_type = false
+          // console.log('发生请求，判断手机号是否存在！')
+        }
+      },
+      //  去登陆
+      to_login() {
+        this.classify.show = true;
+      },
+      colse_classify() {
+        this.classify.show = false;
+      },
+      //  关闭弹窗
+      register_close() {
+        this.zhuce.show = false
+      },
+      //忘记密码
+      user_forget() {
+        const that = this.forget_info
+        if (that.phone === '') {
+          that.error_show = true
+          that.error_info = '手机号码不能为空'
+        } else if (that.Isphone.test(that.phone)) {
+          that.error_show = true
+          that.error_info = '手机号码格式不正确'
+        } else if (that.yzm === '') {
+          that.error_show = true
+          that.error_info = '验证码不能为空'
+        } else if (that.pwd === '') {
+          that.error_show = true
+          that.error_info = '新密码不能为空'
+        } else if (that.pwd_again !== that.pwd) {
+          that.error_show = true
+          that.error_info = '两次密码不一致'
+        }
+      },
+      forget_go_login() {
+        this.forget.show = false
+        this.login.show = true
+      },
+      //  获取验证码
+      forget_get_yzm() {
+        var that = this.forget_info
+        if (that.on_off) {
+          that.on_off = false
+          let set = setInterval(function () {
+            if (that.time > 1) {
+              that.time--
+              that.yzm_info = that.time + 's'
+            } else {
+              that.time = 60
+              that.yzm_info = '获取验证码'
+              that.on_off = true
+              clearInterval(set)
+            }
+          }, 1000)
+        }
+      },
+      //  弹窗关闭
+      forget_close() {
+        this.forget.show = false
+      }
+    },
+    // beforeRouteEnter(to, from, next) {
+    //   next(vm => {
+    //     // 通过 `vm` 访问组件实例
+    //     let path = vm.$root._router.history.current.fullPath
+    //     console.log('路由',path,vm.$router)
+    //     // vm.$router.push('/mine/follow/followCourse')
+    //   })
+    // },
+    mounted() {
+      // let path = this.$root._router.history.current
+      let path = this.$route.fullPath.split('/')[1]
+      let path1 = this.$route.fullPath.split('/')
+      // let path = this.$root._router.history.current.fullPath.split('/')
+      console.log('head路由--', path1[2])
+      let menus = this.menus
+      for (let i in menus) {
+        menus[i].active = false
+        console.log('head路由:', path, menus[i].link.split('/')[1])
+
+        if (path === 'openStatic' && Number(path1[2]) > 20) {
+          this.menus[1].active = true
+          switch (path1[2]) {
+            case '21':
+              this.tindex = 1
+              break;
+            case '22':
+              this.tindex = 2
+              break;
+            case '23':
+              this.tindex = 3
+              break;
+            case '24':
+              this.tindex = 4
+              break;
+            case '25':
+              this.tindex = 5
+              break;
+            case '26':
+              this.tindex = 6
+              break;
+            case '27':
+              this.tindex = 7
+              break;
+          }
+        } else if (path === 'openStatic' && Number(path1[2]) <= 20) {
+          this.menus[0].active = true
+        } else if (path === menus[i].link.split('/')[1]) {
+          this.menus[i].active = true
+        }
+      }
+      let n = 0
+      for (let i in menus) {
+        if (!menus[i].active) {
+          n++
+        }
+      }
+      if (n === 7) {
+        this.menus[0].active = true
+      }
+    }
+  }
+</script>

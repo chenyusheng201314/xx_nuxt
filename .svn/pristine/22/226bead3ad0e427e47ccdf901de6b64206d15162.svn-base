@@ -1,0 +1,385 @@
+<!--
+    author: cys
+-->
+<template>
+  <div>
+    <LeftNav :data="leftNav"></LeftNav>
+    <div class="admin-medal" v-loading.fullscreen.lock="fullscreenLoading">
+      <h2>星级勋章</h2>
+      <ul class="medal-rule">
+        <li v-for="(item,index) in star_medal" :key="index +'a'">
+          <p class="p1">{{item.name}}</p>
+          <p>
+            <img :src="item.image_color.value" alt="" width="40px" style="margin-right: 50px">
+            <img :src="item.image_gray.value" alt="" width="40px">
+          </p>
+          <p class="p2">
+            累计{{item.medal_rule.rule_type.name}}
+            <span>{{item.medal_rule.rule_value}}</span>
+            {{item.medal_rule.rule_type.unit}}
+          </p>
+          <p class="p2">已发放：{{item.person_medal_count}}</p>
+        </li>
+      </ul>
+      <h2>训练营勋章</h2>
+      <ul class="medal-rule">
+        <li v-for="(item,index) in xly_medal" :key="index +'b'">
+          <span class="delete" v-show="item.type && item.person_medal_count === 0" @click="delete_one(index,item.id)">
+            <img src="/admin/images/medal/delete.png" alt="" height="20" width="20">
+          </span>
+          <p class="p1">
+            <span v-show="!item.type">{{item.name}}</span>
+            <input type="text" v-model="item.name" v-show="item.type">
+          </p>
+          <!-- 头像-->
+          <p class="p3">
+            <img :src="item.image_gray.value" alt="" width="40px" v-show="!item.type">
+            <!--上传插件-->
+            <el-upload
+              class="avatar-uploader"
+              :action="add_url"
+              :show-file-list="false"
+              :headers="headers"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+              v-show="item.type"
+            >
+              <img :src="item.image_gray.value" class="avatar">
+            </el-upload>
+          </p>
+          <p>
+            <img :src="item.image_color.value" alt="" width="40px" v-show="!item.type">
+            <!--上传插件-->
+            <el-upload
+              class="avatar-uploader"
+              :action="add_url"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess2"
+              :headers="headers"
+              :before-upload="beforeAvatarUpload"
+              v-show="item.type"
+            >
+              <img :src="item.image_color.value" class="avatar">
+            </el-upload>
+          </p>
+
+          <p class="p4">
+            <span v-show="!item.type" class="span">{{item.xly_name}}</span>
+            <el-select v-model="item.xly_id" v-show="item.type" placeholder="请选择"
+                       @change="select_change(index,item.xly_id)">
+              <el-option
+                v-for="(it,ind) in xly_list"
+                :key="ind"
+                :label="it.training_name"
+                :value="it.id"
+              >
+              </el-option>
+            </el-select>
+          </p>
+          <p class="p2">
+            已发放：{{item.person_medal_count}}
+          </p>
+          <p class="last-p">
+            <span class="save" v-show="item.type" @click="xly_save(index)">保存</span>
+            <span class="edit" v-show="!item.type" @click="xly_edit(index)">编辑</span>
+          </p>
+        </li>
+      </ul>
+      <div class="add-btn" @click="add_medal">+ 添加训练营勋章</div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import LeftNav from '~/components/admin/LeftNav';
+  import axios from 'axios'
+
+  export default {
+    layout: 'admin',
+    name: 'rule',
+    components: {
+      LeftNav
+    },
+    head() {
+      return {
+        title: '勋章规则',
+        link: [
+          {
+            href: '/admin/css/medal.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+        ],
+      }
+    },
+    data() {
+      return {
+        leftNav: [
+          {
+            name: '勋章发放列表',
+            link: '/admin/medal',
+            active: false
+          }, {
+            name: '勋章规则',
+            link: '/admin/medal/rule',
+            active: true
+          }
+        ],
+        now_xly_ind: 0,
+        fullscreenLoading: false,
+        add_url: '',
+      }
+    },
+    async asyncData({store}) {
+      let arr = [], arr2 = [];
+      // 获取训练营列表
+      let xly = {
+        url: '/manage/training/training_list',
+        data: {
+          page: 1,
+          psize: 99999999
+        }
+      };
+      let res_xly = await store.dispatch('adminHttpGet', xly);
+
+      // 获取勋章列表
+      let pramas = {
+        url: '/manage/medal/list'
+      };
+      let res = await store.dispatch('adminHttpGet', pramas);
+      res.data.forEach(function (val, key) {
+        if (val.pid === 1) {
+          arr.push(val)
+        } else {
+          res_xly.data.data.forEach((vv, kk) => {
+            if (vv.id === parseInt(val.medal_rule.rule_value)) {
+              val.xly_name = vv.training_name
+            }
+          });
+          val.type = false;
+          val.xly_id = parseInt(val.medal_rule.rule_value);
+          arr2.push(val)
+        }
+      });
+
+      console.log('星级勋章', arr);
+      return {
+        star_medal: arr,
+        xly_medal: arr2,
+        xly_list: res_xly.data.data,
+        headers: {
+          token: store.state.admin.token
+        }
+      }
+    },
+    methods: {
+      async get_list() {
+        const that = this;
+        let arr = [], arr2 = [];
+        that.fullscreenLoading = true;
+        let xly = {
+          url: '/manage/training/training_list',
+          data: {
+            page: 1,
+            psize: 999999999
+          }
+        };
+        let res_xly = await that.$store.dispatch('adminHttpGet', xly);
+        // 获取勋章列表
+        let pramas = {
+          url: '/manage/medal/list'
+        };
+        let res = await that.$store.dispatch('adminHttpGet', pramas);
+        if (res) {
+          that.fullscreenLoading = false;
+        }
+        res.data.forEach(function (val, key) {
+          if (val.pid === 1) {
+            arr.push(val)
+          } else {
+            res_xly.data.data.forEach((vv, kk) => {
+              if (vv.id === parseInt(val.medal_rule.rule_value)) {
+                val.xly_name = vv.training_name
+              }
+            });
+            val.type = false;
+            val.xly_id = parseInt(val.medal_rule.rule_value);
+            arr2.push(val)
+          }
+        });
+
+        that.star_medal = arr;
+        that.xly_medal = arr2;
+      },
+
+      //编辑  目前同一时间只能对一个训练营编辑
+      xly_edit(index) {
+        const that = this;
+        that.now_xly_ind = index;
+        $.each(that.xly_medal, function (key, val) {
+          if (key === index) {
+            val.type = true
+          } else {
+            val.type = false
+          }
+        });
+      },
+      // 保存
+      xly_save() {
+        const that = this;
+        let index = that.now_xly_ind;
+        console.log('iddidididid', that.xly_medal[index].id);
+        axios({
+          method: 'post',
+          url: '/manage/medal/add_rule',
+          baseURL: that.$store.state.admin.baseUrl,
+          headers: {
+            token: that.$store.state.admin.token,
+          },
+          data: {
+            id: that.xly_medal[index].id,
+            name: that.xly_medal[index].name,
+            image_color: that.xly_medal[index].image_color.name,
+            image_gray: that.xly_medal[index].image_gray.name,
+            rule_value: that.xly_medal[index].xly_id,
+            rule_type: 3,// 完成训练营
+            pid: 2, // 训练营勋章
+          }
+        }).then((res) => {
+          console.log(res);
+          if (res.data.code === 0) {
+            this.$message({
+              message: '保存成功！',
+              type: 'success'
+            });
+            that.get_list();
+          } else {
+            this.$message.error('保存失败！')
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+
+      },
+
+      // 已获得图片成功之后返回数据
+      handleAvatarSuccess(res, file) {
+        const that = this;
+        let ind = that.now_xly_ind;
+        that.xly_medal[ind].image_gray.value = res.data.file_url;
+        that.xly_medal[ind].image_gray.name = res.data.filename;
+        console.log('回调1', res.data);
+      },
+      // 未获得图片成功之后返回数据
+      handleAvatarSuccess2(res, file) {
+        const that = this;
+        let ind = that.now_xly_ind;
+        that.xly_medal[ind].image_color.value = res.data.file_url;
+        that.xly_medal[ind].image_color.name = res.data.filename;
+        console.log('回调2', res.data);
+      },
+      beforeAvatarUpload(file) {
+        console.log('发送之前', file);
+      },
+      // 增加勋章
+      add_medal() {
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data, 'medal', 'add_rule');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        } else {
+          let json = {
+            id: '',
+            xly_id: '',
+            name: '',
+            xly_name: '',
+            image_gray: {
+              value: '/admin/images/medal/header2.png',
+              name: ''
+            },
+            image_color: {
+              value: '/admin/images/medal/header.png',
+              name: ''
+            },
+            person_medal_count: 0,
+            type: false
+          };
+          this.xly_medal.push(json);
+        }
+      },
+      // 删除
+      delete_one(index, id) {
+        const that = this;
+        // 权限
+        let checkInfo = this.comsys.adminCheckRole(this.$store.state.admin.adminRole.data, 'medal', 'del');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        } else {
+          this.$confirm('此操作将永久删除该勋章, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            if (id === '') {
+              that.xly_medal.splice(index, 1);
+              this.$message({
+                message: '删除成功！',
+                type: 'success'
+              });
+            } else {
+              axios({
+                method: 'post',
+                url: '/manage/medal/del',
+                baseURL: that.$store.state.admin.baseUrl,
+                headers: {
+                  token: that.$store.state.admin.token,
+                },
+                data: {
+                  id: id
+                }
+              }).then((res) => {
+                console.log('idaaaaa', res);
+                if (res.data.code === 0) {
+                  this.$message({
+                    message: '删除成功！',
+                    type: 'success'
+                  });
+                  that.get_list();
+                } else {
+                  this.$message.error(res.data.message)
+                }
+              }).catch((err) => {
+                console.log(err);
+              });
+            }
+
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消删除'
+            });
+          });
+        }
+      },
+
+      //训练营选择
+      select_change(index, id) {
+        console.log(index);
+        const that = this;
+        that.xly_list.forEach((val, key) => {
+          if (val.id === id) {
+            that.xly_medal[index].xly_name = val.training_name
+          }
+        });
+      },
+    },
+    mounted() {
+      this.add_url = this.$store.state.admin.baseUrl + '/common/file/add'
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>

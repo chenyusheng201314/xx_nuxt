@@ -1,0 +1,948 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+
+Vue.use(Router)
+
+const _4e1075de = () => import('..\\pages\\tt.vue' /* webpackChunkName: "pages_tt" */).then(m => m.default || m)
+const _53c0f03a = () => import('..\\pages\\test.vue' /* webpackChunkName: "pages_test" */).then(m => m.default || m)
+const _73e85bee = () => import('..\\pages\\download\\index.vue' /* webpackChunkName: "pages_download_index" */).then(m => m.default || m)
+const _65387041 = () => import('..\\pages\\teacher\\index.vue' /* webpackChunkName: "pages_teacher_index" */).then(m => m.default || m)
+const _d49018b4 = () => import('..\\pages\\companyTrain\\index.vue' /* webpackChunkName: "pages_companyTrain_index" */).then(m => m.default || m)
+const _76a48cf4 = () => import('..\\pages\\admin\\index.vue' /* webpackChunkName: "pages_admin_index" */).then(m => m.default || m)
+const _5e80b943 = () => import('..\\pages\\admin\\app.vue' /* webpackChunkName: "pages_admin_app" */).then(m => m.default || m)
+const _3d2e39df = () => import('..\\pages\\admin\\app\\index.vue' /* webpackChunkName: "pages_admin_app_index" */).then(m => m.default || m)
+const _54efdc7a = () => import('..\\pages\\admin\\app\\index\\index.vue' /* webpackChunkName: "pages_admin_app_index_index" */).then(m => m.default || m)
+const _90e6b5ca = () => import('..\\pages\\admin\\app\\index\\setSearch.vue' /* webpackChunkName: "pages_admin_app_index_setSearch" */).then(m => m.default || m)
+const _b73146c2 = () => import('..\\pages\\admin\\app\\index\\setBanner.vue' /* webpackChunkName: "pages_admin_app_index_setBanner" */).then(m => m.default || m)
+const _6c2ad180 = () => import('..\\pages\\admin\\app\\index\\setNav.vue' /* webpackChunkName: "pages_admin_app_index_setNav" */).then(m => m.default || m)
+const _2d0d360c = () => import('..\\pages\\admin\\app\\update.vue' /* webpackChunkName: "pages_admin_app_update" */).then(m => m.default || m)
+const _2eba0c08 = () => import('..\\pages\\admin\\app\\feedback.vue' /* webpackChunkName: "pages_admin_app_feedback" */).then(m => m.default || m)
+const _629deb00 = () => import('..\\pages\\admin\\app\\adv.vue' /* webpackChunkName: "pages_admin_app_adv" */).then(m => m.default || m)
+const _138d07c6 = () => import('..\\pages\\admin\\video.vue' /* webpackChunkName: "pages_admin_video" */).then(m => m.default || m)
+const _25578d6e = () => import('..\\pages\\admin\\user\\index.vue' /* webpackChunkName: "pages_admin_user_index" */).then(m => m.default || m)
+const _1eb72444 = () => import('..\\pages\\admin\\role.vue' /* webpackChunkName: "pages_admin_role" */).then(m => m.default || m)
+const _4f94b664 = () => import('..\\pages\\admin\\companyManage.vue' /* webpackChunkName: "pages_admin_companyManage" */).then(m => m.default || m)
+const _6e1a659e = () => import('..\\pages\\admin\\companyManage\\index.vue' /* webpackChunkName: "pages_admin_companyManage_index" */).then(m => m.default || m)
+const _76476a82 = () => import('..\\pages\\admin\\companyManage\\list.vue' /* webpackChunkName: "pages_admin_companyManage_list" */).then(m => m.default || m)
+const _404c300b = () => import('..\\pages\\admin\\login.vue' /* webpackChunkName: "pages_admin_login" */).then(m => m.default || m)
+const _24f30a85 = () => import('..\\pages\\teacher\\shows.vue' /* webpackChunkName: "pages_teacher_shows" */).then(m => m.default || m)
+const _c49810a4 = () => import('..\\pages\\blogs\\list.vue' /* webpackChunkName: "pages_blogs_list" */).then(m => m.default || m)
+const _48b8c755 = () => import('..\\pages\\class\\list.vue' /* webpackChunkName: "pages_class_list" */).then(m => m.default || m)
+const _2b7f0b40 = () => import('..\\pages\\admin\\test.vue' /* webpackChunkName: "pages_admin_test" */).then(m => m.default || m)
+const _1e806710 = () => import('..\\pages\\class\\introduce.vue' /* webpackChunkName: "pages_class_introduce" */).then(m => m.default || m)
+const _5ae8dfa8 = () => import('..\\pages\\admin\\orgAndTch.vue' /* webpackChunkName: "pages_admin_orgAndTch" */).then(m => m.default || m)
+const _644607da = () => import('..\\pages\\admin\\orgAndTch\\index.vue' /* webpackChunkName: "pages_admin_orgAndTch_index" */).then(m => m.default || m)
+const _75414b7e = () => import('..\\pages\\admin\\orgAndTch\\tchShow.vue' /* webpackChunkName: "pages_admin_orgAndTch_tchShow" */).then(m => m.default || m)
+const _5050c258 = () => import('..\\pages\\admin\\orgAndTch\\case.vue' /* webpackChunkName: "pages_admin_orgAndTch_case" */).then(m => m.default || m)
+const _7b33413e = () => import('..\\pages\\admin\\orgAndTch\\tch.vue' /* webpackChunkName: "pages_admin_orgAndTch_tch" */).then(m => m.default || m)
+const _e20d3e0a = () => import('..\\pages\\admin\\sendMsg.vue' /* webpackChunkName: "pages_admin_sendMsg" */).then(m => m.default || m)
+const _b85819b2 = () => import('..\\pages\\admin\\sendMsg\\index.vue' /* webpackChunkName: "pages_admin_sendMsg_index" */).then(m => m.default || m)
+const _9c5cf04e = () => import('..\\pages\\admin\\sendMsg\\list.vue' /* webpackChunkName: "pages_admin_sendMsg_list" */).then(m => m.default || m)
+const _7b6e1bd7 = () => import('..\\pages\\admin\\invite.vue' /* webpackChunkName: "pages_admin_invite" */).then(m => m.default || m)
+const _6cfc88cb = () => import('..\\pages\\admin\\invite\\index.vue' /* webpackChunkName: "pages_admin_invite_index" */).then(m => m.default || m)
+const _74208904 = () => import('..\\pages\\admin\\invite\\setInvite.vue' /* webpackChunkName: "pages_admin_invite_setInvite" */).then(m => m.default || m)
+const _6bf357a1 = () => import('..\\pages\\open\\detail-con.vue' /* webpackChunkName: "pages_open_detail-con" */).then(m => m.default || m)
+const _fb936362 = () => import('..\\pages\\admin\\account.vue' /* webpackChunkName: "pages_admin_account" */).then(m => m.default || m)
+const _9ea15798 = () => import('..\\pages\\admin\\classification.vue' /* webpackChunkName: "pages_admin_classification" */).then(m => m.default || m)
+const _9e714a7c = () => import('..\\pages\\class\\catalogue.vue' /* webpackChunkName: "pages_class_catalogue" */).then(m => m.default || m)
+const _2ebbe9df = () => import('..\\pages\\case\\list.vue' /* webpackChunkName: "pages_case_list" */).then(m => m.default || m)
+const _e1216520 = () => import('..\\pages\\admin\\order.vue' /* webpackChunkName: "pages_admin_order" */).then(m => m.default || m)
+const _35060912 = () => import('..\\pages\\admin\\order\\index.vue' /* webpackChunkName: "pages_admin_order_index" */).then(m => m.default || m)
+const _59f12afb = () => import('..\\pages\\admin\\setInt.vue' /* webpackChunkName: "pages_admin_setInt" */).then(m => m.default || m)
+const _bbfdd8d6 = () => import('..\\pages\\admin\\sale.vue' /* webpackChunkName: "pages_admin_sale" */).then(m => m.default || m)
+const _7994ff4d = () => import('..\\pages\\admin\\sale\\index.vue' /* webpackChunkName: "pages_admin_sale_index" */).then(m => m.default || m)
+const _71cc60b0 = () => import('..\\pages\\admin\\training.vue' /* webpackChunkName: "pages_admin_training" */).then(m => m.default || m)
+const _07b1d04c = () => import('..\\pages\\admin\\training\\index.vue' /* webpackChunkName: "pages_admin_training_index" */).then(m => m.default || m)
+const _0d0e4685 = () => import('..\\pages\\admin\\training\\classManage.vue' /* webpackChunkName: "pages_admin_training_classManage" */).then(m => m.default || m)
+const _a61c7d44 = () => import('..\\pages\\admin\\crop.vue' /* webpackChunkName: "pages_admin_crop" */).then(m => m.default || m)
+const _b39b6acc = () => import('..\\pages\\admin\\class.vue' /* webpackChunkName: "pages_admin_class" */).then(m => m.default || m)
+const _bb9cce34 = () => import('..\\pages\\admin\\log.vue' /* webpackChunkName: "pages_admin_log" */).then(m => m.default || m)
+const _a4e95712 = () => import('..\\pages\\mine\\mine.vue' /* webpackChunkName: "pages_mine_mine" */).then(m => m.default || m)
+const _3a8ad0b0 = () => import('..\\pages\\mine\\mine\\mine01trip.vue' /* webpackChunkName: "pages_mine_mine_mine01trip" */).then(m => m.default || m)
+const _7dd59c08 = () => import('..\\pages\\mine\\mine\\mine01trip\\train.vue' /* webpackChunkName: "pages_mine_mine_mine01trip_train" */).then(m => m.default || m)
+const _135c3c2d = () => import('..\\pages\\mine\\mine\\mine01trip\\pro.vue' /* webpackChunkName: "pages_mine_mine_mine01trip_pro" */).then(m => m.default || m)
+const _26bf69fd = () => import('..\\pages\\mine\\mine\\mine01trip\\company.vue' /* webpackChunkName: "pages_mine_mine_mine01trip_company" */).then(m => m.default || m)
+const _34707386 = () => import('..\\pages\\mine\\mine\\mine01trip\\buy.vue' /* webpackChunkName: "pages_mine_mine_mine01trip_buy" */).then(m => m.default || m)
+const _5a082e94 = () => import('..\\pages\\mine\\mine\\mine01trip\\history.vue' /* webpackChunkName: "pages_mine_mine_mine01trip_history" */).then(m => m.default || m)
+const _25858744 = () => import('..\\pages\\mine\\mine\\mine01trip\\total.vue' /* webpackChunkName: "pages_mine_mine_mine01trip_total" */).then(m => m.default || m)
+const _290ff02f = () => import('..\\pages\\mine\\mine\\mine11feedback.vue' /* webpackChunkName: "pages_mine_mine_mine11feedback" */).then(m => m.default || m)
+const _200ed7cc = () => import('..\\pages\\mine\\mine\\mine10follow.vue' /* webpackChunkName: "pages_mine_mine_mine10follow" */).then(m => m.default || m)
+const _6799e544 = () => import('..\\pages\\mine\\mine\\mine10follow\\train.vue' /* webpackChunkName: "pages_mine_mine_mine10follow_train" */).then(m => m.default || m)
+const _6cc20f96 = () => import('..\\pages\\mine\\mine\\mine10follow\\course.vue' /* webpackChunkName: "pages_mine_mine_mine10follow_course" */).then(m => m.default || m)
+const _567f9a90 = () => import('..\\pages\\mine\\mine\\mine10follow\\teacher.vue' /* webpackChunkName: "pages_mine_mine_mine10follow_teacher" */).then(m => m.default || m)
+const _4dd8734c = () => import('..\\pages\\mine\\mine\\mine09request.vue' /* webpackChunkName: "pages_mine_mine_mine09request" */).then(m => m.default || m)
+const _74448bf4 = () => import('..\\pages\\mine\\mine\\mine07message.vue' /* webpackChunkName: "pages_mine_mine_mine07message" */).then(m => m.default || m)
+const _0f7fda35 = () => import('..\\pages\\mine\\mine\\mine07message\\system.vue' /* webpackChunkName: "pages_mine_mine_mine07message_system" */).then(m => m.default || m)
+const _4145dd2e = () => import('..\\pages\\mine\\mine\\mine07message\\others.vue' /* webpackChunkName: "pages_mine_mine_mine07message_others" */).then(m => m.default || m)
+const _63f32924 = () => import('..\\pages\\mine\\mine\\mine07message\\_id.vue' /* webpackChunkName: "pages_mine_mine_mine07message__id" */).then(m => m.default || m)
+const _74d7dc78 = () => import('..\\pages\\mine\\mine\\mine05medal.vue' /* webpackChunkName: "pages_mine_mine_mine05medal" */).then(m => m.default || m)
+const _98ccc0fa = () => import('..\\pages\\mine\\mine\\mine03money.vue' /* webpackChunkName: "pages_mine_mine_mine03money" */).then(m => m.default || m)
+const _705776a8 = () => import('..\\pages\\mine\\mine\\mine08order.vue' /* webpackChunkName: "pages_mine_mine_mine08order" */).then(m => m.default || m)
+const _7443d91c = () => import('..\\pages\\mine\\mine\\mine02card.vue' /* webpackChunkName: "pages_mine_mine_mine02card" */).then(m => m.default || m)
+const _0130f1f1 = () => import('..\\pages\\mine\\mine\\mine04points.vue' /* webpackChunkName: "pages_mine_mine_mine04points" */).then(m => m.default || m)
+const _7451f1d4 = () => import('..\\pages\\mine\\mine\\mine04points\\rules.vue' /* webpackChunkName: "pages_mine_mine_mine04points_rules" */).then(m => m.default || m)
+const _9b30877c = () => import('..\\pages\\mine\\mine\\mine04points\\detail.vue' /* webpackChunkName: "pages_mine_mine_mine04points_detail" */).then(m => m.default || m)
+const _6461f2e5 = () => import('..\\pages\\mine\\mine\\mine04points\\buy.vue' /* webpackChunkName: "pages_mine_mine_mine04points_buy" */).then(m => m.default || m)
+const _514d1bb5 = () => import('..\\pages\\mine\\mine\\mine04points\\get.vue' /* webpackChunkName: "pages_mine_mine_mine04points_get" */).then(m => m.default || m)
+const _582db3c6 = () => import('..\\pages\\mine\\mine\\mine06company.vue' /* webpackChunkName: "pages_mine_mine_mine06company" */).then(m => m.default || m)
+const _3d7dc1fb = () => import('..\\pages\\mine\\mine\\mine06company\\train.vue' /* webpackChunkName: "pages_mine_mine_mine06company_train" */).then(m => m.default || m)
+const _54291bf2 = () => import('..\\pages\\mine\\mine\\mine06company\\join.vue' /* webpackChunkName: "pages_mine_mine_mine06company_join" */).then(m => m.default || m)
+const _fcaa5190 = () => import('..\\pages\\mine\\mine\\mine06company\\course.vue' /* webpackChunkName: "pages_mine_mine_mine06company_course" */).then(m => m.default || m)
+const _0ecdbdcc = () => import('..\\pages\\mine\\mine\\mine06company\\members.vue' /* webpackChunkName: "pages_mine_mine_mine06company_members" */).then(m => m.default || m)
+const _6b39bb45 = () => import('..\\pages\\admin\\promotion.vue' /* webpackChunkName: "pages_admin_promotion" */).then(m => m.default || m)
+const _9f1d5cc6 = () => import('..\\pages\\admin\\promotion\\index.vue' /* webpackChunkName: "pages_admin_promotion_index" */).then(m => m.default || m)
+const _14441d44 = () => import('..\\pages\\admin\\promotion\\special.vue' /* webpackChunkName: "pages_admin_promotion_special" */).then(m => m.default || m)
+const _1a677231 = () => import('..\\pages\\admin\\promotion\\integral.vue' /* webpackChunkName: "pages_admin_promotion_integral" */).then(m => m.default || m)
+const _24e55d1e = () => import('..\\pages\\admin\\promotion\\free.vue' /* webpackChunkName: "pages_admin_promotion_free" */).then(m => m.default || m)
+const _4b52102e = () => import('..\\pages\\admin\\promotion\\boutique.vue' /* webpackChunkName: "pages_admin_promotion_boutique" */).then(m => m.default || m)
+const _6a701e20 = () => import('..\\pages\\admin\\promotion\\document.vue' /* webpackChunkName: "pages_admin_promotion_document" */).then(m => m.default || m)
+const _017af774 = () => import('..\\pages\\admin\\promotion\\present.vue' /* webpackChunkName: "pages_admin_promotion_present" */).then(m => m.default || m)
+const _0cf0246e = () => import('..\\pages\\admin\\medal\\index.vue' /* webpackChunkName: "pages_admin_medal_index" */).then(m => m.default || m)
+const _79956598 = () => import('..\\pages\\open\\nav.vue' /* webpackChunkName: "pages_open_nav" */).then(m => m.default || m)
+const _ad2a15d6 = () => import('..\\pages\\admin\\bi.vue' /* webpackChunkName: "pages_admin_bi" */).then(m => m.default || m)
+const _59db2466 = () => import('..\\pages\\admin\\bi\\index.vue' /* webpackChunkName: "pages_admin_bi_index" */).then(m => m.default || m)
+const _060296f5 = () => import('..\\pages\\admin\\recharge.vue' /* webpackChunkName: "pages_admin_recharge" */).then(m => m.default || m)
+const _1e4a2026 = () => import('..\\pages\\admin\\recharge\\index.vue' /* webpackChunkName: "pages_admin_recharge_index" */).then(m => m.default || m)
+const _09a5b069 = () => import('..\\pages\\admin\\recharge\\order.vue' /* webpackChunkName: "pages_admin_recharge_order" */).then(m => m.default || m)
+const _38f27d12 = () => import('..\\pages\\news\\news.vue' /* webpackChunkName: "pages_news_news" */).then(m => m.default || m)
+const _729aa680 = () => import('..\\pages\\class\\introduce-tab.vue' /* webpackChunkName: "pages_class_introduce-tab" */).then(m => m.default || m)
+const _0e4c3b1f = () => import('..\\pages\\class\\buy.vue' /* webpackChunkName: "pages_class_buy" */).then(m => m.default || m)
+const _7e0b7e7e = () => import('..\\pages\\admin\\pc.vue' /* webpackChunkName: "pages_admin_pc" */).then(m => m.default || m)
+const _9fda2ebe = () => import('..\\pages\\admin\\pc\\index.vue' /* webpackChunkName: "pages_admin_pc_index" */).then(m => m.default || m)
+const _42d9a542 = () => import('..\\pages\\admin\\pc\\setting.vue' /* webpackChunkName: "pages_admin_pc_setting" */).then(m => m.default || m)
+const _1e0094a0 = () => import('..\\pages\\admin\\pc\\blogroll.vue' /* webpackChunkName: "pages_admin_pc_blogroll" */).then(m => m.default || m)
+const _df49e448 = () => import('..\\pages\\admin\\pc\\about.vue' /* webpackChunkName: "pages_admin_pc_about" */).then(m => m.default || m)
+const _2b2e2c72 = () => import('..\\pages\\admin\\pc\\blogClassify.vue' /* webpackChunkName: "pages_admin_pc_blogClassify" */).then(m => m.default || m)
+const _2f4200e7 = () => import('..\\pages\\admin\\pc\\enroll.vue' /* webpackChunkName: "pages_admin_pc_enroll" */).then(m => m.default || m)
+const _43209a58 = () => import('..\\pages\\admin\\pc\\news.vue' /* webpackChunkName: "pages_admin_pc_news" */).then(m => m.default || m)
+const _3a034dec = () => import('..\\pages\\open\\detail.vue' /* webpackChunkName: "pages_open_detail" */).then(m => m.default || m)
+const _4bd79fc6 = () => import('..\\pages\\admin\\user\\sendTable.vue' /* webpackChunkName: "pages_admin_user_sendTable" */).then(m => m.default || m)
+const _70fa353a = () => import('..\\pages\\admin\\user\\information.vue' /* webpackChunkName: "pages_admin_user_information" */).then(m => m.default || m)
+const _0ed065a2 = () => import('..\\pages\\admin\\user\\xlyTable.vue' /* webpackChunkName: "pages_admin_user_xlyTable" */).then(m => m.default || m)
+const _bf8d46a6 = () => import('..\\pages\\admin\\user\\lessonTable.vue' /* webpackChunkName: "pages_admin_user_lessonTable" */).then(m => m.default || m)
+const _0842edf2 = () => import('..\\pages\\admin\\user\\userInfo.vue' /* webpackChunkName: "pages_admin_user_userInfo" */).then(m => m.default || m)
+const _78cc048d = () => import('..\\pages\\admin\\user\\userXlyTable.vue' /* webpackChunkName: "pages_admin_user_userXlyTable" */).then(m => m.default || m)
+const _4ddcc1e2 = () => import('..\\pages\\admin\\user\\userList.vue' /* webpackChunkName: "pages_admin_user_userList" */).then(m => m.default || m)
+const _478f3855 = () => import('..\\pages\\admin\\medal\\rule.vue' /* webpackChunkName: "pages_admin_medal_rule" */).then(m => m.default || m)
+const _3225ac36 = () => import('..\\pages\\admin\\user\\teacherTable.vue' /* webpackChunkName: "pages_admin_user_teacherTable" */).then(m => m.default || m)
+const _97575d1e = () => import('..\\pages\\admin\\user\\getTable.vue' /* webpackChunkName: "pages_admin_user_getTable" */).then(m => m.default || m)
+const _740a1450 = () => import('..\\pages\\admin\\user\\accreditLits.vue' /* webpackChunkName: "pages_admin_user_accreditLits" */).then(m => m.default || m)
+const _388af621 = () => import('..\\pages\\openStatic\\_id.vue' /* webpackChunkName: "pages_openStatic__id" */).then(m => m.default || m)
+const _d610e22e = () => import('..\\pages\\teacher\\_id.vue' /* webpackChunkName: "pages_teacher__id" */).then(m => m.default || m)
+const _671fb046 = () => import('..\\pages\\news\\_id.vue' /* webpackChunkName: "pages_news__id" */).then(m => m.default || m)
+const _59f77453 = () => import('..\\pages\\class\\_id.vue' /* webpackChunkName: "pages_class__id" */).then(m => m.default || m)
+const _5920d889 = () => import('..\\pages\\case\\_id.vue' /* webpackChunkName: "pages_case__id" */).then(m => m.default || m)
+const _2dcf564c = () => import('..\\pages\\blogs\\_id.vue' /* webpackChunkName: "pages_blogs__id" */).then(m => m.default || m)
+const _51cfae53 = () => import('..\\pages\\admin\\u_video.vue' /* webpackChunkName: "pages_admin_u_video" */).then(m => m.default || m)
+const _80926eec = () => import('..\\pages\\company_manage\\index.vue' /* webpackChunkName: "pages_company_manage_index" */).then(m => m.default || m)
+const _344cbcb8 = () => import('..\\pages\\company_manage\\index\\index.vue' /* webpackChunkName: "pages_company_manage_index_index" */).then(m => m.default || m)
+const _983ca83e = () => import('..\\pages\\company_manage\\index\\video.vue' /* webpackChunkName: "pages_company_manage_index_video" */).then(m => m.default || m)
+const _76919d13 = () => import('..\\pages\\company_manage\\index\\account.vue' /* webpackChunkName: "pages_company_manage_index_account" */).then(m => m.default || m)
+const _804c86b6 = () => import('..\\pages\\company_manage\\index\\course.vue' /* webpackChunkName: "pages_company_manage_index_course" */).then(m => m.default || m)
+const _6f27ec00 = () => import('..\\pages\\company_manage\\index\\role.vue' /* webpackChunkName: "pages_company_manage_index_role" */).then(m => m.default || m)
+const _ed4328be = () => import('..\\pages\\company_manage\\login.vue' /* webpackChunkName: "pages_company_manage_login" */).then(m => m.default || m)
+const _da5783a0 = () => import('..\\pages\\company_manage\\member\\index.vue' /* webpackChunkName: "pages_company_manage_member_index" */).then(m => m.default || m)
+const _ec276020 = () => import('..\\pages\\company_manage\\training\\index.vue' /* webpackChunkName: "pages_company_manage_training_index" */).then(m => m.default || m)
+const _5bd2961b = () => import('..\\pages\\company_manage\\training\\classManage.vue' /* webpackChunkName: "pages_company_manage_training_classManage" */).then(m => m.default || m)
+const _06a72fd1 = () => import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */).then(m => m.default || m)
+
+
+
+if (process.client) {
+  window.history.scrollRestoration = 'manual'
+}
+const scrollBehavior = function (to, from, savedPosition) {
+  // if the returned position is falsy or an empty object,
+  // will retain current scroll position.
+  let position = false
+
+  // if no children detected
+  if (to.matched.length < 2) {
+    // scroll to the top of the page
+    position = { x: 0, y: 0 }
+  } else if (to.matched.some((r) => r.components.default.options.scrollToTop)) {
+    // if one of the children has scrollToTop option set to true
+    position = { x: 0, y: 0 }
+  }
+
+  // savedPosition is only available for popstate navigations (back button)
+  if (savedPosition) {
+    position = savedPosition
+  }
+
+  return new Promise(resolve => {
+    // wait for the out transition to complete (if necessary)
+    window.$nuxt.$once('triggerScroll', () => {
+      // coords will be used if no selector is provided,
+      // or if the selector didn't match any element.
+      if (to.hash) {
+        let hash = to.hash
+        // CSS.escape() is not supported with IE and Edge.
+        if (typeof window.CSS !== 'undefined' && typeof window.CSS.escape !== 'undefined') {
+          hash = '#' + window.CSS.escape(hash.substr(1))
+        }
+        try {
+          if (document.querySelector(hash)) {
+            // scroll to anchor by returning the selector
+            position = { selector: hash }
+          }
+        } catch (e) {
+          console.warn('Failed to save scroll position. Please add CSS.escape() polyfill (https://github.com/mathiasbynens/CSS.escape).')
+        }
+      }
+      resolve(position)
+    })
+  })
+}
+
+
+export function createRouter () {
+  return new Router({
+    mode: 'history',
+    base: '/',
+    linkActiveClass: 'nuxt-link-active',
+    linkExactActiveClass: 'nuxt-link-exact-active',
+    scrollBehavior,
+    routes: [
+		{
+			path: "/tt",
+			component: _4e1075de,
+			name: "tt"
+		},
+		{
+			path: "/test",
+			component: _53c0f03a,
+			name: "test"
+		},
+		{
+			path: "/download",
+			component: _73e85bee,
+			name: "download"
+		},
+		{
+			path: "/teacher",
+			component: _65387041,
+			name: "teacher"
+		},
+		{
+			path: "/companyTrain",
+			component: _d49018b4,
+			name: "companyTrain"
+		},
+		{
+			path: "/admin",
+			component: _76a48cf4,
+			name: "admin"
+		},
+		{
+			path: "/admin/app",
+			component: _5e80b943,
+			children: [
+				{
+					path: "",
+					component: _3d2e39df,
+					children: [
+						{
+							path: "",
+							component: _54efdc7a,
+							name: "admin-app-index"
+						},
+						{
+							path: "setSearch",
+							component: _90e6b5ca,
+							name: "admin-app-index-setSearch"
+						},
+						{
+							path: "setBanner",
+							component: _b73146c2,
+							name: "admin-app-index-setBanner"
+						},
+						{
+							path: "setNav",
+							component: _6c2ad180,
+							name: "admin-app-index-setNav"
+						}
+					]
+				},
+				{
+					path: "update",
+					component: _2d0d360c,
+					name: "admin-app-update"
+				},
+				{
+					path: "feedback",
+					component: _2eba0c08,
+					name: "admin-app-feedback"
+				},
+				{
+					path: "adv",
+					component: _629deb00,
+					name: "admin-app-adv"
+				}
+			]
+		},
+		{
+			path: "/admin/video",
+			component: _138d07c6,
+			name: "admin-video"
+		},
+		{
+			path: "/admin/user",
+			component: _25578d6e,
+			name: "admin-user"
+		},
+		{
+			path: "/admin/role",
+			component: _1eb72444,
+			name: "admin-role"
+		},
+		{
+			path: "/admin/companyManage",
+			component: _4f94b664,
+			children: [
+				{
+					path: "",
+					component: _6e1a659e,
+					name: "admin-companyManage"
+				},
+				{
+					path: "list",
+					component: _76476a82,
+					name: "admin-companyManage-list"
+				}
+			]
+		},
+		{
+			path: "/admin/login",
+			component: _404c300b,
+			name: "admin-login"
+		},
+		{
+			path: "/teacher/shows",
+			component: _24f30a85,
+			name: "teacher-shows"
+		},
+		{
+			path: "/blogs/list",
+			component: _c49810a4,
+			name: "blogs-list"
+		},
+		{
+			path: "/class/list",
+			component: _48b8c755,
+			name: "class-list"
+		},
+		{
+			path: "/admin/test",
+			component: _2b7f0b40,
+			name: "admin-test"
+		},
+		{
+			path: "/class/introduce",
+			component: _1e806710,
+			name: "class-introduce"
+		},
+		{
+			path: "/admin/orgAndTch",
+			component: _5ae8dfa8,
+			children: [
+				{
+					path: "",
+					component: _644607da,
+					name: "admin-orgAndTch"
+				},
+				{
+					path: "tchShow",
+					component: _75414b7e,
+					name: "admin-orgAndTch-tchShow"
+				},
+				{
+					path: "case",
+					component: _5050c258,
+					name: "admin-orgAndTch-case"
+				},
+				{
+					path: "tch",
+					component: _7b33413e,
+					name: "admin-orgAndTch-tch"
+				}
+			]
+		},
+		{
+			path: "/admin/sendMsg",
+			component: _e20d3e0a,
+			children: [
+				{
+					path: "",
+					component: _b85819b2,
+					name: "admin-sendMsg"
+				},
+				{
+					path: "list",
+					component: _9c5cf04e,
+					name: "admin-sendMsg-list"
+				}
+			]
+		},
+		{
+			path: "/admin/invite",
+			component: _7b6e1bd7,
+			children: [
+				{
+					path: "",
+					component: _6cfc88cb,
+					name: "admin-invite"
+				},
+				{
+					path: "setInvite",
+					component: _74208904,
+					name: "admin-invite-setInvite"
+				}
+			]
+		},
+		{
+			path: "/open/detail-con",
+			component: _6bf357a1,
+			name: "open-detail-con"
+		},
+		{
+			path: "/admin/account",
+			component: _fb936362,
+			name: "admin-account"
+		},
+		{
+			path: "/admin/classification",
+			component: _9ea15798,
+			name: "admin-classification"
+		},
+		{
+			path: "/class/catalogue",
+			component: _9e714a7c,
+			name: "class-catalogue"
+		},
+		{
+			path: "/case/list",
+			component: _2ebbe9df,
+			name: "case-list"
+		},
+		{
+			path: "/admin/order",
+			component: _e1216520,
+			children: [
+				{
+					path: "",
+					component: _35060912,
+					name: "admin-order"
+				}
+			]
+		},
+		{
+			path: "/admin/setInt",
+			component: _59f12afb,
+			name: "admin-setInt"
+		},
+		{
+			path: "/admin/sale",
+			component: _bbfdd8d6,
+			children: [
+				{
+					path: "",
+					component: _7994ff4d,
+					name: "admin-sale"
+				}
+			]
+		},
+		{
+			path: "/admin/training",
+			component: _71cc60b0,
+			children: [
+				{
+					path: "",
+					component: _07b1d04c,
+					name: "admin-training"
+				},
+				{
+					path: "classManage",
+					component: _0d0e4685,
+					name: "admin-training-classManage"
+				}
+			]
+		},
+		{
+			path: "/admin/crop",
+			component: _a61c7d44,
+			name: "admin-crop"
+		},
+		{
+			path: "/admin/class",
+			component: _b39b6acc,
+			name: "admin-class"
+		},
+		{
+			path: "/admin/log",
+			component: _bb9cce34,
+			name: "admin-log"
+		},
+		{
+			path: "/mine/mine",
+			component: _a4e95712,
+			name: "mine-mine",
+			children: [
+				{
+					path: "mine01trip",
+					component: _3a8ad0b0,
+					name: "mine-mine-mine01trip",
+					children: [
+						{
+							path: "train",
+							component: _7dd59c08,
+							name: "mine-mine-mine01trip-train"
+						},
+						{
+							path: "pro",
+							component: _135c3c2d,
+							name: "mine-mine-mine01trip-pro"
+						},
+						{
+							path: "company",
+							component: _26bf69fd,
+							name: "mine-mine-mine01trip-company"
+						},
+						{
+							path: "buy",
+							component: _34707386,
+							name: "mine-mine-mine01trip-buy"
+						},
+						{
+							path: "history",
+							component: _5a082e94,
+							name: "mine-mine-mine01trip-history"
+						},
+						{
+							path: "total",
+							component: _25858744,
+							name: "mine-mine-mine01trip-total"
+						}
+					]
+				},
+				{
+					path: "mine11feedback",
+					component: _290ff02f,
+					name: "mine-mine-mine11feedback"
+				},
+				{
+					path: "mine10follow",
+					component: _200ed7cc,
+					name: "mine-mine-mine10follow",
+					children: [
+						{
+							path: "train",
+							component: _6799e544,
+							name: "mine-mine-mine10follow-train"
+						},
+						{
+							path: "course",
+							component: _6cc20f96,
+							name: "mine-mine-mine10follow-course"
+						},
+						{
+							path: "teacher",
+							component: _567f9a90,
+							name: "mine-mine-mine10follow-teacher"
+						}
+					]
+				},
+				{
+					path: "mine09request",
+					component: _4dd8734c,
+					name: "mine-mine-mine09request"
+				},
+				{
+					path: "mine07message",
+					component: _74448bf4,
+					name: "mine-mine-mine07message",
+					children: [
+						{
+							path: "system",
+							component: _0f7fda35,
+							name: "mine-mine-mine07message-system"
+						},
+						{
+							path: "others",
+							component: _4145dd2e,
+							name: "mine-mine-mine07message-others"
+						},
+						{
+							path: ":id?",
+							component: _63f32924,
+							name: "mine-mine-mine07message-id"
+						}
+					]
+				},
+				{
+					path: "mine05medal",
+					component: _74d7dc78,
+					name: "mine-mine-mine05medal"
+				},
+				{
+					path: "mine03money",
+					component: _98ccc0fa,
+					name: "mine-mine-mine03money"
+				},
+				{
+					path: "mine08order",
+					component: _705776a8,
+					name: "mine-mine-mine08order"
+				},
+				{
+					path: "mine02card",
+					component: _7443d91c,
+					name: "mine-mine-mine02card"
+				},
+				{
+					path: "mine04points",
+					component: _0130f1f1,
+					name: "mine-mine-mine04points",
+					children: [
+						{
+							path: "rules",
+							component: _7451f1d4,
+							name: "mine-mine-mine04points-rules"
+						},
+						{
+							path: "detail",
+							component: _9b30877c,
+							name: "mine-mine-mine04points-detail"
+						},
+						{
+							path: "buy",
+							component: _6461f2e5,
+							name: "mine-mine-mine04points-buy"
+						},
+						{
+							path: "get",
+							component: _514d1bb5,
+							name: "mine-mine-mine04points-get"
+						}
+					]
+				},
+				{
+					path: "mine06company",
+					component: _582db3c6,
+					name: "mine-mine-mine06company",
+					children: [
+						{
+							path: "train",
+							component: _3d7dc1fb,
+							name: "mine-mine-mine06company-train"
+						},
+						{
+							path: "join",
+							component: _54291bf2,
+							name: "mine-mine-mine06company-join"
+						},
+						{
+							path: "course",
+							component: _fcaa5190,
+							name: "mine-mine-mine06company-course"
+						},
+						{
+							path: "members",
+							component: _0ecdbdcc,
+							name: "mine-mine-mine06company-members"
+						}
+					]
+				}
+			]
+		},
+		{
+			path: "/admin/promotion",
+			component: _6b39bb45,
+			children: [
+				{
+					path: "",
+					component: _9f1d5cc6,
+					name: "admin-promotion"
+				},
+				{
+					path: "special",
+					component: _14441d44,
+					name: "admin-promotion-special"
+				},
+				{
+					path: "integral",
+					component: _1a677231,
+					name: "admin-promotion-integral"
+				},
+				{
+					path: "free",
+					component: _24e55d1e,
+					name: "admin-promotion-free"
+				},
+				{
+					path: "boutique",
+					component: _4b52102e,
+					name: "admin-promotion-boutique"
+				},
+				{
+					path: "document",
+					component: _6a701e20,
+					name: "admin-promotion-document"
+				},
+				{
+					path: "present",
+					component: _017af774,
+					name: "admin-promotion-present"
+				}
+			]
+		},
+		{
+			path: "/admin/medal",
+			component: _0cf0246e,
+			name: "admin-medal"
+		},
+		{
+			path: "/open/nav",
+			component: _79956598,
+			name: "open-nav"
+		},
+		{
+			path: "/admin/bi",
+			component: _ad2a15d6,
+			children: [
+				{
+					path: "",
+					component: _59db2466,
+					name: "admin-bi"
+				}
+			]
+		},
+		{
+			path: "/admin/recharge",
+			component: _060296f5,
+			children: [
+				{
+					path: "",
+					component: _1e4a2026,
+					name: "admin-recharge"
+				},
+				{
+					path: "order",
+					component: _09a5b069,
+					name: "admin-recharge-order"
+				}
+			]
+		},
+		{
+			path: "/news/news",
+			component: _38f27d12,
+			name: "news-news"
+		},
+		{
+			path: "/class/introduce-tab",
+			component: _729aa680,
+			name: "class-introduce-tab"
+		},
+		{
+			path: "/class/buy",
+			component: _0e4c3b1f,
+			name: "class-buy"
+		},
+		{
+			path: "/admin/pc",
+			component: _7e0b7e7e,
+			children: [
+				{
+					path: "",
+					component: _9fda2ebe,
+					name: "admin-pc"
+				},
+				{
+					path: "setting",
+					component: _42d9a542,
+					name: "admin-pc-setting"
+				},
+				{
+					path: "blogroll",
+					component: _1e0094a0,
+					name: "admin-pc-blogroll"
+				},
+				{
+					path: "about",
+					component: _df49e448,
+					name: "admin-pc-about"
+				},
+				{
+					path: "blogClassify",
+					component: _2b2e2c72,
+					name: "admin-pc-blogClassify"
+				},
+				{
+					path: "enroll",
+					component: _2f4200e7,
+					name: "admin-pc-enroll"
+				},
+				{
+					path: "news",
+					component: _43209a58,
+					name: "admin-pc-news"
+				}
+			]
+		},
+		{
+			path: "/open/detail",
+			component: _3a034dec,
+			name: "open-detail"
+		},
+		{
+			path: "/admin/user/sendTable",
+			component: _4bd79fc6,
+			name: "admin-user-sendTable"
+		},
+		{
+			path: "/admin/user/information",
+			component: _70fa353a,
+			name: "admin-user-information"
+		},
+		{
+			path: "/admin/user/xlyTable",
+			component: _0ed065a2,
+			name: "admin-user-xlyTable"
+		},
+		{
+			path: "/admin/user/lessonTable",
+			component: _bf8d46a6,
+			name: "admin-user-lessonTable"
+		},
+		{
+			path: "/admin/user/userInfo",
+			component: _0842edf2,
+			name: "admin-user-userInfo"
+		},
+		{
+			path: "/admin/user/userXlyTable",
+			component: _78cc048d,
+			name: "admin-user-userXlyTable"
+		},
+		{
+			path: "/admin/user/userList",
+			component: _4ddcc1e2,
+			name: "admin-user-userList"
+		},
+		{
+			path: "/admin/medal/rule",
+			component: _478f3855,
+			name: "admin-medal-rule"
+		},
+		{
+			path: "/admin/user/teacherTable",
+			component: _3225ac36,
+			name: "admin-user-teacherTable"
+		},
+		{
+			path: "/admin/user/getTable",
+			component: _97575d1e,
+			name: "admin-user-getTable"
+		},
+		{
+			path: "/admin/user/accreditLits",
+			component: _740a1450,
+			name: "admin-user-accreditLits"
+		},
+		{
+			path: "/openStatic/:id?",
+			component: _388af621,
+			name: "openStatic-id"
+		},
+		{
+			path: "/teacher/:id",
+			component: _d610e22e,
+			name: "teacher-id"
+		},
+		{
+			path: "/news/:id?",
+			component: _671fb046,
+			name: "news-id"
+		},
+		{
+			path: "/class/:id?",
+			component: _59f77453,
+			name: "class-id"
+		},
+		{
+			path: "/case/:id?",
+			component: _5920d889,
+			name: "case-id"
+		},
+		{
+			path: "/blogs/:id?",
+			component: _2dcf564c,
+			name: "blogs-id"
+		},
+		{
+			path: "/admin/u:video",
+			component: _51cfae53,
+			name: "admin-uvideo"
+		},
+		{
+			path: "/company:manage",
+			component: _80926eec,
+			children: [
+				{
+					path: "",
+					component: _344cbcb8,
+					name: "companymanage-index"
+				},
+				{
+					path: "video",
+					component: _983ca83e,
+					name: "companymanage-index-video"
+				},
+				{
+					path: "account",
+					component: _76919d13,
+					name: "companymanage-index-account"
+				},
+				{
+					path: "course",
+					component: _804c86b6,
+					name: "companymanage-index-course"
+				},
+				{
+					path: "role",
+					component: _6f27ec00,
+					name: "companymanage-index-role"
+				}
+			]
+		},
+		{
+			path: "/company:manage/login",
+			component: _ed4328be,
+			name: "companymanage-login"
+		},
+		{
+			path: "/company:manage/member",
+			component: _da5783a0,
+			name: "companymanage-member"
+		},
+		{
+			path: "/company:manage/training",
+			component: _ec276020,
+			name: "companymanage-training"
+		},
+		{
+			path: "/company:manage/training/classManage",
+			component: _5bd2961b,
+			name: "companymanage-training-classManage"
+		},
+		{
+			path: "/",
+			component: _06a72fd1,
+			name: "index"
+		}
+    ],
+    
+    
+    fallback: false
+  })
+}

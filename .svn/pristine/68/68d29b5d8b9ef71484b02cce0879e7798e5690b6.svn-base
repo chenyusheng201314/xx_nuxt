@@ -1,0 +1,38 @@
+<template>
+  <div class="mine-public">
+    <div class="d-inline-block menu">
+      <ul>
+        <li @click="item=1"><nuxt-link :class="{'item-active':item === 1}" to="/mine/mine/mine10follow/course"><div class="point"></div>关注的课程</nuxt-link></li>
+        <li @click="item=2"><nuxt-link :class="{'item-active':item === 2}" to="/mine/mine/mine10follow/teacher"><div class="point"></div>关注的导师</nuxt-link></li>
+        <li @click="item=3"><nuxt-link :class="{'item-active':item === 3}" to="/mine/mine/mine10follow/train"><div class="point"></div>关注的训练营</nuxt-link></li>
+      </ul>
+    </div>
+    <div class="d-inline-block content">
+      <!--<transition>-->
+        <keep-alive>
+          <div class="mine-box">
+            <div class="mine-con">
+              <nuxt-child></nuxt-child>
+            </div>
+          </div>
+        </keep-alive>
+      <!--</transition>-->
+    </div>
+  </div>
+</template>
+
+<script>
+
+export default {
+  name: 'mine10follow',
+  // transitions: {
+  //   name: 'router-fade',
+  //   mode: 'out-in'
+  // },
+  data () {
+    return {
+      item: 1
+    }
+  },
+}
+</script>

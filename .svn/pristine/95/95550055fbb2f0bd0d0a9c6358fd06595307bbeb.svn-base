@@ -1,0 +1,391 @@
+<template>
+  <div class="company-video">
+    <h2>视频库</h2>
+    <p class="eng-name">Video library</p>
+    <div class="update-list" v-show="btn_show" @click="show_up_list">视频传输列表</div>
+    <ul class="search-info">
+      <li>
+        <span class="li-span">视频名称</span>
+        <input type="text" v-model="search_info.name">
+      </li>
+      <li>
+        <span class="li-span">上传时间</span>
+        <el-date-picker
+          v-model="search_info.time"
+          type="datetimerange"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          format="yyyy-MM-dd HH:mm:ss"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          :default-time="['00:00:00','23:59:59']">
+        </el-date-picker>
+      </li>
+      <li>
+        <span class="li-span">是否被使用</span>
+        <el-select v-model="search_info.status" placeholder="请选择">
+          <el-option
+            v-for="(item,index) in search_info.status_select"
+            :key="index"
+            :label="item.name"
+            :value="item.num">
+          </el-option>
+        </el-select>
+      </li>
+      <li class="last-li">
+        <span class="search-btn" @click="fun_search">搜索</span>
+        <span class="add-btn" :class="{disable_btn: !up_type}" @click="add_err">
+         {{up_type? '+ 上传': '上传中...'}}
+          <upVideo
+            v-show="up_show"
+            m_style="opacity: 0;position: absolute;top: 0;left: 0;width: 90px;height: 40px;"
+            mime=""
+            @close_cover="close_cover"
+            @get_list_again="get_list_again"
+            :cover_show="cover_show"
+            @video_list_type_change="video_list_type_change"
+            @upload_type_change="upload_type_change"
+          ></upVideo>
+        </span>
+        <span class="sm">视频仅供您企业内部使用</span>
+
+      </li>
+      <li style="width:80%">
+        <span class="li-span" style="display: inline-block;">视频解析：</span>
+        <el-progress :text-inside="true" :stroke-width="18"
+                     :percentage="noTimeNum>0?parseInt((noTimeNum-noTime.length)/noTimeNum*50)+50:100" color="#FB9500"
+                     show-text style="width:50%;display: inline-block;"></el-progress>
+        <span class="li-span" style="display: inline-block;" v-if="noTimeNum!=0">（剩余{{noTime.length}}个未解析）</span><span
+        class="li-span" style="display: inline-block;color:#F1686B; margin-left: 15px" v-else>解析完成！</span>
+
+      </li>
+    </ul>
+
+    <table>
+      <tr>
+        <th>序号</th>
+        <th>视频名称</th>
+        <th>时长</th>
+        <th>类型</th>
+        <th>上传时间</th>
+        <th>是否被使用</th>
+        <th>操作</th>
+      </tr>
+      <tbody>
+      <tr v-for="(item,index) in video_list" :key="index">
+        <td width="100">{{index + 1}}</td>
+        <td width="550"><p class="p1">{{item.upload_name}} &nbsp;&nbsp;<span v-if="item.duration==0.00"
+                                                                             style="color:#BCBBC0;font-size: 12px">解析中...</span>
+        </p></td>
+        <td width="150">{{(item.duration / 60).toFixed(1)}} 分钟</td>
+        <td width="150">{{item.video_type}}</td>
+        <td width="350">{{item.created_at}}</td>
+        <td width="100">
+          <span class="true" v-show="item.is_used !== 0">是</span>
+          <span class="false" v-show="item.is_used === 0">否</span>
+        </td>
+        <td>
+          <span class="iconfont" style="margin-right: 0" @click="delete_one(index,item.id)">&#xe62f;</span>
+          <span class="iconfont" title="更新视频时长" v-if='false' @click="update_time(index,item.video_id)">&#xe752;</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <!-- 分页-->
+    <div class="paging">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="paging.currentPage"
+        :page-sizes="paging.page_sizes"
+        :page-size="paging.page_size"
+        layout="prev, pager, next, sizes, jumper"
+        :total="paging.total"
+        :pager-count="5"
+        v-loading.fullscreen.lock="fullscreenLoading"
+      >
+      </el-pagination>
+    </div>
+  </div>
+</template>
+
+<script>
+  import upVideo from '~/components/companyManage/up_video'
+
+  export default {
+    name: "video_library",
+    layout: 'companyManage',
+    components: {
+      upVideo
+    },
+    data() {
+      return {
+        // 搜索信息
+        search_info: {
+          name: '',
+          time: '',
+          status: '',
+          status_select: [
+            {num: '', name: '全部'},
+            {num: 1, name: '是'},
+            {num: 0, name: '否'},
+          ]
+        },
+        //加载动画
+        fullscreenLoading: false,
+        //  弹窗显示
+        cover_show: false,
+        //  上传状态
+        up_type: true,
+        btn_show: false,
+        up_show: true,
+        tit: '测试标题',
+        noTime: [],
+        noTimeNum: 0,
+      }
+    },
+    async asyncData({store}) {
+      // 视频列表
+      let video_req = {
+        url: '/company/company_video/video_list',
+        data: {
+          page: 1,
+          psize: 20,
+          is_used: '',
+          video_id: '',
+          show_name: '',
+          create_start_time: '',
+          create_end_time: ''
+        }
+      };
+      let video_res = await store.dispatch('companyHttpGet', video_req);
+      // console.log('视频列表', video_res.data.data.data);
+      return {
+        //视频列表
+        video_list: video_res.data.data.data,
+        // 分页
+        paging: {
+          total: video_res.data.data.total,
+          currentPage: 1,  //当前页
+          page_sizes: [10, 20, 30], //每页显示多少条下拉
+          page_size: 20,// 默认显示多少条
+        },
+      }
+    },
+    methods: {
+      // 获取列表
+      async get_list() {
+        const that = this;
+        that.fullscreenLoading = true;
+        let req = {
+          url: '/company/company_video/video_list',
+          data: {
+            page: that.paging.currentPage,
+            psize: that.paging.page_size,
+            is_used: that.search_info.status,
+            video_id: '',
+            show_name: that.search_info.name,
+            create_start_time: that.search_info.time ? that.search_info.time[0] : '',
+            create_end_time: that.search_info.time ? that.search_info.time[1] : '',
+          }
+        };
+        let res = await that.$store.dispatch('companyHttpGet', req);
+        if (res) {
+          that.fullscreenLoading = false;
+        }
+        that.video_list = res.data.data.data;
+      },
+      fun_search() {
+        this.paging.currentPage = 1;
+        this.paging.page_size = 20;
+        this.get_list();
+      },
+      //分页每页显示数量
+      handleSizeChange(val) {
+        this.paging.page_size = val;
+        this.get_list();
+      },
+      //分页当前页
+      handleCurrentChange(val) {
+        this.paging.currentPage = val;
+        this.get_list();
+      },
+      //删除一个
+      delete_one(index, id) {
+        const that = this;
+        //权限
+        let checkInfo = that.comsys.adminCheckRole(that.$store.state.company.companyRole.data, 'company_video', 'video_del');
+        if (!checkInfo) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+          return false
+        }
+
+
+        if (parseInt(that.video_list[index].is_used) === 0) {
+
+          that.$confirm('此操作将永久删除该视频, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(async () => {
+            let req = {
+              url: '/company/company_video/video_del',
+              data: {
+                id
+              }
+            };
+            let res = await that.$store.dispatch('companyHttpPost', req);
+            //console.log(res);
+            if (res.code === 0) {
+              that.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              that.get_list()
+            } else {
+              that.$message.error(res.message);
+            }
+
+          }).catch(() => {
+            that.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+
+        } else {
+          that.$message.error('被使用中的视频无法删除')
+        }
+
+
+      },
+      // 弹窗列表
+      show_up_list() {
+        this.cover_show = true
+      },
+      // 关闭列表
+      close_cover(val) {
+        this.cover_show = val
+      },
+      // 上传结束
+      get_list_again(val) {
+        const that = this;
+        that.cover_show = false;
+        if (val) {
+          that.video_paging();
+        }
+      },
+      // 上传状态
+      upload_type_change(val) {
+        this.up_type = val
+      },
+      // 列表按钮显示
+      video_list_type_change(bool) {
+        this.btn_show = bool;
+      },
+      // 更新视频时间
+      async update_time(index, id) {
+        const that = this;
+        if (parseInt(that.video_list[index].duration) === 0) {
+          let req = {
+            url: '/common/video/company_video_duration_save',
+            data: {
+              videoid: id
+            }
+          };
+          let res = await that.$store.dispatch('companyHttpPost', req);
+          //console.log('视频时长', res);
+          if (res.code === 0) {
+            that.$message({
+              type: 'success',
+              message: '更新成功!'
+            });
+            that.video_list[index].duration = res.data
+          } else {
+            that.$message({
+              type: 'warning',
+              message: '视频拼命保存中，请稍等片刻!'
+            })
+          }
+        } else {
+          that.$message({
+            type: 'warning',
+            message: '已是最新数据，无需更新!'
+          })
+        }
+
+      },
+      // 权限错误警告
+      add_err() {
+        if (!this.up_show) {
+          this.$message({message: '警告，您无此权限', type: 'warning'});
+        }
+      },
+      async saveVideoTime() {
+        var _this = this;
+        for (var i = 0; i < this.noTime.length; i++) {
+          let paramst = {url: "/common/video/company_video_duration_save", data: {videoid: this.noTime[i].video_id}}
+          let rest = await this.$store.dispatch("companyHttpPost", paramst);
+          console.log(rest)
+        }
+        setTimeout(() => {
+          _this.setVideoTime();
+        }, 1000);
+      },
+      async setVideoTime() {
+        let param = {url: "/company/company_video/video_list_duration", data: {}}
+        let res = await this.$store.dispatch("companyHttpGet", param);
+        this.noTime = res.data;
+        if (this.noTimeNum == 0) {
+          this.noTimeNum = this.noTime.length
+        }
+        console.log('video', res);
+        if (this.noTime.length > 0) {
+          this.saveVideoTime()
+        }
+        else {
+          this.noTimeNum = 0
+          this.get_list()
+        }
+      },
+    },
+    async mounted() {
+      //权限
+      const that = this;
+      let checkInfo = that.comsys.adminCheckRole(that.$store.state.company.companyRole.data, 'company_video', 'video_add');
+      that.up_show = checkInfo;
+      this.setVideoTime()
+    },
+    head() {
+      return {
+        title: '视频库',
+        link: [
+          {
+            href: '/company_manage/css/iconfont.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+          {
+            href: '/company_manage/css/video.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+          {
+            href: '/company_manage/css/up_video.css',
+            type: 'text/css',
+            rel: 'stylesheet',
+          },
+        ],
+        script: [
+          {src: '/company_manage/js/es6-promise.min.js'},
+          {src: '/company_manage/js/aliyun-oss-sdk4.13.2.min.js'},
+          {src: '/company_manage/js/aliyun-upload-sdk1.3.1.min.js'},
+          {src: '/company_manage/js/bootstrap.min.js'},
+        ]
+      }
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>

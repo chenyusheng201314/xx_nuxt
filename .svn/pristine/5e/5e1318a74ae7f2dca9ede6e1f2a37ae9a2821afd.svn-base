@@ -1,0 +1,119 @@
+<template>
+  <div class="news-detail container">
+    <topBg src="/images/static/column06news.jpg"></topBg>
+    <route :route="route_data"></route>
+    <div class="text-center border">
+      <h3 class="title">{{news.info.news_title}}</h3>
+      <div class="text">
+        <div class="d-inline-block time">{{news.info.created_at}}</div>
+        <div class="d-inline-block ref">来源：{{news.info.news_source}}</div>
+        <div class="d-inline-block editor">责任编辑：{{news.info.news_editor}}</div>
+      </div>
+      <div class="text-left ql-editor news-con" v-html="news.info.news_content"></div>
+      <div class="text-left link">
+        <div class="d-inline-block text-overflow-one go pre">
+          <nuxt-link v-if="news.info_up!=='没有上一篇了'" :to="'/news/'+news.info_up.id">上一篇：{{news.info_up.news_title}}</nuxt-link>
+        </div>
+        <div class="d-inline-block text-overflow-one text-right go next">
+          <nuxt-link v-if="news.info_down!=='没有下一篇了'" :to="'/news/'+news.info_down.id">下一篇：{{news.info_down.news_title}}</nuxt-link>
+        </div>
+      </div>
+    </div>
+    <div class="border others">
+      <div class="top-title ql-align-center">其他资讯</div>
+      <div class="d-inline-block other" v-for="(item, index) in news_list" :key="index">
+        <nuxt-link :to="'/news/'+item.id">
+          <img class="other-cover" :src="item.news_pic" alt="">
+          <div class="text-overflow-one other-title">{{item.news_title}}</div>
+        </nuxt-link>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import topBg from '@/components/topBg'
+import route from '@/components/localRoute'
+export default {
+  name: 'news',
+  head() {
+    return {
+      title:this.news.info.news_title,
+      meta: [
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: this.news.info.keywords
+        },{
+          hid: 'description',
+          name: 'description',
+          content: this.news.info.news_description
+        }
+      ],
+      link: [
+        {
+          href: '/css/news.css',
+          type:'text/css',
+          rel: 'stylesheet',
+        }
+      ]
+    }
+  },
+  data () {
+    return {
+      route_data: [{name: '享学科技网', path: '/'}, {name: '行业资讯', path: '/news/news'}],
+    }
+  },
+
+  async asyncData({store,params}) {
+    // 增加点击量
+    let click = await store.dispatch('httpPost', {
+      url: '/home/news/news_click',
+      data: {
+        id: params.id
+      }
+    })
+
+    let res = await store.dispatch('httpGet', {
+      url: '/home/news/news_info',
+      data:{
+        id: params.id
+      }
+    });
+    // 其他 行业资讯 随机
+    let news_list = await store.dispatch('httpGet', {
+      url: '/home/news/news_random',
+      data: {
+        num: 4,
+      }
+    })
+    console.log('详情',res,news_list.data)
+    return {
+      news: res.code===0?res.data:{},
+      news_list: news_list.data?news_list.data:[]
+    }
+
+  },
+  components: {
+    topBg, route
+  },
+  // updated(){
+  //   this.route_data.push({name: this.news.info.news_title, path: ''})
+  // },
+  methods: {
+
+  },
+  updated () {
+    document.documentElement.scrollTop = '0px'
+    // console.log('顶部',document.documentElement.scrollTop)
+  },
+  // beforeMount () {
+  //   this.route_data.push({name: this.news.info.news_title, path: ''})
+  // },
+  mounted () {
+    // this.route_data.push({name: this.news.info.news_title, path: ''})
+    // document.documentElement.scrollTop = 0
+
+  },
+}
+</script>

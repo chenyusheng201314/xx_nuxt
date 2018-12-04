@@ -1,0 +1,239 @@
+<template>
+<div class="app_preview">
+   
+   <el-form :model="addInfo" :rules="rules" ref="addInfo" >
+      <el-form-item label="案例名称" label-width="100px"  prop="title">
+       {{addInfo.title}}
+      </el-form-item>
+ 
+      <el-form-item label="企业logo（小图）" label-width="100px"  prop="organization_small_logo">
+ 
+          <!-- <div v-on:click="cut_pic('organization_small_logo',448,340)" >
+              <img v-if="addInfo.organization_small_logo.value" :src="addInfo.organization_small_logo.value" class="avatar" style="width:224px;height: 170px;">
+              <div class="cut_pic_add" v-else><i>+</i></div>
+         </div> -->
+         <img v-if="addInfo.organization_small_logo.value" :src="addInfo.organization_small_logo.value" class="avatar" style="width:200px"  >
+      </el-form-item>
+   
+      
+      <el-form-item label="企业logo（大图）" label-width="100px"  prop="organization_big_logo">
+         <!-- <div v-on:click="cut_pic('organization_big_logo',716,382)" >
+              <img v-if="addInfo.organization_big_logo.value" :src="addInfo.organization_big_logo.value" class="avatar" style="width:358px;height: 191px;">
+              <div class="cut_pic_add" v-else><i>+</i></div>
+         </div> -->
+         <img v-if="addInfo.organization_big_logo.value" :src="addInfo.organization_big_logo.value" class="avatar" style="width:300px"  >
+      </el-form-item>
+     
+      <div v-on:click="setImg('cases_content_picture')">
+      <el-form-item label="案例详情图" label-width="100px"  prop="cases_content_picture">
+       <!--    <div v-on:click="cut_pic('cases_content_picture',600,200)" >
+              <img v-if="addInfo.cases_content_picture.value" :src="addInfo.cases_content_picture.value" class="avatar" style="width:600px;height:200px;">
+              <div class="cut_pic_add" v-else><i>+</i></div>
+         </div> -->
+         <img v-if="addInfo.cases_content_picture.value" :src="addInfo.cases_content_picture.value" class="avatar" style="width:400px"  >
+
+
+      </el-form-item>
+      </div>
+     
+      <el-form-item label="案例概述" label-width="100px"  prop="description">
+        {{addInfo.description}}
+      </el-form-item>
+      <div v-for="(vo, index) in addInfoMore" :key="index" class="add_info_more">
+        <div style="font-size: 18px;font-weight: bolder; line-height:50px"> {{addInfo.content[index].title}}</div>
+         <div  class="ql-editor" v-html="addInfo.content[index].content" style="text-indent: 2em"></div>
+     
+      </div>
+    </el-form>
+ 
+    <div class="clr"></div>
+    
+ 
+ 
+
+ </div> 
+ 
+
+
+
+</template>
+
+<script>
+ 
+import cropper from '~/components/admin/cropper';
+
+export default {
+  
+	name: "caseEdit",
+  props: ['addInfo','formData','extFormData','addInfoMore','addInfoSamllThumb','addInfoBigThumb'],
+  components: {
+      cropper
+  },
+	data() {
+		return {
+			 rules: {
+          title:[{ required: true, message: '请输入案例名称', trigger: 'blur' }],
+          organization_small_logo:[{ required: true, message: '必填', trigger: 'blur' }],
+          organization_big_logo:[{ required: true, message: '必填', trigger: 'blur' }],
+          cases_content_picture:[{ required: true, message: '必填', trigger: 'blur' }],
+          cases_content_picture:[{ required: true, message: '必填', trigger: 'blur' }],
+          description:[{ required: true, message: '必填', trigger: 'blur' }],
+       },
+      ces:"",
+      aspectRatio:1,
+      cutPicDic:"",
+      cutPicInfo:{},
+      dialogCropperVisible: false,
+      quillUpdateImg: false,
+      editPicInfo:"",
+      thisEdit:"11",
+      saveAction:"",
+      cImg:null,
+      editorOption: {}
+      
+		}
+	},
+
+   created () {
+   
+          
+     },
+	methods: {
+    cut_pic(cutPicDic,picWidth,picHeight) {
+        this.$set(this.cutPicInfo,"aspectRatio",picWidth/picHeight)
+        this.$set(this.cutPicInfo,"cutPicDic",cutPicDic)
+        this.$set(this.cutPicInfo,"curPic",this.addInfo[cutPicDic].value)
+        this.dialogCropperVisible = true
+    },
+    async cutPicSuccess(res) {
+      this.dialogCropperVisible = res.visible
+      let params = {url: "/common/file/add",data:{file_base64:res.data}}
+      let rest  = await this.$store.dispatch("adminHttpPost",params);
+      if(rest.code==4002) {
+        this.$set(this.addInfo[this.cutPicInfo.cutPicDic],"value",rest.data.file_url)
+        this.$set(this.addInfo[this.cutPicInfo.cutPicDic],"name",rest.data.filename)
+        //this.$message({message: '图片上传成功',type: 'success'});
+      }
+      else {
+        this.$message.error('图片上传失败');
+      }
+    },
+    onEditorBlur() { //失去焦点事件
+
+    },
+    onEditorFocus(index,e) { //获得焦点事件
+      // this.thisEdit = index
+      // console.log(this.thisEdit)
+      // console.log(this.$refs)
+    },
+    async onEditorChange(index,e) { //内容改变事件
+      console.log(index)
+      var imgReg = /<img.*?(?:>|\/>)/gi;
+      var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+      var arr = this.addInfo.content[index].content.match(imgReg);
+      arr = arr==null?[]:arr  
+      for (var i = 0; i < arr.length; i++) {
+       var src = arr[i].match(srcReg);
+       //获取图片地址
+       if(src[1]){
+        if(src[1].indexOf('data:image')>-1) {
+          let params = {url: "/common/file/add",data:{file_base64:src[1]}}
+          let res  = await this.$store.dispatch("adminHttpPost",params);
+          this.addInfo.content[index].content = this.addInfo.content[index].content.replace(src[1], res.data.file_url);
+        }
+       }
+      }
+    },
+    async onEditorChange2(e) { //内容改变事件
+      var imgReg = /<img.*?(?:>|\/>)/gi;
+      var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+      var arr = this.addInfo.description.match(imgReg);
+      arr = arr==null?[]:arr  
+      for (var i = 0; i < arr.length; i++) {
+       var src = arr[i].match(srcReg);
+       //获取图片地址
+       if(src[1]){
+        if(src[1].indexOf('data:image')>-1) {
+          let params = {url: "/common/file/add",data:{file_base64:src[1]}}
+          let res  = await this.$store.dispatch("adminHttpPost",params);
+          this.addInfo.description = this.addInfo.description.replace(src[1], res.data.file_url);
+        }
+       }
+      }
+    },
+    editPic(res, file,fileList) {
+      console.log(file)
+      //this.addInfo.content[this.thisEdit].content = this.addInfo.content[this.thisEdit].content+"<img src='"+file.response.data.file_url+"' />"
+      console.log('myQuillEditor'+this.thisEdit)
+      let quill = this.$refs['myQuillEditor'+this.thisEdit].quill
+      console.log(this.$refs)
+      let length = 1
+      quill.insertEmbed(length, 'image', file.response.data.file_url)
+      quill.setSelection(length + 1)
+ 
+      
+    },
+ 
+    save: function() {
+      this.$refs['addInfo'].validate((valid) => {
+        if (valid) {
+          var res = {}
+          res.btnAaction = "save";
+          res.visible = false;
+          this.$emit('editSuccess', res);
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+
+    },
+     cancel:function(){
+        this.$refs['addInfo'].resetFields();
+        var res={}
+        res.btnAaction = "cancel";
+        res.visible = false;
+        this.$emit('editSuccess',res) 
+     },
+     addNew:function() {
+
+          this.addInfoMore.push({title:"",content:""})
+          this.addInfo.content = this.addInfoMore
+          console.log(this.addInfoMore)
+     },
+     addInfoMoreDel:function(index) {
+        this.addInfoMore.splice(index,1)
+     },
+     setImg(cimg){
+        this.cImg = cimg
+        console.log(this.cImg)
+     },
+    handleAvatarSuccess(res, file,fileList) {
+      this.$set(this.addInfo[this.cImg],'name',file.response.data.filename)
+      this.$set(this.addInfo[this.cImg],'value',file.response.data.file_url)
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/gif' || file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    setChooseImg:function(field) {
+       this.chooseImg = field; 
+       console.log(this.chooseImg)
+    },  
+  },
+  mounted () {
+     
+       
+  },
+   
+}
+</script>
+
+ 

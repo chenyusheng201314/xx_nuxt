@@ -1,0 +1,194 @@
+.open-static-con{
+  width: 100%;
+}
+.open-static-content {
+  margin-left: -15px;
+  margin-right: -15px;
+  justify-content: center;
+  align-items: center;
+}
+@keyframes att {
+  0%{
+    transform: translateY(0);
+  }
+  25%{
+    transform: translateY(-10px);
+  }
+  50%{
+    transform: translateY(0);
+  }
+  75%{
+    transform: translateY(10px);
+  }
+  100%{
+    transform: translateY(0px);
+  }
+}
+@keyframes myfirst {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(0px, -15px); }
+  100% { transform: translate(0px, 0px);}
+}
+
+.button {
+  left: 50%;
+  margin-left: -99px;
+  bottom: 95px;
+  /*transition: transform 1s;*/
+  animation: att 600ms linear infinite;
+}
+.button:hover,.button:active,.button:focus {
+  animation:none;
+}
+.button-down-guide {
+  left: 50%;
+  margin-left: -182px;
+  bottom: 95px;
+}
+.button-ad {
+  left: 33%;
+  /*margin-left: -182px;*/
+  bottom: 132px;
+}
+.button-ad1 {
+  left: 45%;
+  margin-left: -3px;
+  bottom: 95px;
+}
+.button-train {
+  width: 200px;
+  height: auto;
+  left: 50%;
+  margin-left: -300px;
+  bottom: 100px;
+}
+.button-train1 {
+  width: 200px;
+  height: auto;
+  margin-right: -300px;
+  left: 50%;
+  bottom: 100px;
+}
+.button-learning {
+  width: 200px;
+  height: auto;
+  left: 50%;
+  margin-left: -160px;
+  bottom: 100px;
+}
+.button-learning1 {
+  width: 200px;
+  height: auto;
+  left: 50%;
+  margin-left: 160px;
+  bottom: 100px;
+}
+.modal-con {
+  width: 468px;
+  height: 688px;
+  background: url("/images/openStatic/sign.png") no-repeat center;
+  background-size: contain;
+  margin-top: -150px;
+}
+.modal {
+  opacity: 1;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1509;
+  background-color: rgba(0,0,0,.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.close-modal {
+  top: 25%;
+  right: 34px;
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+}
+.inputs {
+  padding-top: 70%;
+  padding-left: 130px;
+}
+.inputs input {
+  width: 70%;
+  height: 42px;
+  line-height: 42px;
+  display: block;
+  border: 0 none;
+  outline: none;
+  background-color: inherit!important;
+  margin-bottom: 24px;
+}
+.inputs input:active,.inputs input:focus {
+  border: 0 none;
+  outline: none;
+}
+.sign {
+  width: 200px;
+  height: 50px;
+  background-color: #333;
+  opacity: 0;
+  margin: 36px auto 0;
+}
+
+.top03 {
+  left: 818px;
+  bottom: 178px;
+  animation: none;
+}
+
+
+
+/*在线微课*/
+.swiper-box {
+  width: 1200px;
+  left: 19%;
+  top: 190px;
+}
+
+.lesson-li {
+  width: 25%;
+  height: 225px;
+  float: left;
+  vertical-align: top;
+  /*overflow: hidden;*/
+  padding: 0 50px;
+  margin-bottom: 16px;
+}
+
+
+
+.lesson-cover {
+  display: block;
+  width: 200px;
+  height: 123px;
+  border-radius: 14px;
+}
+.lesson-title {
+  font-size: 18px;
+  /*line-height: 20px;*/
+  color: #333;
+}
+.lesson-teacher, .lesson-num, .lesson-price{
+  font-size: 13px;
+  color: #999;
+  margin-top: 4px;
+}
+.lesson-price {
+  font-size: 13px;
+  color: #999;
+  margin-top: 4px;
+}
+.lesson-icon {
+  vertical-align: top;
+  margin-right: 4px;
+}
+.lesson-icon+span {
+  
+  margin-right: 10px;
+}

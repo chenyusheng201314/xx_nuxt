@@ -1,0 +1,126 @@
+import Vuex from 'vuex'
+import axios from 'axios'
+
+const state = {
+  isLogin: 0,
+  adminUsername:'',
+  token: '',
+  userInfo: '',
+  baseUrl: '',
+  fileAddUrl: '',
+  sex: {0:'--',1:'男',2:'女'},
+  inp: '',
+  now_nav: '首页',
+  adminRole:{}
+
+};
+const mutations = {
+
+  setToken(state, res) {
+    state.token = res
+  },
+  serUser(state, user) {
+    state.userInfo = user
+  },
+  setIsLogin(state, isLogined) {
+    state.isLogin = isLogined
+  },
+  setUsername(state,username){
+    state.adminUsername = username
+  },
+  setInp(state, inp) {
+    state.inp = inp
+  },
+  setNav(state, nav) {
+    state.now_nav = nav
+  }
+  ,
+  setAdminRole(state, res) {
+    state.adminRole = res
+  },
+  setAdminApi(state,res) {
+    state.baseUrl = res
+    state.fileAddUrl = res+'/common/file/add'
+  }
+};
+const actions = {
+ 
+  async nuxtServerInit({commit, state, store}, {env,req}) {
+    commit('setAdminApi', process.env.apiUrl);
+    if (req.session && req.session.token && req.session.adminInfo) {
+      commit('setToken', req.session.token);
+      commit('setIsLogin',1)
+      commit('setUsername',req.session.adminUsername)
+      let hm = {url: "/manage/acl/role_info",data:{role_id:req.session.adminInfo.role_id}}
+      let res = await this.dispatch("adminHttpGet",hm);
+      commit('setAdminRole',res)
+    }
+    else {
+      commit('setToken', '');
+      commit('setIsLogin', 0,'');
+    }
+  },
+
+  // 登录
+  async admin_login({commit, state}, ht) {
+    let res = await axios.post('/api/logins', ht);
+    if (res.data.token) {
+      commit('setToken', res.data.token)
+      commit('setIsLogin', 1)
+      commit('setUsername',ht.username)
+      let hm = {url: "/manage/acl/role_info",data:{role_id:res.data.role_id}}
+      let rest = await this.dispatch("adminHttpGet",hm);
+      commit('setAdminRole',rest)
+      res.isLogin = 1
+      //return 1
+    } else {
+      commit('setToken', '')
+      commit('setIsLogin', 0)
+      commit('setUsername','')
+      res.isLogin = 0
+      //return 0
+    }
+    return res
+  },
+  async admin_logout({commit, state}) {
+    await axios.post('/api/admin_logout');
+    commit('setToken', '')
+    commit('setIsLogin', 0)
+    commit('setUsername','')
+  },
+  async adminHttpGet({commit, state}, params) {
+    const {data} = await axios({
+      method: 'get',
+      url: state.baseUrl + params.url,
+      headers: {'token': state.token},
+      params: params.data,
+      timeout:1000*60*2
+    });
+    if(data.code==2001) {
+      commit('setIsLogin', 0)
+    }
+    if(data.code!==0) {
+      data.data = {}
+      data.data.data = []
+    }
+    return data;
+  },
+  async adminHttpPost({commit, state}, params) {
+    const {data} = await axios({
+      method: 'post',
+      url: state.baseUrl + params.url,
+      headers: {'token': state.token},
+      data: params.data,
+      timeout:1000*60*2
+    })
+    if(data.code==2001) {
+      commit('setIsLogin', 0)
+    }
+    return data;
+  },
+
+}
+
+export default {
+  state, mutations, actions
+}

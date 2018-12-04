@@ -1,0 +1,1387 @@
+.mine .container {
+  padding: 0;
+}
+.mine .top-msg {
+  height: 150px;
+  background-color: #ffc107;
+  padding: 32px 0;
+}
+.mine .user-cover {
+  width: 80px;
+  height: 80px;
+  border: 3px solid rgba(255,255,255,.5);
+  border-radius: 50%;
+  margin-right: 35px;
+}
+.mine .user-con {
+  color: #fff;
+  vertical-align: top;
+  margin-top: 18px;
+  margin-right: 45px;
+}
+.mine .user-name {
+  font-size: 20px;
+  line-height: 20px;
+  margin-bottom: 12px;
+}
+.mine .user-note {
+  font-size: 15px;
+}
+.mine .sign {
+  color: #fff;
+  box-sizing: border-box;
+  vertical-align: middle;
+  font-size: 18px;
+  /*width: 60px;*/
+  padding: 0 10px;
+  height: 25px;
+  line-height: 25px;
+  border: 1px solid #fff;
+  border-radius: 15px;
+  /*padding-left: 10px;*/
+}
+.mine .signed {
+  color: #ff6900;
+}
+.mine .tabs {
+  color: #666;
+  height: 50px;
+  line-height: 48px;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+}
+.mine .tabs ul li {
+  float: left;
+  width: 64px;
+  border-bottom: 1px solid #fff;
+  margin-right: 49px;
+}
+.mine .tabs ul li a{
+  width: 64px;
+  padding-top: 10px;
+  padding-bottom: 18px;
+}
+.mine .tabs ul li:last-of-type {
+  margin-right: 0;
+}
+.mine .tab-active {
+  color: #ff6900!important;
+  border-bottom: 1px solid #ff6900!important;
+}
+.mine .content {
+  margin-bottom: 60px;
+}
+
+
+/*子组件公用 start*/
+.router-fade-enter-active, .router-fade-leave-active {
+  transition: opacity .3s;
+}
+.router-fade-enter, .router-fade-leave-active {
+  opacity: 0;
+}
+.mine-box {
+  width: 844px;
+  border: 1px solid #e5e5e5;
+}
+.mine-card-box {
+  border: 1px solid #e5e5e5;
+}
+.mine-con {
+  padding: 0 45px 45px;
+  border-bottom: 1px solid #ddd;
+}
+.mine-title {
+  border-left: 4px solid #ff6900;
+  padding-left: 4px;
+  margin-top: 45px;
+}
+.h-title {
+  font-size: 20px;
+  line-height: 20px;
+  color: #ff6900;
+  border-left: 1px solid #ff6900;
+  padding-left: 10px;
+}
+
+/*课程卡片*/
+.online-courses {
+  font-size: 0;
+  margin-bottom: -23px;
+}
+.online-course {
+  width: 228px;
+  height: 262px;
+  border: 1px solid #dcdcdc;
+  margin-right: 34px;
+  margin-bottom: 23px;
+}
+.online-course-right {
+  margin-right: 0;
+}
+.course-cover {
+  width: 100%;
+  height: 150px;
+}
+.course-con {
+  padding: 10px 24px;
+}
+.course-title {
+  font-size: 15px;
+  line-height: 15px;
+  color: #333;
+  margin-bottom: 10px;
+}
+.course-teacher {
+  font-size: 12px;
+  line-height: 15px;
+  color: #999;
+  padding: 0 8px;
+  margin-bottom: 6px;
+}
+.course-nums {
+  font-size: 12px;
+  line-height: 15px;
+  color: #999;
+  padding: 0 8px;
+  margin-bottom: 10px;
+}
+.course-num {
+  background: url("/images/teacher/num.png") no-repeat left center;
+  margin-right: 10px;
+  padding-left: 22px;
+}
+.course-time {
+  background: url("/images/teacher/time.png") no-repeat left center;
+  padding-left: 22px;
+}
+.course-process{
+  width: 100%;
+  height: 15px;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ff6900;
+  padding: 0 8px;
+}
+.process-box {
+  width: 46%;
+  height: 6px;
+  border: 1px solid #ff6900;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.process-bar {
+  left: 0;
+  height: 4px;
+  background-color: #ff6900;
+  border-radius: 5px;
+}
+/*子组件公用 end*/
+
+
+
+.mine-box-buy .online-course {
+  overflow: hidden;
+}
+.mine-box-buy .course-receive {
+  font-size: 12px;
+  height: 20px;
+  line-height: 20px;
+  color: #ff6900;
+}
+.mine-box-buy .send {
+  width: 74px;
+  height: 34px;
+  color: #fff;
+  font-size: 15px;
+  line-height: 20px;
+  background-color: #ff6900;
+  padding-left: 20px;
+  bottom: -4px;
+  right: -26px;
+  transform: rotate(-45deg);
+}
+.mine-box-company .mine-con {
+  border-bottom: 0 none;
+}
+.mine-box .mine-con {
+  border-bottom: 0 none;
+}
+.mine-total .medals {
+  width: 100%;
+}
+.mine-total .medal-cover {
+  width: 50px;
+  height: 50px;
+  margin: 0 12px;
+}
+.mine-total .text {
+  font-size: 15px;
+  color: #666;
+  padding-left: 20px;
+}
+.mine-box .h-title {
+  margin-top: 45px;
+  margin-bottom: 45px;
+  /*border-left: 0 none;*/
+}
+.mine-box .code {
+  font-size: 20px;
+  color: #333;
+}
+.mine-box .code-pic {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 22px;
+}
+
+.train-box {
+  border: 1px solid #e5e5e5;
+}
+.train-box .mine-train {
+  padding-bottom: 15px;
+}
+.train-box .mine-title {
+  margin-bottom: 45px;
+}
+.train-box .train {
+  margin-right: 29px;
+  margin-bottom: 30px;
+}
+
+.train-box .train-right {
+  margin-right: 0;
+}
+.train-box .train-cover {
+  width: 350px;
+  height: 202px;
+  margin-bottom: 18px;
+}
+
+.train-box .train-con {
+
+}
+.train-box .train-title {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 16px;
+}
+.train-box .train-price {
+  font-size: 18px;
+  line-height: 22px;
+  color: #ff6900;
+}
+
+.medal-box {
+  border: 1px solid #e5e5e5;
+}
+
+.medal-box {
+  color: #333;
+  font-size: 18px;
+}
+.medal-box .stars {
+  padding: 0 45px 45px;
+}
+.medal-box .stars:first-of-type {
+  border-bottom: 1px solid #e5e5e5;
+}
+.medal-box .star {
+  color: #666;
+  font-size: 14px;
+  width: 140px;
+  
+  margin-right: 45px;
+}
+.medal-box .h-title {
+  margin-bottom: 45px;
+}
+.medal-box .star-right {
+  margin-right: 0;
+}
+.medal-box .medal-cover {
+  width: 106px;
+  height: 152px;
+  margin-bottom: 20px;
+}
+.medal-box .medal-cover1 {
+  width: 106px;
+  height: 121px;
+  margin-bottom: 20px;
+}
+.medal-box .star-name {
+  font-size: 20px;
+  color: #666;
+}
+.medal-box .star-rule {
+  font-size: 15px;
+  color: #999;
+}
+
+
+.mine-points-detail .records {
+  font-size: 15px;
+  color: #666;
+}
+.mine-points-detail .records li{
+  padding: 10px 30px;
+  border-top: 1px solid #ddd;
+}
+.mine-points-detail .records li:last-of-type{
+  border-bottom: 1px solid #ddd;
+}
+.mine-points-detail .record-num {
+  float: right;
+  color: #ff6900;
+}
+.mine-points-detail .record-time {
+  width: 250px;
+  vertical-align: top;
+}
+.mine-points-detail .record-con {
+  width: 50%;
+}
+.mine-points-detail .paging {
+  margin-top: 45px;
+  margin-bottom: 0!important;
+}
+.mine-points-get .mine-con {
+  padding: 45px 0;
+  margin: 0 45px;
+}
+.mine-points-get .mine-con:last-of-type {
+  border-bottom: 0 none;
+}
+.mine-points-get .points-title {
+  font-size: 20px;
+  line-height: 20px;
+  color: #ff6900;
+  width: 250px;
+  margin-bottom: 20px;
+}
+.mine-points-get .points-text {
+  font-size: 18px;
+  color: #333;
+}
+.mine-points-get .points-total {
+  font-size: 18px;
+  color: #333;
+  float: right;
+}
+.mine-points-get .points-num {
+  color: #ff6900;
+}
+.mine-points-get .points-con {
+  font-size: 15px;
+  line-height: 15px;
+  color: #666;
+}
+.mine-rules .mine-box {
+  font-size: 15px;
+  color: #666;
+  padding: 15px 0;
+}
+.mine-rules .mine-con {
+  padding: 0 30px 45px;
+  margin: 0 45px;
+}
+.mine-rules .mine-con:last-of-type {
+  border-bottom: 0 none;
+}
+.mine-rules .h-title {
+  border-left: 0 none;
+  padding-left: 0;
+  margin-top: 45px;
+  margin-bottom: 45px;
+  margin-left: -30px;
+  /*margin-top: 0;*/
+  
+}
+.mine-rules .title-text {
+  margin-left: 10px;
+  line-height: 20px;
+  vertical-align: middle;
+}
+.mine-company-join .search-box{
+  margin-bottom: 45px;
+}
+.mine-company-join .search-box > input{
+  width: 235px;
+  height: 40px;
+  font-size: 15px;
+  color: #333;
+  line-height: 40px;
+  border: 1px solid #ff6900;
+  border-radius: 20px;
+  padding: 0 20px;
+}
+.mine-company-join .search-box > input::placeholder{
+  color: #999;
+}
+.mine-company-join .search-box > input:focus{
+  outline: none;
+}
+.mine-company-join .search-icon{
+  top: 10px;
+  left: 200px;
+}
+.mine-company-join .result{
+
+}
+.mine-company-join .result li{
+  width: 200px;
+  float: left;
+  text-align: center;
+  margin-right: 20px;
+}
+.mine-company-join .result li img{
+  width: 200px;
+  height: 200px;
+  border: 1px solid #e5e5e5;
+  border-radius: 100px;
+  margin-bottom: 20px;
+}
+.mine-company-join .result-name{
+  color: #333;
+  width: 100%;
+  font-size: 18px;
+  line-height: 18px;
+  margin-bottom: 20px;
+}
+.mine-company-join .result-exit{
+  color: #666;
+  padding-left: 40px;
+  background: url("/images/mine/exit.png") no-repeat 65px center;
+}
+.mine-company-join .result-exit:hover {
+  background-image: url("/images/mine/exit1.png");
+  color: #ff6900;
+}
+.mine-company-members .company-box{
+  padding-left: 55px;
+}
+.mine-company-members .company-cover{
+  width: 130px;
+  height: 130px;
+  vertical-align: top;
+  border: 1px solid #e5e5e5;
+  border-radius: 70px;
+  margin-right: 45px;
+}
+.mine-company-members .companey-con{
+  width: 74%;
+  vertical-align: top;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 40px;
+  margin-top: 40px;
+}
+.mine-company-members .company-name{
+  font-size: 20px;
+  line-height: 20px;
+  color: #ff6900;
+  margin-bottom: 10px;
+}
+.mine-company-members .company-members-num{
+  font-size: 15px;
+  color: #666;
+  background: url("/images/mine/members.png") no-repeat left center;
+  padding-left: 40px;
+}
+.mine-company-members .company-members{
+  padding-top: 45px;
+}
+.mine-company-members .li{
+  width: 100px;
+  margin-right: 30px;
+  float: left;
+  margin-bottom: 30px;
+}
+.mine-company-members .margin-right-no {
+  margin-right: 0;
+}
+.mine-company-members .company-members li img{
+  width: 100%;
+  height: 100px;
+  border-radius: 50px;
+  margin-bottom: 20px;
+}
+.mine-company-members .result-name{
+  font-size: 15px;
+  color: #666;
+}
+.mine-company-members .paging {
+  margin-top: 15px;
+  margin-bottom: 0!important;
+}
+.mine-company-train .h-title {
+  margin-bottom: 45px;
+  border-left: 0 none;
+}
+.mine-company-train .code {
+  font-size: 20px;
+  color: #333;
+}
+.mine-company-train .code-pic {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 22px;
+}
+.mine-message-others .msg-read-all {
+  float: right;
+  font-size: 15px;
+  color: #666;
+  padding-right: 32px;
+}
+.mine-message-others .msg-read-all:hover {
+  color: #ff6900;
+}
+.mine-message-others .msg-li {
+  font-size: 15px;
+  line-height: 16px;
+  color: #666;
+  padding: 17px 30px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.mine-message-others .msg-msg {
+  width: 80%;
+}
+.mine-message-others .msg-read {
+  font-size: 30px;
+  line-height: 16px;
+  color: #ff6900;
+  vertical-align: sub;
+  margin-left: 8px;
+}
+.mine-message-others .msg-time {
+  width: 19%;
+}
+.mine-message-system .msg-read-all {
+  float: right;
+  font-size: 15px;
+  color: #666;
+  padding-right: 32px;
+}
+.mine-message-system .msg-read-all:hover {
+  color: #ff6900;
+}
+.mine-message-system .msg-li {
+  font-size: 15px;
+  line-height: 16px;
+  color: #666;
+  padding: 17px 30px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.mine-message-system .msg-li:first-of-type {
+  border-top: 1px solid #e5e5e5;
+}
+.mine-message-system .msg-msg {
+  width: 80%;
+}
+.mine-message-system .msg-read {
+  font-size: 30px;
+  line-height: 16px;
+  color: #ff6900;
+  vertical-align: sub;
+  margin-left: 8px;
+}
+.mine-message-system .msg-time {
+  width: 19%;
+}
+.mine-message-detail {
+  padding-top: 45px;
+}
+.mine-message-detail .message-detail-title {
+  font-size: 20px;
+  color: #ff6900;
+  margin-bottom: 30px;
+}
+.mine-message-detail .message-detail-content {
+  
+  font-size: 15px;
+  color: #666;
+  border-top: 1px solid #e5e5e5;
+  padding: 30px 0;
+}
+.mine-message-detail .news-join,
+.mine-message-detail .back-list {
+  width: 130px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 15px;
+  color: #fff;
+  background-color: #ff6900;
+  border-radius: 16px;
+  margin: 0 20px;
+}
+.mine-message-detail .news-join-gray {
+  background-color: #bdbdbd;
+}
+
+.mine-follow {
+  padding-top: 45px;
+}
+.mine-follow .company-members{
+
+}
+.mine-follow .li{
+  width: 100px;
+  margin-right: 30px;
+  float: left;
+  margin-bottom: 30px;
+}
+.mine-follow .margin-right-no {
+  margin-right: 0;
+}
+.mine-follow .company-members li .teacher-cover{
+  width: 100%;
+  height: 100px;
+  border-radius: 50px;
+  margin-bottom: 20px;
+  background: no-repeat center top;
+  background-size: cover;
+}
+.mine-follow .result-name{
+  font-size: 15px;
+  color: #666;
+}
+.mine-follow .follow {
+  width: 16px;
+  height: 16px;
+  background: url("/images/mine/follow1.png") no-repeat center;
+  background-size: contain;
+  right: 5px;
+  bottom: 13px;
+}
+.mine-follow .follow-teacher {
+  right: 0;
+  bottom: 10px;
+}
+.mine-follow .follow:hover {
+  background-image: url("/images/mine/follow.png");
+}
+
+.mine-follow .price-text {
+  font-size: 14px;
+  color: #666;
+}
+.mine-follow .free-price-text {
+  color: #ff6900
+}
+.mine-follow .price-text-old {
+  color: #999;
+  text-decoration: line-through;
+}
+.mine-follow .bought {
+  color: #8da0b9;
+}
+
+
+.mine-trip .menu {
+  width: 330px;
+  border: 1px solid #ddd;
+  margin-right: 20px;
+  vertical-align: top;
+  box-shadow: 0 2px 2px 1px #ddd;
+}
+
+.mine-trip .menu ul li a{
+  display: inline-block;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  color: #666;
+  padding-left: 35px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.mine-trip .point {
+  display: inline-block;
+  font-size: 14px;
+  width: 10px;
+  height: 10px;
+  margin-right: 16px;
+  margin-bottom: 2px;
+  border-radius: 5px;
+  background-color: #666;
+}
+.mine-trip .menu ul li a:hover{
+  color: #fff!important;
+  background-color: #ff6900!important;
+}
+.mine-trip .menu ul li a:hover  .point {
+  background-color: #fff!important;
+}
+.mine-trip .item-active {
+  color: #fff!important;
+  background-color: #ff6900!important;
+}
+.mine-trip .item-active .point {
+  background-color: #fff!important;
+}
+
+.mine-card {
+  width: 100%;
+}
+.mine-card .base-title {
+  width: 110px;
+  margin-bottom: 45px;
+}
+.mine-card .flex-two {
+  width: 100%;
+  font-size: 18px;
+  color: #666;
+  font-weight: 500;
+  padding: 45px 95px;
+  border-bottom: 1px solid #ddd;
+  clear: both;
+}
+.mine-card .flex-two.msg {
+  overflow: hidden;
+}
+.mine-card .flex-1 {
+  float: left;
+  width: 50%;
+  vertical-align: top;
+}
+.mine-card .avatar-box {
+  width: 185px;
+  height: 185px;
+  margin: 20px auto;
+}
+.mine-card .avatar-box .avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 100px;
+  background: no-repeat center;
+  background-size: contain;
+  border: 1px solid #ddd;
+}
+
+.mine-card .up-avatar {
+  font-size: 18px;
+  color: #333;
+}
+
+
+.mine-card label{
+  width: 80px;
+  text-align: right;
+  margin-right: 40px;
+  margin-bottom: 20px;
+}
+.mine-card .edit-pwd {
+  color: #ff6900;
+  margin-left: 20px;
+  
+}
+.mine-card .label-sex {
+  width: 30px;
+  margin: 0;
+}
+.mine-card input{
+  width: 300px;
+  height: 40px;
+  font-size: 15px;
+  color: #333;
+  line-height: 40px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding-left: 15px;
+}
+
+.mine-card .up-avatar-input {
+  width: 200px;
+  height: 40px;
+  background-color: #aaa;
+  opacity: 0;
+  left: 30%;
+  top: -10px;
+}
+.mine-card .up-avatar-input:hover +.up-avatar,
+/*.mine-card .up-avatar-input:focus +.up-avatar,*/
+.mine-card .up-avatar-input:active +.up-avatar
+{
+  color: #ff6900;
+}
+.mine-card .input-job{
+  width: 300px;
+  height: 40px;
+  font-size: 15px;
+  color: #333;
+  line-height: 40px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding-left: 15px;
+  vertical-align: middle;
+}
+.mine-card .msg-box .input-sex {
+  width: 20px;
+}
+.mine-card .sex {
+  font-weight: 400;
+  width: 60%;
+  margin-top: 10px;
+}
+.mine-card .boy {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  vertical-align: middle;
+  background: #ddd url("/images/mine/boy.png") no-repeat center;
+  margin-right: 10px;
+}
+.mine-card .girl {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  vertical-align: middle;
+  background: #ddd url("/images/mine/girl.png") no-repeat center;
+  margin-right: 10px;
+}
+.mine-card .sex-active {
+  background-color: #ff6900;
+}
+.mine-card .boy-box {
+  margin-right: 30px;
+}
+.mine-card .girl-box {
+  float: right;
+}
+.mine-card .bottom-msg {
+  padding-left: 20px;
+}
+.mine-card .select {
+  width: 74%;
+  vertical-align: super;
+}
+.mine-card .select select{
+  width: 140px;
+  height: 40px;
+  font-size: 15px;
+  color: #333;
+  line-height: 40px;
+  border: 1px solid #e5e5e5;
+  padding-left: 15px;
+  
+  /*很关键：将默认的select选择框样式清除*/
+  appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+  
+  /*在选择框的最右侧中间显示小箭头图片*/
+  background: url("/images/mine/arrow.png") no-repeat scroll 120px center transparent;
+  /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+  /*padding-right: 18px;*/
+  filter: none !important;
+}
+/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+/*select::-ms-expand { display: none; }*/
+.mine-card .save {
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+  color: #fff;
+  background-color: #ff6900;
+  opacity: 0.9;
+  border: 0 none;
+  border-radius: 4px;
+  display: block;
+  margin: 45px auto 0;
+}
+.mine-card .save:hover {
+  opacity: 1;
+}
+.mine-card .save:focus {
+  outline: 0 none;
+  opacity: 1;
+  box-shadow: 0 1px 2px 1px #ff6900;
+}
+.mine-card .fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.mine-card .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.mine-card .edit-title {
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 24px;
+}
+.mine-card .edit-title-text {
+  width: 180px;
+  font-size: 20px;
+  color: #ff6900;
+  border-bottom: 1px solid #ff6900;
+  padding-bottom: 10px;
+  margin-bottom: -1px;
+}
+.mine-card .edit-input {
+  width: 100%;
+  height: 48px;
+  line-height: 48px;
+  padding: 0 20px 0 60px;
+  margin-bottom: 12px;
+}
+.mine-card .edit-input::-webkit-input-placeholder {
+  color: #aaa;
+}
+.mine-card .edit-input+img {
+  position: absolute;
+  left: 36px;
+  top: 17px;
+}
+.mine-card .code {
+}
+.mine-card .get-code {
+  content: '获取验证码';
+  position: absolute;
+  top: 0;
+  right: 20px;
+  color: #ff6900;
+  font-size: 14px;
+  height: 50px;
+  line-height: 50px;
+}
+.mine-card .danger {
+  font-size: 14px;
+  color: #dc3545;
+}
+.mine-card .done {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  color: #fff;
+  background-color: #ff6900;
+  opacity: 0.9;
+  border: 0 none;
+  border-radius: 8px;
+  display: block;
+  margin: 20px auto 0;
+}
+.mine-card .done:hover {
+  opacity: 1;
+}
+.mine-card .done:focus {
+  outline: 0 none;
+  opacity: 1;
+  box-shadow: 0 1px 2px 1px #ff6900;
+}
+
+.mine-card .edit-pwd-modal {
+  width: 430px!important;
+  height: 530px!important;
+  color: #333!important;
+  background-color: #fff;
+}
+
+.mine-money.mine-box {
+  width: 100%;
+}
+.mine-money .money-box {
+  color: #666;
+  padding: 0 95px 45px;
+  border-bottom: 1px solid #ddd;
+}
+.mine-money .my-money {
+  margin-bottom: 45px;
+  margin-top: 45px;
+}
+.mine-money .my-money-num {
+  color: #ff6900;
+  font-size: 50px;
+  line-height: 50px;
+}
+.mine-money .recharges {
+  width: 660px;
+}
+.mine-money .recharge {
+  width: 200px;
+  height: 115px;
+  font-size: 20px;
+  color: #ff6900;
+  border: 1px solid #ff6900;
+  border-radius: 10px;
+  padding-top: 14px;
+  margin: 0 30px 30px 0;
+  float: left;
+}
+
+.modal-code {
+  background-color: #fff;
+  text-align: center;
+}
+
+.mine-money .br {
+  margin-right: 0;
+}
+.mine-money .recharge-money {
+  font-size: 35px;
+}
+.mine-money .recharge-money-real {
+  color: #666;
+}
+.mine-money .recharge-active {
+  color: #fff;
+  background-color: #ff6900;
+}
+.mine-money .pay-main {
+  width: 178px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 30px;
+  border: 1px solid #0BBC13;
+  background-size: contain;
+  margin: 0 30px;
+  padding: 0 0 0 45px;
+}
+.mine-money .pay-we {
+  background: url("/images/mine/payWe.png") no-repeat left;
+  
+}
+.mine-money .pay-ali {
+  background: url("/images/mine/payAli.png") no-repeat left;
+  border: 1px solid #039FEB;
+}
+.mine-money .records {
+  font-size: 15px;
+  color: #666;
+}
+.mine-money .records li{
+  padding: 10px 30px;
+  /*line-height: 40px;*/
+  border-top: 1px solid #ddd;
+}
+.mine-money .records li:last-of-type{
+  border-bottom: 1px solid #ddd;
+}
+.mine-money .record-num {
+  color: #ff6900;
+}
+.mine-money .record-time {
+  /*vertical-align: top;*/
+  /*margin-right: 140px;*/
+  width: 30%;
+}
+.mine-box .lesson-price-point1 {
+  font-size: 13px;
+  color: #333;
+}
+.mine-box .lesson-price-point {
+  font-size: 15px;
+  color: #ff6900;
+}
+.mine-box .lesson-price {
+  font-size: 13px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+
+.mine-money .record-con {
+  width: 60%;
+}
+.mine-money .paging {
+  margin-top: 45px;
+  margin-bottom: 0!important;
+}
+
+.mine-public .menu {
+  width: 330px;
+  border: 1px solid #ddd;
+  margin-right: 20px;
+  vertical-align: top;
+  box-shadow: 0 2px 2px 1px #ddd;
+}
+
+.mine-public .menu ul li a{
+  display: inline-block;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  color: #666;
+  padding-left: 35px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.mine-public .point {
+  display: inline-block;
+  font-size: 14px;
+  width: 10px;
+  height: 10px;
+  margin-right: 16px;
+  margin-bottom: 2px;
+  border-radius: 5px;
+  background-color: #666;
+}
+.mine-public .menu ul li a:hover{
+  color: #fff!important;
+  background-color: #ff6900!important;
+}
+.mine-public .menu ul li a:hover  .point {
+  background-color: #fff!important;
+}
+.mine-public .item-active {
+  color: #fff!important;
+  background-color: #ff6900!important;
+}
+.mine-public .item-active .point {
+  background-color: #fff!important;
+}
+.mine-order .order-box {
+  width: 100%;
+  padding: 45px;
+  border: 1px solid #e5e5e5;
+  margin-bottom: 60px;
+}
+.mine-order li {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 20px;
+}
+.mine-order .cover {
+  width: 165px;
+  height: 100px;
+  vertical-align: top;
+  margin-right: 45px;
+}
+.mine-order .order-con {
+  font-size: 20px;
+  color: #666;
+  width: 60%;
+  vertical-align: top;
+}
+.mine-order .order-title {
+  color: #333;
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+.mine-order .order-price {
+  color: #ff6900;
+  line-height: 20px;
+  margin-bottom: 32px;
+}
+.mine-order .order-num {
+  font-size: 15px;
+  color: #666;
+}
+
+.mine-order .order-con-right {
+  width: 20%;
+  font-size: 15px;
+  vertical-align: top;
+}
+.mine-order .order-time {
+  color: #999;
+  line-height: 15px;
+  margin-bottom: 30px;
+}
+.mine-order .order-total {
+  line-height: 15px;
+  color: #333;
+  
+}
+.mine-order .order-money {
+  font-size: 20px;
+  color: #ff6900;
+}
+.mine-order .order-money span {
+  font-size: 30px;
+}
+
+
+.mine-request .mine-box {
+  width: 100%;
+  padding: 45px;
+}
+.mine-request .mine-con {
+  padding: 35px;
+  background-color: #f7f7f7;
+  border-radius: 6px;
+}
+.mine-request .mine-title {
+  margin-top: 0;
+}
+.mine-request .mine-title .h-title{
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.mine-request .middle {
+  margin-bottom: 20px;
+}
+.mine-request .address {
+  width: 83%;
+  font-size: 15px;
+  line-height: 15px;
+  color: #999;
+  background-color: #fff;
+  padding: 17px 18px;
+  border: 1px solid #e5e5e5;
+  margin-right: 14px;
+}
+.mine-request input {
+  width: 600px;
+  font-size: 15px;
+  color: #999;
+  border: 0 none;
+  margin-left: 10px;
+}
+.mine-request input:active,
+.mine-request input:focus {
+  outline: none;
+}
+.mine-request .btn-main {
+  font-size: 15px;
+  font-weight: 400;
+  width: 150px;
+  height: 50px;
+  line-height: 50px;
+}
+.mine-request .icons {
+  float: right;
+  margin-top: 10px;
+  margin-right: 178px;
+}
+
+.mine-request .icons>img{
+  margin-left: 10px;
+}
+
+.mine-request .out-box {
+  width: 132px;
+  height: 132px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  top: 40px;
+  left: -46px;
+}
+.mine-request .code-pic {
+  width: 100%;
+  height: 100%;
+}
+.mine-request .qq {
+  /*left: -8px;*/
+  left: -12px;
+}
+.mine-request .we {
+  /*left: 32px;*/
+  left: 24px;
+}
+.mine-request .triangle {
+  width: 14px;
+  height: 14px;
+  transform: rotate(45deg);
+  border: 1px solid #ddd;
+  top: -8px;
+  left: 59px;
+}
+.mine-request .triangle-box {
+  width: 18px;
+  height: 12px;
+  background-color: #fff;
+  top: -3px;
+  left: 57px;
+  border-radius: 4px;
+}
+.mine-request .text {
+  font-size: 15px;
+  color: #666;
+}
+
+
+.mine-feedback.mine-box {
+  width: 100%;
+  padding: 45px;
+}
+.mine-feedback .mine-con{
+  padding: 35px;
+  background-color: #f7f7f7;
+  border-radius: 6px;
+}
+.select-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: 1px solid #9D9D9D;
+  padding: 3px;
+  vertical-align: middle;
+}
+.select-box> .select-point {
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background-color: #fff;
+}
+.select-box-active > .select-point{
+  background-color: #ff6900!important;
+}
+
+.mine-feedback label {
+  font-size: 15px;
+  color: #666;
+  margin-left: 8px;
+}
+.mine-feedback .mine-con .mine-title {
+  margin-top: 0;
+}
+.mine-feedback .mine-con .mine-title .h-title {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.mine-feedback textarea {
+  width: 1040px;
+  height: 200px;
+  resize: none;
+  border: 1px solid #e5e5e5;
+  font-size: 15px;
+  color: #666;
+  padding: 18px;
+  margin: 20px 0;
+}
+.mine-feedback textarea::placeholder {
+  color: #999;
+}
+.mine-feedback textarea:focus {
+  outline: none;
+}
+.mine-feedback .length {
+  font-size: 15px;
+  color: #999;
+  right: 20px;
+  bottom: 40px;
+}
+.mine-feedback .btn-main {
+  width: 150px;
+  height: 50px;
+  line-height: 50px;
+  display: inline-block;
+}
+/*弹出二维码*/
+.ewm-cover {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,.6);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.ewm-cover .cover-con {
+  width: 30%;
+  background-color: #fff;
+  padding: 20px 20px 45px;
+  border-radius: 8px;
+}
+.ewm-cover .close {
+  float: none;
+  text-align: right;
+}
+.ewm-cover .cover-con p{
+  font-size: 15px;
+  color: #999;
+  margin-top: 20px;
+}

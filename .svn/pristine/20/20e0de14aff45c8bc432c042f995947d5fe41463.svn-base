@@ -1,0 +1,73 @@
+<template>
+<div class="admin_body">
+  <LeftNav :data="leftNav"/>
+  <div class="admin_body_right">
+    <nuxt-child/>
+  </div>
+</div>
+</template>
+
+<script>
+import LeftNav from '~/components/admin/LeftNav';
+export default {
+  layout: 'admin',
+  name: 'admin_body',
+  data () {
+    return {
+      title: '机构导师',
+      leftNav: []
+    }
+  },
+  components: {
+      LeftNav
+    },
+  methods: {
+       setMeau() {
+         let leftNav = []
+         let roles =  this.$store.state.admin.adminRole.data
+         
+         let company = this.comsys.adminGetMeau(roles,"company")
+         let company_list = []
+         if(company.length>0) {
+           company_list = this.comsys.adminGetMeau(company[0].son,"list")
+ 
+         }
+         let company_authorization_record = this.comsys.adminGetMeau(roles,"company_authorization_record")
+         let training_auth_log_list = []
+         let course_auth_log_list = []
+         if(company_authorization_record.length>0) {
+           training_auth_log_list = this.comsys.adminGetMeau(company_authorization_record[0].son,"training_auth_log_list")
+           course_auth_log_list = this.comsys.adminGetMeau(company_authorization_record[0].son,"course_auth_log_list")
+ 
+         }
+         if(company_list.length>0) {
+            leftNav.push({name:'企业列表',link:'/admin/companyManage',active:false})
+         }
+         if(training_auth_log_list.length>0 || course_auth_log_list.length>0) {
+            leftNav.push({name:'授权记录',link:'/admin/companyManage/list',active:false})
+         }
+         if(leftNav.length>0) {leftNav[0].active = true}
+         this.leftNav =  leftNav
+       }
+ 
+ 
+  },
+  mounted () {
+    this.setMeau()
+  
+  },
+  head () {
+    return {
+      title: "机构",
+      meta: [{
+        hid: 'description',
+        name: 'description',
+        content: "123"
+      }],
+ 
+      
+    }
+  }
+}
+</script>
+

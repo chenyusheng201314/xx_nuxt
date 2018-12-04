@@ -1,0 +1,135 @@
+.news-detail .container {
+  padding: 0;
+}
+.news-detail .border {
+  border: 1px solid #ddd;
+  padding: 45px;
+  margin-bottom: 20px;
+}
+.news-detail .title{
+  font-size: 20px;
+  color: #ff6900;
+  margin-bottom: 30px;
+}
+.news-detail .text {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 45px;
+}
+.news-detail .time{
+  margin-right: 30px;
+}
+.news-detail .ref{
+  margin-right: 30px;
+}
+.news-detail .editor{
+
+}
+.news-detail .news-con{
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 45px;
+  margin-bottom: 45px;
+}
+.news-detail .link {
+  width: 100%;
+  font-size: 0;
+}
+.news-detail .go {
+  width: 50%;
+  font-size: 18px;
+  color: #666;
+}
+.news-detail .top-title {
+  font-size: 20px;
+  color: #ff6900;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ff6900;
+  margin-bottom: 30px;
+}
+.news-detail .other {
+  width: 25%;
+  padding: 0 10px;
+}
+
+.news-detail .other-cover {
+  width: 100%;
+  height: 160px;
+  margin-bottom: 20px;
+}
+.news-detail .other-title {
+  padding: 0 10px;
+}
+.news-detail .others{
+  margin-bottom: 60px;
+}
+
+
+
+
+.news .container {
+  padding: 0;
+}
+.news .border {
+  height: 200px;
+  border: 1px solid #ddd;
+  padding: 30px 45px;
+  margin-bottom: 50px;
+}
+.news .border:hover {
+  /*box-shadow: 2px 0 4px 2px #ff0;*/
+  /*-moz-box-shadow:0px 2px 10px #ff9600;*/
+  /*-webkit-box-shadow:0px 4px 10px #ff9600;*/
+  box-shadow:0px 2px 12px #ffd64d;
+}
+.news .box-cover{
+  width: 352px;
+  height: 200px;
+  margin-right: 45px;
+}
+.news .news-cover{
+  width: 352px;
+  height: 200px;
+  border: 1px solid #f4f4f4;
+  top: -60px;
+  left: 0;
+}
+.news .con {
+  width: 63%;
+  vertical-align: top;
+}
+.news .title{
+  font-size: 20px;
+  line-height: 20px;
+  color: #353535;
+  margin-bottom: 18px;
+}
+.news .content{
+  color: #353535;
+  margin-bottom: 30px;
+}
+.news .time {
+  float: right;
+  font-size: 15px;
+  color: #999;
+}
+.news .read {
+  color: #fff;
+  background: #999;
+  font-size: 14px;
+  width: 100px;
+  height: 24px;
+  line-height: 24px;
+  padding-left: 8px;
+}
+.news .border:hover .read {
+  background: #ff6900;
+}
+.news .border:hover .title{
+  color: #ff9600;
+}
+.news .triangle {
+  margin-left: 8px;
+}
+.news .color {
+  color: inherit;
+}

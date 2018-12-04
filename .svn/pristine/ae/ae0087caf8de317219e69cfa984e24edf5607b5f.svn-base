@@ -1,0 +1,82 @@
+<template>
+  <div class="mine-box">
+    <div class="mine-con">
+      <div class="mine-title">
+        <h4 class="h-title">{{user.belong_company}}</h4>
+      </div>
+      <div class="text-left online-courses">
+        <div class="d-inline-block online-course" v-for="(item, index) in lesson" :key="index"
+             :class="{'online-course-right':(index+1)%3===0}">
+          <div v-if="item.get_type === 4">
+            <img class="course-cover" :src="item.course.cover" alt="">
+            <div class="text-center course-con">
+              <div class="text-overflow-one course-title">{{item.course.course_name}}</div>
+              <div class="text-overflow-one course-teacher">{{item.course.teacher.realname}} | {{item.course.teacher.title}}</div>
+              <div class="text-overflow-one course-nums">
+                <div class="d-inline-block course-num">{{item.course.section_num}} 课时</div>
+                <div class="d-inline-block course-time">{{item.course.media_time|s-h|fixed2}} 小时</div>
+              </div>
+              <div class="course-process">
+                <div class="d-inline-block position-relative process-box">
+                  <div class="position-absolute process-bar" :style="'width:'+item.course.rate * 100+'%'"></div>
+                </div>
+                <span>已完成{{item.course.rate * 100}}%</span>
+              </div>
+            </div>
+          </div>
+          <div v-if="item.get_type === 5">
+            <img class="course-cover" :src="item.companycourse.cover" alt="">
+            <div class="text-center course-con">
+              <div class="text-overflow-one course-title">{{item.companycourse.course_name}}</div>
+              <div class="text-overflow-one course-teacher">{{item.companycourse.teacher}}</div>
+              <div class="text-overflow-one course-nums">
+                <div class="d-inline-block course-num">{{item.companycourse.section_num}} 课时</div>
+                <div class="d-inline-block course-time">{{item.companycourse.media_time|s-h|fixed2}} 小时</div>
+              </div>
+              <div class="course-process">
+                <div class="d-inline-block position-relative process-box">
+                  <div class="position-absolute process-bar" :style="'width:'+item.companycourse.rate * 100+'%'"></div>
+                </div>
+                <span>已完成{{item.companycourse.rate * 100}}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'mine01trip04company',
+  data () {
+    return {
+
+    }
+  },
+  props:['user'],
+  async asyncData({store}) {
+    // let lesson_company = await axios.get(context.store.state.apiUrl + '/api/v1/app/personal/person_company_course', {
+    //   headers: {'token': context.store.state.userInfo.token},
+    //   params: {
+    //     page: 1,
+    //     psize: 10
+    //   }
+    // })
+    let res = await store.dispatch('mineGet', {
+      url: '/app/personal/person_company_course',
+      data: {
+        page: 1,
+        psize: 1000
+      }
+    })
+    console.log('企业课程',res.data.data)
+    return {
+      // user:user.data,
+      lesson: res.data.data,
+
+    }
+  },
+}
+</script>

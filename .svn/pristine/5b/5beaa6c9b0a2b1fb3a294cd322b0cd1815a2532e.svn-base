@@ -1,0 +1,641 @@
+<template>
+  <div class="open-static-con">
+    <!--专题页-->
+    <div class="d-flex open-static-content">
+      <!--1 基于岗位序列的课程体系设计-->
+      <div v-if="id===1">
+        <img src="/images/openStatic/0101.jpg" alt="">
+        <img src="/images/openStatic/0102.jpg" alt="">
+        <img src="/images/openStatic/0103.jpg" alt="">
+        <img src="/images/openStatic/0104.jpg" alt="">
+        <img src="/images/openStatic/0105.jpg" alt="">
+        <img src="/images/openStatic/0107.jpg" alt="">
+        <img src="/images/openStatic/0108.jpg" alt="">
+        <img src="/images/openStatic/0109.jpg" alt="">
+        <img src="/images/openStatic/0110.jpg" alt="">
+        <img src="/images/openStatic/0111.jpg" alt="">
+        <img src="/images/openStatic/0112.jpg" alt="">
+        <img src="/images/openStatic/0113.jpg" alt="">
+        <div class="position-relative">
+          <img src="/images/openStatic/0114.jpg" alt="">
+          <img class="position-absolute cursor-pointer button" src="/images/openStatic/0115.png" alt="" @click="show_modal">
+        </div>
+      </div>
+      <!--2绩效改进技术-->
+      <div v-if="id===2">
+        <img src="/images/openStatic/0201.jpg" alt="">
+        <img src="/images/openStatic/0202.jpg" alt="">
+        <img src="/images/openStatic/0203.jpg" alt="">
+        <img src="/images/openStatic/0204.jpg" alt="">
+        <img src="/images/openStatic/0205.jpg" alt="">
+        <img src="/images/openStatic/0206.jpg" alt="">
+        <img src="/images/openStatic/0207.jpg" alt="">
+        <img src="/images/openStatic/0208.jpg" alt="">
+        <img src="/images/openStatic/0209.jpg" alt="">
+        <img src="/images/openStatic/0210.jpg" alt="">
+        <img src="/images/openStatic/0211.jpg" alt="">
+        <div class="position-relative">
+          <img src="/images/openStatic/0212.jpg" alt="">
+          <img class="position-absolute cursor-pointer button" src="/images/openStatic/0213.png" alt="" @click="show_modal">
+        </div>
+      </div>
+      <!--3教学案例设计与开发-->
+      <div v-if="id===3">
+        <div class="position-relative">
+          <img src="/images/openStatic/0301.jpg" alt="">
+          <img class="position-absolute cursor-pointer button top03" src="/images/openStatic/0313.png" alt="" @click="show_modal">
+        </div>
+        <img src="/images/openStatic/0302.jpg" alt="">
+        <img src="/images/openStatic/0303.jpg" alt="">
+        <img src="/images/openStatic/0304.jpg" alt="">
+        <img src="/images/openStatic/0305.jpg" alt="">
+        <img src="/images/openStatic/0306.jpg" alt="">
+        <img src="/images/openStatic/0307.jpg" alt="">
+        <img src="/images/openStatic/0308.jpg" alt="">
+        <img src="/images/openStatic/0309.jpg" alt="">
+        <img src="/images/openStatic/0310.jpg" alt="">
+        <div class="position-relative">
+          <img src="/images/openStatic/0311.jpg" alt="">
+          <img class="position-absolute cursor-pointer button" src="/images/openStatic/0312.png" alt="" @click="show_modal">
+        </div>
+      </div>
+      <!--4柯氏四级培训效果评估-->
+      <div v-if="id===4">
+        <img src="/images/openStatic/0401.jpg" alt="">
+        <img src="/images/openStatic/0402.jpg" alt="">
+        <img src="/images/openStatic/0403.jpg" alt="">
+        <img src="/images/openStatic/0404.jpg" alt="">
+        <img src="/images/openStatic/0405.jpg" alt="">
+        <img src="/images/openStatic/0406.jpg" alt="">
+        <img src="/images/openStatic/0407.jpg" alt="">
+        <img src="/images/openStatic/0408.jpg" alt="">
+        <img src="/images/openStatic/0409.jpg" alt="">
+        <img src="/images/openStatic/0410.jpg" alt="">
+        <img src="/images/openStatic/0411.jpg" alt="">
+        <img src="/images/openStatic/0412.jpg" alt="">
+        <div class="position-relative">
+          <img src="/images/openStatic/0413.jpg" alt="">
+          <img class="position-absolute cursor-pointer button" src="/images/openStatic/0414.png" alt="" @click="show_modal">
+        </div>
+      </div>
+      <!--5完美授课技巧-->
+      <div v-if="id===5">
+        <img src="/images/openStatic/0501.jpg" alt="">
+        <img src="/images/openStatic/0502.jpg" alt="">
+        <img src="/images/openStatic/0503.jpg" alt="">
+        <img src="/images/openStatic/0504.jpg" alt="">
+        <img src="/images/openStatic/0505.jpg" alt="">
+        <img src="/images/openStatic/0506.jpg" alt="">
+        <img src="/images/openStatic/0507.jpg" alt="">
+        <img src="/images/openStatic/0508.jpg" alt="">
+        <img src="/images/openStatic/0509.jpg" alt="">
+        <img src="/images/openStatic/05010.jpg" alt="">
+        <img src="/images/openStatic/05011.jpg" alt="">
+        <div class="position-relative">
+          <img src="/images/openStatic/0512.jpg" alt="">
+          <img class="position-absolute cursor-pointer button" src="/images/openStatic/0513.png" alt="" @click="show_modal">
+        </div>
+      </div>
+      <!--6完美咨询技巧-->
+      <div v-if="id===6">
+        <img src="/images/openStatic/0601.jpg" alt="">
+        <img src="/images/openStatic/0602.jpg" alt="">
+        <img src="/images/openStatic/0603.jpg" alt="">
+        <img src="/images/openStatic/0604.jpg" alt="">
+        <img src="/images/openStatic/0605.jpg" alt="">
+        <img src="/images/openStatic/0606.jpg" alt="">
+        <img src="/images/openStatic/0607.jpg" alt="">
+        <img src="/images/openStatic/0608.jpg" alt="">
+        <img src="/images/openStatic/0609.jpg" alt="">
+        <img src="/images/openStatic/0610.jpg" alt="">
+        <img src="/images/openStatic/0611.jpg" alt="">
+        <div class="position-relative">
+          <img src="/images/openStatic/0612.jpg" alt="">
+          <img class="position-absolute cursor-pointer button" src="/images/openStatic/0613.png" alt="" @click="show_modal">
+        </div>
+      </div>
+      <!--7在岗带教-->
+      <div v-if="id===7">
+        <img src="/images/openStatic/0701.jpg" alt="">
+        <img src="/images/openStatic/0702.jpg" alt="">
+        <img src="/images/openStatic/0703.jpg" alt="">
+        <img src="/images/openStatic/0704.jpg" alt="">
+        <img src="/images/openStatic/0705.jpg" alt="">
+        <img src="/images/openStatic/0706.jpg" alt="">
+        <img src="/images/openStatic/0707.jpg" alt="">
+        <img src="/images/openStatic/0708.jpg" alt="">
+        <img src="/images/openStatic/0709.jpg" alt="">
+        <img src="/images/openStatic/0710.jpg" alt="">
+        <img src="/images/openStatic/0711.jpg" alt="">
+        <img src="/images/openStatic/0712.jpg" alt="">
+        <img src="/images/openStatic/0713.jpg" alt="">
+        <div class="position-relative">
+          <img src="/images/openStatic/0714.jpg" alt="">
+          <img class="position-absolute cursor-pointer button" src="/images/openStatic/0715.png" alt="" @click="show_modal">
+        </div>
+      </div>
+      <!--8导师-->
+      <div v-if="id===8">
+        <img src="/images/openStatic/0801.jpg" alt="">
+        <img src="/images/openStatic/0802.jpg" alt="">
+        <img src="/images/openStatic/0803.jpg" alt="">
+        <img src="/images/openStatic/0804.jpg" alt="">
+        <img src="/images/openStatic/0805.jpg" alt="">
+        <img src="/images/openStatic/0806.jpg" alt="">
+        <img src="/images/openStatic/0807.jpg" alt="">
+        <img src="/images/openStatic/0808.jpg" alt="">
+      </div>
+      <!--9培训管理者的进阶之路-->
+      <div v-if="id===9">
+        <img src="/images/openStatic/0901.jpg" alt="">
+        <img src="/images/openStatic/0902.jpg" alt="">
+        <img src="/images/openStatic/0903.jpg" alt="">
+        <img src="/images/openStatic/0904.jpg" alt="">
+        <img src="/images/openStatic/0905.jpg" alt="">
+        <img src="/images/openStatic/0906.jpg" alt="">
+        <img src="/images/openStatic/0907.jpg" alt="">
+      </div>
+      <!--10企业内训-->
+      <div v-if="id===10">
+        <img src="/images/openStatic/1001.jpg" alt="">
+        <img src="/images/openStatic/1002.jpg" alt="">
+        <img src="/images/openStatic/1003.jpg" alt="">
+        <img src="/images/openStatic/1004.jpg" alt="">
+        <img src="/images/openStatic/1005.jpg" alt="">
+
+        <div class="position-relative">
+          <img src="/images/openStatic/1006.jpg" alt="">
+          <!--轮播-->
+          <div class="position-absolute swiper-box">
+            <div class="swiper-container swiper-container-banner">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide" v-for="(items,indexs) in lessons" :key="indexs">
+                  <ul class="ul">
+                    <li class="cursor-pointer lesson-li" v-for="(item, index) in items" :key="index" @click="toLesson(item.id)">
+                      <nuxt-link :to="'/class/detail?id='+item.id">
+                      <div class="position-relative d-inline-block">
+                        <img class="lesson-cover" :src="item.cover" alt="">
+                        <!--<div class="position-absolute text-center white lesson-good lesson-new" v-if="item.is_activity===0 && item.is_new===1">新品</div>-->
+                        <!--<div class="position-absolute text-center white lesson-lable lesson-good" v-if="item.is_activity===0 && item.is_jp===1">精品</div>-->
+                        <!--<div class="position-absolute text-center white lesson-good lesson-send" v-if="item.is_activity===1">买赠</div>-->
+                        <!--<div class="position-absolute text-center white lesson-good lesson-special" v-if="item.is_activity===2">{{item.coures_tj.sale_price/item.price |fixed1}}折</div>-->
+                      </div>
+                      <div class="w-60 lesson-content">
+                        <div class="text-overflow-one lesson-title">{{item.course_name}}</div>
+                        <div class="text-overflow-one gray lesson-teacher">
+                          <span>{{item.organization_teacher.realname}}</span> |
+                          <span>{{item.organization_teacher.title}}</span>
+                        </div>
+                        <div class="text-overflow-one lesson-num">
+                          <img class="lesson-icon" src="/images/home/num.png" alt="">
+                          <span>{{item.section_num}} 课时</span>
+                          <img class="lesson-icon" src="/images/home/time.png" alt="">
+                          <span>{{item.media_time|s-h|fixed1}} 小时</span>
+                        </div>
+                        <div v-if="item.is_get" :class="['lesson-price price-text', {'bought': item.is_get }]">已购买</div>
+                        <!--<div v-else-if="item.is_activity===3" class="lesson-price">{{item.price}} <span class="price-text">学币</span></div>-->
+                        <div v-else-if="item.is_activity===3" class="w-100 text-overflow-one lesson-price free-price">免费
+                          <!--<span class="price-text free-price-text">{{item.price|fixed0}}学币</span>-->
+                          <span class="price-text">&nbsp;&nbsp;剩余：{{item.course_free.time_free.name}}</span>
+                        </div>
+                        <div v-else-if="item.is_activity===2&& item.is_get===0" class="lesson-price free-price">{{item.coures_tj.sale_price}}
+                          <span class="price-text">学币&nbsp;&nbsp;</span>
+                          <span class="price-text free-price-text">{{item.price}}学币</span>
+                        </div>
+                        <div v-else-if="item.is_activity===4" class="lesson-price free-price">{{item.coures_jf.points}}
+                          <span class="price-text">积分&nbsp;&nbsp;</span>
+                          <span class="price-text free-price-text">{{item.price}}学币</span>
+                        </div>
+                        <div v-else class="lesson-price">{{item.price}} <span class="price-text">学币</span></div>
+                      </div>
+                      </nuxt-link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <!-- 如果需要分页器 -->
+              <div class="swiper-pagination swiper-pagination-banner"></div>
+            </div>
+          </div>
+        </div>
+
+        <img src="/images/openStatic/1007.jpg" alt="">
+        <img src="/images/openStatic/1008.jpg" alt="">
+        <img src="/images/openStatic/1009.jpg" alt="">
+        <img src="/images/openStatic/1010.jpg" alt="">
+
+
+      </div>
+      <!--11享学平台-->
+      <div v-if="id===11">
+        <div class="position-relative">
+          <img src="/images/openStatic/1101.jpg" alt="">
+          <img class="position-absolute cursor-pointer button-learning " src="/images/openStatic/1109.png" alt="" @click="show_modal">
+          <img class="position-absolute cursor-pointer button-learning1" src="/images/openStatic/1110.png" alt="" @click="open_user">
+        </div>
+        <img src="/images/openStatic/1102.jpg" alt="">
+        <img src="/images/openStatic/1103.jpg" alt="">
+        <img src="/images/openStatic/1104.jpg" alt="">
+        <img src="/images/openStatic/1105.jpg" alt="">
+        <img src="/images/openStatic/1106.jpg" alt="">
+        <img src="/images/openStatic/1107.jpg" alt="">
+        <img src="/images/openStatic/1108.jpg" alt="">
+
+      </div>
+      <!--12享学训练营-->
+      <div v-if="id===12">
+        <img src="/images/openStatic/1201.jpg" alt="">
+        <div class="position-relative">
+          <img src="/images/openStatic/1202.jpg" alt="">
+          <img class="position-absolute cursor-pointer button-down-guide" src="/images/openStatic/1211.png" alt="" @click="show_modal">
+        </div>
+
+        <img src="/images/openStatic/1203.jpg" alt="">
+        <img src="/images/openStatic/1204.jpg" alt="">
+        <img src="/images/openStatic/1205.jpg" alt="">
+        <img src="/images/openStatic/1206.jpg" alt="">
+        <img src="/images/openStatic/1207.jpg" alt="">
+        <img src="/images/openStatic/1208.jpg" alt="">
+        <img src="/images/openStatic/1209.jpg" alt="">
+        <img src="/images/openStatic/1210.jpg" alt="">
+
+      </div>
+      <!--13TDF-->
+      <div v-if="id===13">
+        <img src="/images/openStatic/1301.jpg" alt="">
+        <img src="/images/openStatic/1302.jpg" alt="">
+        <img src="/images/openStatic/1303.jpg" alt="">
+        <img src="/images/openStatic/1304.jpg" alt="">
+        <img src="/images/openStatic/1305.jpg" alt="">
+        <img src="/images/openStatic/1306.jpg" alt="">
+        <img src="/images/openStatic/1307.jpg" alt="">
+        <img src="/images/openStatic/1308.jpg" alt="">
+        <img src="/images/openStatic/1309.jpg" alt="">
+        <div class="position-relative">
+          <img src="/images/openStatic/1310.jpg" alt="">
+          <img class="position-absolute cursor-pointer button" src="/images/openStatic/1311.png" alt="" @click="show_modal">
+        </div>
+      </div>
+
+      <!--15首页广告 -->
+      <!--广告位-学习项目沙龙-->
+      <div v-if="id===15">
+        <div class="position-relative">
+          <img src="/images/openStatic/1501.jpg" alt="">
+          <img class="position-absolute cursor-pointer button-ad" src="/images/openStatic/1510.png" alt="" @click="show_modal">
+        </div>
+
+        <img src="/images/openStatic/1502.jpg" alt="">
+        <img src="/images/openStatic/1503.jpg" alt="">
+        <img src="/images/openStatic/1504.jpg" alt="">
+
+        <div class="position-relative">
+          <img src="/images/openStatic/1505.jpg" alt="">
+          <img class="position-absolute cursor-pointer button-ad1" src="/images/openStatic/1510.png" alt="" @click="show_modal">
+        </div>
+        <img src="/images/openStatic/1506.jpg" alt="">
+        <img src="/images/openStatic/1507.jpg" alt="">
+        <img src="/images/openStatic/1508.jpg" alt="">
+        <div class="position-relative">
+          <img src="/images/openStatic/1509.jpg" alt="">
+          <img class="position-absolute cursor-pointer button" src="/images/openStatic/1510.png" alt="" @click="show_modal">
+        </div>
+      </div>
+
+      <!--19关于我们-->
+      <div v-if="id===19">
+        <img src="/images/openStatic/1901.jpg" alt="">
+        <img src="/images/openStatic/1902.jpg" alt="">
+        <img src="/images/openStatic/1903.jpg" alt="">
+        <img src="/images/openStatic/1904.jpg" alt="">
+        <img src="/images/openStatic/1905.jpg" alt="">
+      </div>
+
+      <!--从21开始 为企业解决方案-->
+      <!--房产行业-->
+      <div v-if="id===21">
+        <div class="position-relative">
+          <img src="/images/openStatic/2101.jpg" alt="">
+          <img class="position-absolute cursor-pointer button-train" src="/images/openStatic/2109.png" alt="" @click="show_modal">
+          <!--<a href="http://p.qiao.baidu.com/cps/chat?siteId=12667303&userId=26578884">-->
+            <img class="position-absolute cursor-pointer button-train1" src="/images/openStatic/2110.png" @click="open_user" alt="">
+          <!--</a>-->
+        </div>
+        <img src="/images/openStatic/2102.jpg" alt="">
+        <img src="/images/openStatic/2103.jpg" alt="">
+        <img src="/images/openStatic/2104.jpg" alt="">
+        <img src="/images/openStatic/2105.jpg" alt="">
+        <img src="/images/openStatic/2106.jpg" alt="">
+        <img src="/images/openStatic/2107.jpg" alt="">
+        <img src="/images/openStatic/2108.jpg" alt="">
+      </div>
+
+      <!--'服装行业',-->
+      <div v-if="id===22">
+        <div class="position-relative">
+          <img src="/images/openStatic/2201.jpg" alt="">
+          <img class="position-absolute cursor-pointer button-train" src="/images/openStatic/2208.png" alt="" @click="show_modal">
+          <img class="position-absolute cursor-pointer button-train1" src="/images/openStatic/2209.png" alt="" @click="open_user">
+        </div>
+        <img src="/images/openStatic/2202.jpg" alt="">
+        <img src="/images/openStatic/2203.jpg" alt="">
+        <img src="/images/openStatic/2204.jpg" alt="">
+        <img src="/images/openStatic/2205.jpg" alt="">
+        <img src="/images/openStatic/2206.jpg" alt="">
+        <img src="/images/openStatic/2207.jpg" alt="">
+      </div>
+      <!--'金融行业',-->
+      <div v-if="id===23">
+        <div class="position-relative">
+          <img src="/images/openStatic/2301.jpg" alt="">
+          <img class="position-absolute cursor-pointer button-train" src="/images/openStatic/2306.png" alt="" @click="show_modal">
+          <img class="position-absolute cursor-pointer button-train1" src="/images/openStatic/2307.png" alt="" @click="open_user">
+        </div>
+        <img src="/images/openStatic/2302.jpg" alt="">
+        <img src="/images/openStatic/2303.jpg" alt="">
+        <img src="/images/openStatic/2304.jpg" alt="">
+        <img src="/images/openStatic/2305.jpg" alt="">
+      </div>
+      <!--'汽车行业',-->
+      <div v-if="id===24">
+        <div class="position-relative">
+          <img src="/images/openStatic/2401.jpg" alt="">
+          <img class="position-absolute cursor-pointer button-train" src="/images/openStatic/2408.png" alt="" @click="show_modal">
+          <img class="position-absolute cursor-pointer button-train1" src="/images/openStatic/2409.png" alt="" @click="open_user">
+        </div>
+        <img src="/images/openStatic/2402.jpg" alt="">
+        <img src="/images/openStatic/2403.jpg" alt="">
+        <img src="/images/openStatic/2404.jpg" alt="">
+        <img src="/images/openStatic/2405.jpg" alt="">
+        <img src="/images/openStatic/2406.jpg" alt="">
+        <img src="/images/openStatic/2407.jpg" alt="">
+      </div>
+      <!--'物流行业',-->
+      <div v-if="id===25">
+        <div class="position-relative">
+          <img src="/images/openStatic/2501.jpg" alt="">
+          <img class="position-absolute cursor-pointer button-train" src="/images/openStatic/2507.png" alt="" @click="show_modal">
+          <img class="position-absolute cursor-pointer button-train1" src="/images/openStatic/2508.png" alt="" @click="open_user">
+        </div>
+        <img src="/images/openStatic/2502.jpg" alt="">
+        <img src="/images/openStatic/2503.jpg" alt="">
+        <img src="/images/openStatic/2504.jpg" alt="">
+        <img src="/images/openStatic/2505.jpg" alt="">
+        <img src="/images/openStatic/2506.jpg" alt="">
+      </div>
+      <!--'医药行业',-->
+      <div v-if="id===26">
+        <div class="position-relative">
+          <img src="/images/openStatic/2601.jpg" alt="">
+          <img class="position-absolute cursor-pointer button-train" src="/images/openStatic/2607.png" alt="" @click="show_modal">
+          <img class="position-absolute cursor-pointer button-train1" src="/images/openStatic/2608.png" alt="" @click="open_user">
+        </div>
+        <img src="/images/openStatic/2602.jpg" alt="">
+        <img src="/images/openStatic/2603.jpg" alt="">
+        <img src="/images/openStatic/2604.jpg" alt="">
+        <img src="/images/openStatic/2605.jpg" alt="">
+        <img src="/images/openStatic/2606.jpg" alt="">
+      </div>
+      <!--'IT行业'-->
+      <div v-if="id===27">
+        <div class="position-relative">
+          <img src="/images/openStatic/2701.jpg" alt="">
+          <img class="position-absolute cursor-pointer button-train" src="/images/openStatic/2708.png" alt="" @click="show_modal">
+          <img class="position-absolute cursor-pointer button-train1" src="/images/openStatic/2709.png" alt="" @click="open_user">
+        </div>
+        <img src="/images/openStatic/2702.jpg" alt="">
+        <img src="/images/openStatic/2703.jpg" alt="">
+        <img src="/images/openStatic/2704.jpg" alt="">
+        <img src="/images/openStatic/2705.jpg" alt="">
+        <img src="/images/openStatic/2706.jpg" alt="">
+        <img src="/images/openStatic/2707.jpg" alt="">
+      </div>
+    </div>
+
+    <!--报名-->
+    <div class="modal fade" v-show="modal">
+      <div class="position-relative modal-con">
+        <div class="position-absolute close-modal" @click="close_modal"></div>
+        <div class="inputs">
+          <input type="text" v-model="customer_name">
+          <input type="tel" v-model="mobile">
+          <input type="text" v-model="company">
+        </div>
+        <div class="sign" @click="sign"></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import Swiper from 'swiper'
+  export default {
+    name: "openStatic",
+    head () {
+      return {
+        link: [
+          {
+            href: '/css/open.static.css',
+            type:'text/css',
+            rel: 'stylesheet',
+          }
+        ]
+      }
+    },
+    data () {
+      return {
+        modal:false,
+        sign_title:'',
+        customer_name:'',
+        mobile:'',
+        company:'',
+      }
+    },
+    async asyncData({store,params}) {
+      let id = Number(params.id)
+      let lessons = []
+      // console.log('在线微课',id)
+      if (id===10) {
+        // 企业内训中的 课程
+        let res = await store.dispatch('httpGet',{
+          url: '/home/course/course_list',
+          method:'get',
+          params:{
+            page:1,
+            pasize:100,
+            sort_id:''
+          }
+        })
+
+        let dd = res.data.data
+        // console.log('在线微课0',Math.ceil(dd.length/8))
+        let len = Math.ceil(dd.length/8)
+        if(len) {
+          for(let i=0;i< len;i++){
+            let d = JSON.parse(JSON.stringify(dd))
+            let a = []
+            a = d.splice(i*8,8)
+            lessons.push(a)
+          }
+        }
+      }
+      // console.log('在线微课11',lessons)
+      return {
+        id,
+        lessons
+      }
+    },
+    methods:{
+      // 轮播
+      init () {
+        // 轮播swiper
+        var mySwiper = new Swiper('.swiper-container-banner', {
+          // direction: 'horizontal',
+          // autoplay: {
+          //   delay: 50000,
+          //   stopOnLastSlide: false,
+          //   disableOnInteraction: true,
+          // },
+          // slidesPerView: "auto",
+          // centeredSlides: true,
+
+          initialSlide: 0,
+          loop: true,
+          // 如果需要分页器
+          // pagination: {
+          //   el: '.swiper-pagination-banner'
+          // }
+        })
+      },
+      // 微课
+      toLesson () {
+
+      },
+      show_modal () {
+        this.modal = true
+        document.getElementsByTagName("body")[0].className = 'modal-open'
+      },
+      // 在线沟通 窗口
+      open_user () {
+        window.open('http://p.qiao.baidu.com/cps/chat?siteId=12667303&userId=26578884','_blank',
+          "height=600, width=900, top=200, left=600, scrollbars=no,resizable=0.2,modal=false,alwaysRaised=yes");
+      },
+      close_modal() {
+        this.modal = false
+        document.getElementsByTagName("body")[0].className = ''
+      },
+      // 报名
+      async sign() {
+        // alert('提交')
+        if (!this.sign_title) {
+          // alert('请填写课程名')
+          this.$message({
+            type:'warning',
+            message:'请填写课程名~'
+          })
+
+        }else if (!this.customer_name){
+          this.$message({
+            type:'warning',
+            message:'请填写姓名~'
+          })
+        }else if (!this.iphone(this.mobile)){
+          this.$message({
+            type:'warning',
+            message:'请填写合法的手机号~'
+          })
+        }else {
+          let res = await this.$store.dispatch('httpPost', {
+            url:'/home/sign_up_msg/msg_add',
+            data:{
+              sign_title:this.sign_title,
+              customer_name:this.customer_name,
+              mobile:this.mobile,
+              company:this.company
+            }
+          });
+          if(res.code===0){
+            this.$message({
+              type:'success',
+              message:'报名成功~'
+            })
+            setTimeout(()=>{
+              this.close_modal()
+            },1500)
+            this.customer_name=''
+            this.mobile=''
+            this.company=''
+          }else {
+            this.$message({
+              type:'error',
+              message:res.message
+            })
+          }
+
+        }
+      }
+    },
+    beforeMount () {
+      // <!--id = 1 基于岗位序列的课程体系设计 2绩效改进技术  3教学案例设计与开发-->
+      // <!--4柯氏四级培训效果评估 5完美授课技巧 6完美咨询技巧 7在岗带教-->
+      // 有报名信息的时候 要填写sign_title
+      switch (this.id) {
+        case 1:
+          this.sign_title='基于岗位序列的课程体系设计'
+          break;
+        case 2:
+          this.sign_title='绩效改进技术'
+          break;
+        case 3:
+          this.sign_title='教学案例设计与开发'
+          break;
+        case 4:
+          this.sign_title='柯氏四级培训效果评估'
+          break;
+        case 5:
+          this.sign_title='完美授课技巧'
+          break;
+        case 6:
+          this.sign_title='完美咨询技巧'
+          break;
+        case 7:
+          this.sign_title='在岗带教'
+          break;
+
+        case 13:
+          this.sign_title='TDF'
+          break;
+
+
+
+        case 21:
+          this.sign_title='房产行业'
+          break;
+        case 22:
+          this.sign_title='服装行业'
+          break;
+        case 23:
+          this.sign_title='金融行业'
+          break;
+        case 24:
+          this.sign_title='汽车行业'
+          break;
+        case 25:
+          this.sign_title='物流行业'
+          break;
+        case 26:
+          this.sign_title='医药行业'
+          break;
+        case 27:
+          this.sign_title='IT行业'
+          break;
+      }
+    },
+    mounted () {
+      // 企业内训 轮播图
+      if (this.id===10) {
+        this.init()
+      }
+    }
+  }
+</script>
